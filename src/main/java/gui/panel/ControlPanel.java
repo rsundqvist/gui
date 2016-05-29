@@ -7,6 +7,7 @@ import java.util.Map;
 import contract.json.Operation;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -85,9 +86,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         visualController.getModelController().setExecutionTickListener(this, tickCount);
         this.visualization = visualization;
 
-        visualController.getModelController().getExecutionModel().indexProperty()
+        visualController.getModelController().getModel().indexProperty()
                 .addListener((InvalidationListener) observable -> {
-                    int index = visualController.getModelController().getExecutionModel().indexProperty().get();
+                    int index = visualController.getModelController().getModel().indexProperty().get();
                     updateOperationOverview(index);
                 });
 
@@ -121,8 +122,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         // ============================================================= //
 
         Button play = (Button) namespace.get("play");
-        play.disableProperty()
-                .bind(visualController.getModelController().getExecutionModel().executeNextProperty().not());
+        play.disableProperty().bind(visualController.getModelController().getModel().executeNextProperty().not());
 
         visualController.getModelController().autoExecutingProperty()
                 .addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
@@ -135,19 +135,26 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
                 });
 
         Button forward = (Button) namespace.get("forward");
-        forward.disableProperty()
-                .bind(visualController.getModelController().getExecutionModel().executeNextProperty().not());
+        forward.disableProperty().bind(visualController.getModelController().getModel().executeNextProperty().not());
 
         Button back = (Button) namespace.get("back");
-        back.disableProperty()
-                .bind(visualController.getModelController().getExecutionModel().executePreviousProperty().not());
+        back.disableProperty().bind(visualController.getModelController().getModel().executePreviousProperty().not());
 
         // Operation progress bar
         operationList = (ListView<Operation>) namespace.get("operationList");
         modelProgress = (ProgressBar) namespace.get("modelProgress");
         listSizeLabel = (TextField) namespace.get("listSizeLabel");
         currentOperationLabel = (TextField) namespace.get("currentOperationLabel");
-        ObservableList<Operation> obsList = visualController.getModelController().getExecutionModel().getOperations();
+        ObservableList<Operation> obsList = visualController.getModelController().getModel().getOperations();
+        obsList.addListener(new ListChangeListener<Operation>() {
+
+            @Override
+            public void onChanged (ListChangeListener.Change<? extends Operation> c) {
+                int index = visualController.getModelController().getModel().indexProperty().get();
+                updateOperationOverview(index);
+            }
+
+        });
         operationList.setItems(obsList);
 
     }
@@ -204,7 +211,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
             int index = Integer.parseInt(input) - 1;
             visualController.execute(index);
         } catch (Exception exc) {
-            tf.setText(visualController.getModelController().getExecutionModel().getIndex() + "");
+            tf.setText(visualController.getModelController().getModel().getIndex() + "");
             URL resource = this.getClass().getResource("/assets/shortcircuit.mp3");
             Media media = new Media(resource.toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -236,16 +243,23 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
     }
 
     private void updateOperationOverview (Number index) {
-        int currOp = index.intValue() + 1;
         int totOps = operationList.getItems().size();
 
-        operationList.getFocusModel().focus(currOp - 3);
-        operationList.scrollTo(currOp - 3);
-        operationList.getSelectionModel().select(currOp - 1);
+        if (totOps == 0) {
+            currentOperationLabel.setText(0 + "");
+            listSizeLabel.setText(0 + "");
+            modelProgress.setProgress(0);
+        } else {
+            int currOp = index.intValue() + 1;
+            operationList.getFocusModel().focus(currOp - 3);
+            operationList.scrollTo(currOp - 3);
+            operationList.getSelectionModel().select(currOp - 1);
 
-        modelProgress.setProgress((double) currOp / totOps);
+            modelProgress.setProgress((double) currOp / totOps);
 
-        currentOperationLabel.setText(currOp + "");
-        listSizeLabel.setText(totOps + "");
+            currentOperationLabel.setText(currOp + "");
+            listSizeLabel.setText(totOps + "");
+        }
+
     }
 }

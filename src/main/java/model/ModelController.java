@@ -260,7 +260,7 @@ public class ModelController {
      *
      * @return An {@code ExecutionModel}.
      */
-    public ExecutionModel getExecutionModel () {
+    public ExecutionModel getModel () {
         return executionModel;
     }
 

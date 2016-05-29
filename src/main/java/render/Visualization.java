@@ -273,13 +273,13 @@ public class Visualization extends StackPane {
 
     /**
      * Set the animation time in milliseconds for all animations. Actual animation time
-     * will be {@code millis * 0.85} to allow rest time after the animation.
+     * will be {@code millis * 0.65} to allow rest time after the animation.
      *
      * @param animationTime
      *            The new animation time in milliseconds.
      */
     public void setAnimationTime (long animationTime) {
-        this.animationTime = (long) (animationTime * 0.85000);
+        this.animationTime = (long) (animationTime * 0.65000);
     }
 
     /**

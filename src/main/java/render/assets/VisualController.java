@@ -54,7 +54,7 @@ public class VisualController implements OperationsExecutedListener {
         this.modelController = executionModel;
         this.visualization = visualization;
 
-        executionModel.getExecutionModel().addOperationsExecutedListener(this);
+        executionModel.getModel().addOperationsExecutedListener(this);
     }
 
     /**

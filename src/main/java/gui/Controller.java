@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -87,7 +88,7 @@ public class Controller implements ComListener {
 
         this.visualController = visualController;
 
-        execModel = visualController.getModelController().getExecutionModel();
+        execModel = visualController.getModelController().getModel();
         visualization = visualController.getVisualization();
         modelLoader = new ModelLoader(execModel);
 
@@ -125,7 +126,7 @@ public class Controller implements ComListener {
 
     public void interpretOperationHistory () {
         Interpreter interpreter = new Interpreter();
-        List<Operation> beforeItems = execModel.getOperations();
+        List<Operation> beforeItems = new ArrayList<Operation>(execModel.getOperations());
         List<Operation> afterItems = interpreter.interpret(beforeItems);
         int n = beforeItems.size() - afterItems.size();
         execModel.setOperations(afterItems);
@@ -133,8 +134,8 @@ public class Controller implements ComListener {
         if (n == 0) {
             Main.console.info("Interpretation did not return any new operations.");
         } else {
-            Main.console.info("List size reduced by " + n + ", going from " + beforeItems.size() + " to "
-                    + afterItems.size() + ".");
+            Main.console.info("Interpretation successful. List size reduced by " + n + ", going from "
+                    + beforeItems.size() + " to " + afterItems.size() + ".");
         }
         visualController.reset();
     }
