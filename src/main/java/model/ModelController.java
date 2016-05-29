@@ -1,9 +1,6 @@
 package model;
 
-import java.util.List;
-
 import assets.Debug;
-import contract.json.Operation;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -13,7 +10,6 @@ import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.beans.property.ReadOnlyLongWrapper;
 import javafx.util.Duration;
-import render.Visualization;
 import render.assets.Const;
 
 /**
@@ -22,7 +18,7 @@ import render.assets.Const;
  * @author Richard Sundqvist
  *
  */
-public class ExecutionModelController implements OperationsExecutedListener {
+public class ModelController {
 
     // ============================================================= //
     /*
@@ -36,11 +32,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
      * The model this controller is responsible for.
      */
     private final ExecutionModel  executionModel;
-
-    /**
-     * The visualization used to animate the model.
-     */
-    private final Visualization   visualization;
 
     /**
      * Time line used for timed model progression.
@@ -87,14 +78,9 @@ public class ExecutionModelController implements OperationsExecutedListener {
      *
      * @param executionModel
      *            The model to control.
-     * @param The
-     *            The visualization used to animate.
      */
-    public ExecutionModelController (ExecutionModel executionModel, Visualization visualization) {
+    public ModelController (ExecutionModel executionModel) {
         this.executionModel = executionModel;
-        this.visualization = visualization;
-
-        executionModel.addOperationsExecutedListener(this);
 
         autoExecutionSpeed = Const.DEFAULT_ANIMATION_TIME;
 
@@ -111,8 +97,8 @@ public class ExecutionModelController implements OperationsExecutedListener {
      * Create a new model controller for {@link ExecutionModel#INSTANCE}.
      *
      */
-    public ExecutionModelController () {
-        this(ExecutionModel.INSTANCE, new Visualization(ExecutionModel.INSTANCE));
+    public ModelController () {
+        this(ExecutionModel.INSTANCE);
     }
 
     // ============================================================= //
@@ -191,14 +177,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
         }
     }
 
-    @Override
-    public void operationsExecuted (List<Operation> executedOperations) {
-        for (Operation op : executedOperations) {
-            visualization.render(op);
-        }
-        executedOperations.clear();
-    }
-
     /**
      * Stop timed execution for the model.
      */
@@ -229,8 +207,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
         if (autoExecutionSpeed < 0) {
             throw new IllegalArgumentException("Time between executions cannot be less than zero.");
         }
-
-        visualization.setAnimationTime(autoExecutionSpeed);
 
         boolean wasRunning = autoExecutionTimeline.getStatus() == Status.RUNNING;
         if (wasRunning) {
@@ -286,15 +262,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
      */
     public ExecutionModel getExecutionModel () {
         return executionModel;
-    }
-
-    /**
-     * Returns the Visualization used by this controller.
-     *
-     * @return A Visualization.
-     */
-    public Visualization getVisualization () {
-        return visualization;
     }
 
     // ============================================================= //
@@ -368,7 +335,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
     public void reset () {
         stopAutoExecution();
         executionTickListener.tickUpdate(0);
-        visualization.reset();
         executionModel.reset();
     }
 
@@ -379,7 +345,6 @@ public class ExecutionModelController implements OperationsExecutedListener {
     public void clear () {
         stopAutoExecution();
         executionTickListener.tickUpdate(0);
-        visualization.clear();
         executionModel.clear();
     }
 

@@ -13,10 +13,10 @@ import javafx.scene.control.TextArea;
  */
 public class ConsolePanel {
 
-    public static final String PREPEND_FORCE = "\n<>\t";
-    public static final String PREPEND_ERR   = "\n>\t";
-    public static final String PREPEND_INFO  = "\n";
-    public static final String PREPEND_DEBUG = "\n";
+    public static final String PREPEND_SEVERE = "\n<>\t";
+    public static final String PREPEND_ERROR  = "\n>\t";
+    public static final String PREPEND_NORMAL = "\n";
+    public static final String PREPEND_DEBUG  = "\n";
 
     // ============================================================= //
     /*
@@ -26,10 +26,10 @@ public class ConsolePanel {
      */
     // ============================================================= //
 
-    private boolean            quiet         = false;
-    private boolean            info          = true;
-    private boolean            err           = true;
-    private boolean            debug         = false;
+    private boolean            quiet          = false;
+    private boolean            info           = true;
+    private boolean            err            = true;
+    private boolean            debug          = false;
 
     private final TextArea     consoleTextArea;
 
@@ -72,7 +72,7 @@ public class ConsolePanel {
         if (quiet || !this.info) {
             return;
         }
-        print(PREPEND_INFO + info);
+        print(PREPEND_NORMAL + info);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ConsolePanel {
         if (quiet || !this.err) {
             return;
         }
-        print(PREPEND_ERR + err);
+        print(PREPEND_ERROR + err);
     }
 
     /**
@@ -107,7 +107,7 @@ public class ConsolePanel {
      *            The line to print.
      */
     public void force (String force) {
-        print((force.equals("") ? "" : PREPEND_FORCE) + force);
+        print((force.equals("") ? "" : PREPEND_SEVERE) + force);
     }
 
     // ============================================================= //
@@ -153,7 +153,7 @@ public class ConsolePanel {
     public void setInfo (boolean value) {
         info = value;
         if (!quiet) {
-            print(PREPEND_INFO + "Information printouts " + (info ? "ENABLED." : "DISABLED."));
+            print(PREPEND_NORMAL + "Information printouts " + (info ? "ENABLED." : "DISABLED."));
         }
     }
 
@@ -190,7 +190,7 @@ public class ConsolePanel {
     public void setError (boolean value) {
         err = value;
         if (!quiet) {
-            print(PREPEND_ERR + "Error printouts " + (err ? "ENABLED." : "DISABLED."));
+            print(PREPEND_ERROR + "Error printouts " + (err ? "ENABLED." : "DISABLED."));
         }
     }
 }

@@ -199,7 +199,9 @@ public class ExecutionModel {
     }
 
     private void notifyExecutedOperationsListeners () {
+        List<Operation> executedOperations;
         for (OperationsExecutedListener opl : operationsExecutedListeners) {
+            executedOperations = new ArrayList<Operation>(this.executedOperations);
             opl.operationsExecuted(executedOperations);
         }
     }

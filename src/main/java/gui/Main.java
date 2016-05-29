@@ -22,8 +22,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.ExecutionModel;
-import model.ExecutionModelController;
+import model.ModelController;
 import render.Visualization;
+import render.assets.VisualController;
 
 /**
  * Entry class for the GUI.
@@ -67,10 +68,10 @@ public class Main extends Application {
         // ============================================================= //
         SourcePanel sourcePanel = new SourcePanel();
         Visualization visualization = new Visualization(ExecutionModel.INSTANCE);
-        ExecutionModelController emc = new ExecutionModelController(ExecutionModel.INSTANCE, visualization);
-        ControlPanel controlPanel = new ControlPanel(emc, visualization);
+        VisualController vc = new VisualController(new ModelController(ExecutionModel.INSTANCE), visualization);
+        ControlPanel controlPanel = new ControlPanel(vc, visualization);
 
-        controller = new Controller(primaryStage, sourcePanel, emc);
+        controller = new Controller(primaryStage, sourcePanel, vc);
         fxmlLoader.setController(controller);
 
         // ============================================================= //

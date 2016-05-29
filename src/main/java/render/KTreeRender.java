@@ -3,9 +3,9 @@ package render;
 import java.util.Arrays;
 
 import assets.Tools;
-import contract.datastructure.IndexedElement;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
+import contract.datastructure.IndexedElement;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

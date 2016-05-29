@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import contract.datastructure.IndexedElement;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
+import contract.datastructure.IndexedElement;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;

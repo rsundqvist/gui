@@ -19,9 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import model.ExecutionModelController;
 import model.ExecutionTickListener;
 import render.Visualization;
+import render.assets.VisualController;
 
 /**
  *
@@ -30,7 +30,7 @@ import render.Visualization;
  */
 public class ControlPanel extends Pane implements ExecutionTickListener {
 
-    private static final int               tickCount = 100;
+    private static final int          tickCount = 100;
 
     // ============================================================= //
     /*
@@ -40,15 +40,15 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
      */
     // ============================================================= //
 
-    private final ExecutionModelController emController;
-    private final Visualization            visualization;
-    private final ProgressBar              animationProgress;
+    private final VisualController    visualController;
+    private final Visualization       visualization;
+    private final ProgressBar         animationProgress;
 
     // Model progress list + related items.
-    private final ProgressBar              modelProgress;
-    private final ListView<Operation>      operationList;
-    private final TextField                listSizeLabel;
-    private final TextField                currentOperationLabel;
+    private final ProgressBar         modelProgress;
+    private final ListView<Operation> operationList;
+    private final TextField           listSizeLabel;
+    private final TextField           currentOperationLabel;
 
     // ============================================================= //
     /*
@@ -67,7 +67,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
      *            Used to control visualization.
      */
     @SuppressWarnings("unchecked")
-    public ControlPanel (ExecutionModelController executionModelController, Visualization visualization) {
+    public ControlPanel (VisualController executionModelController, Visualization visualization) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/panel/ControlPanel.fxml"));
         fxmlLoader.setController(this);
@@ -81,14 +81,15 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         }
         getChildren().add(root);
 
-        emController = executionModelController;
-        emController.setExecutionTickListener(this, tickCount);
+        visualController = executionModelController;
+        visualController.getModelController().setExecutionTickListener(this, tickCount);
         this.visualization = visualization;
 
-        emController.getExecutionModel().indexProperty().addListener((InvalidationListener) observable -> {
-            int index = emController.getExecutionModel().indexProperty().get();
-            updateOperationOverview(index);
-        });
+        visualController.getModelController().getExecutionModel().indexProperty()
+                .addListener((InvalidationListener) observable -> {
+                    int index = visualController.getModelController().getExecutionModel().indexProperty().get();
+                    updateOperationOverview(index);
+                });
 
         // ============================================================= //
         /*
@@ -101,9 +102,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         animationProgress = (ProgressBar) namespace.get("animationProgress");
 
         Slider speedSlider = (Slider) namespace.get("speedSlider");
-        speedSlider.setValue(-emController.getAutoExecutionSpeed());
+        speedSlider.setValue(-visualController.getAutoExecutionSpeed());
         speedSlider.setOnMouseReleased(event -> {
-            emController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()));
+            visualController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()));
         });
 
         // Panel sizing.
@@ -120,29 +121,33 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         // ============================================================= //
 
         Button play = (Button) namespace.get("play");
-        play.disableProperty().bind(emController.getExecutionModel().executeNextProperty().not());
+        play.disableProperty()
+                .bind(visualController.getModelController().getExecutionModel().executeNextProperty().not());
 
-        emController.autoExecutingProperty().addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+        visualController.getModelController().autoExecutingProperty()
+                .addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
 
-            if (newValue) {
-                play.setText("Pause");
-            } else {
-                play.setText("Play");
-            }
-        });
+                    if (newValue) {
+                        play.setText("Pause");
+                    } else {
+                        play.setText("Play");
+                    }
+                });
 
         Button forward = (Button) namespace.get("forward");
-        forward.disableProperty().bind(emController.getExecutionModel().executeNextProperty().not());
+        forward.disableProperty()
+                .bind(visualController.getModelController().getExecutionModel().executeNextProperty().not());
 
         Button back = (Button) namespace.get("back");
-        back.disableProperty().bind(emController.getExecutionModel().executePreviousProperty().not());
+        back.disableProperty()
+                .bind(visualController.getModelController().getExecutionModel().executePreviousProperty().not());
 
         // Operation progress bar
         operationList = (ListView<Operation>) namespace.get("operationList");
         modelProgress = (ProgressBar) namespace.get("modelProgress");
         listSizeLabel = (TextField) namespace.get("listSizeLabel");
         currentOperationLabel = (TextField) namespace.get("currentOperationLabel");
-        ObservableList<Operation> obsList = emController.getExecutionModel().getOperations();
+        ObservableList<Operation> obsList = visualController.getModelController().getExecutionModel().getOperations();
         operationList.setItems(obsList);
 
     }
@@ -156,23 +161,23 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
     // ============================================================= //
 
     public void play () {
-        emController.toggleAutoExecution();
+        visualController.toggleAutoExecution();
     }
 
     public void forward () {
-        emController.executeNext();
+        visualController.executeNext();
     }
 
     public void back () {
-        emController.executePrevious();
+        visualController.executePrevious();
     }
 
     public void restart () {
-        emController.reset();
+        visualController.reset();
     }
 
     public void clear () {
-        emController.clear();
+        visualController.clear();
     }
 
     public void toggleAnimate (Event e) {
@@ -197,9 +202,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         String input = tf.getText();
         try {
             int index = Integer.parseInt(input) - 1;
-            emController.execute(index);
+            visualController.execute(index);
         } catch (Exception exc) {
-            tf.setText(emController.getExecutionModel().getIndex() + "");
+            tf.setText(visualController.getModelController().getExecutionModel().getIndex() + "");
             URL resource = this.getClass().getResource("/assets/shortcircuit.mp3");
             Media media = new Media(resource.toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -214,7 +219,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         ListView lw = (ListView) e.getSource();
 
         int index = lw.getSelectionModel().getSelectedIndex() - 1;
-        emController.execute(index);
+        visualController.execute(index);
     }
 
     // ============================================================= //

@@ -3,10 +3,10 @@ package render;
 import java.util.Arrays;
 
 import contract.datastructure.Array;
-import contract.datastructure.IndexedElement;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
+import contract.datastructure.IndexedElement;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.Node;

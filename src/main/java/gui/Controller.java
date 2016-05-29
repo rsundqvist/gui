@@ -47,9 +47,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.ExecutionModel;
-import model.ExecutionModelController;
 import model.ModelLoader;
 import render.Visualization;
+import render.assets.VisualController;
 
 public class Controller implements ComListener {
 
@@ -61,18 +61,18 @@ public class Controller implements ComListener {
      */
     // ============================================================= //
 
-    private final Visualization            visualization;
-    private final Stage                    primaryStage;
-    private final LogStreamManager         lsm;
+    private final Visualization    visualization;
+    private final Stage            primaryStage;
+    private final LogStreamManager lsm;
 
-    private final ExecutionModel           execModel;
-    private final ModelLoader              modelLoader;
-    private final ExecutionModelController execModelController;
+    private final ExecutionModel   execModel;
+    private final ModelLoader      modelLoader;
+    private final VisualController visualController;
     // Controls
-    private Menu                           visualMenu;
+    private Menu                   visualMenu;
     // Views, panels, dialogs
-    private final SourcePanel              sourcePanel;
-    private final ConnectedView            connectedView;
+    private final SourcePanel      sourcePanel;
+    private final ConnectedView    connectedView;
 
     // ============================================================= //
     /*
@@ -82,13 +82,13 @@ public class Controller implements ComListener {
      */
     // ============================================================= //
 
-    public Controller (Stage primaryStage, SourcePanel sourcePanel, ExecutionModelController execModelController) {
+    public Controller (Stage primaryStage, SourcePanel sourcePanel, VisualController visualController) {
         this.primaryStage = primaryStage;
 
-        this.execModelController = execModelController;
+        this.visualController = visualController;
 
-        execModel = execModelController.getExecutionModel();
-        visualization = execModelController.getVisualization();
+        execModel = visualController.getModelController().getExecutionModel();
+        visualization = visualController.getVisualization();
         modelLoader = new ModelLoader(execModel);
 
         visualization.setAnimationTime(render.assets.Const.DEFAULT_ANIMATION_TIME);
@@ -114,7 +114,7 @@ public class Controller implements ComListener {
     }
 
     public void openInterpreterView () {
-        execModelController.stopAutoExecution();
+        visualController.stopAutoExecution();
         InterpreterView interpreterView = new InterpreterView(primaryStage);
 
         if (interpreterView.show(execModel.getOperations())) {
@@ -136,7 +136,7 @@ public class Controller implements ComListener {
             Main.console.info("List size reduced by " + n + ", going from " + beforeItems.size() + " to "
                     + afterItems.size() + ".");
         }
-        execModelController.reset();
+        visualController.reset();
     }
 
     // ============================================================= //
@@ -348,23 +348,23 @@ public class Controller implements ComListener {
     }
 
     public void play () {
-        execModelController.toggleAutoExecution();
+        visualController.toggleAutoExecution();
     }
 
     public void forward () {
-        execModelController.executeNext();
+        visualController.executeNext();
     }
 
     public void back () {
-        execModelController.executePrevious();
+        visualController.executePrevious();
     }
 
     public void restart () {
-        execModelController.reset();
+        visualController.reset();
     }
 
     public void clear () {
-        execModelController.clear();
+        visualController.clear();
     }
 
     /**
