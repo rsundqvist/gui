@@ -315,7 +315,7 @@ public class ExecutionModel {
     private void execute () {
         setIndex(index + 1);
 
-        if (index > 0 && index < operations.size()) {
+        if (index >= 0 && index < operations.size()) {
             Operation op = operations.get(index);
             setAtomicIndex(atomicIndex + op.operation.numAtomicOperations);
             executedOperations.add(op);

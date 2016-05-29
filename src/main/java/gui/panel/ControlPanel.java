@@ -241,8 +241,8 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         int currOp = index.intValue() + 1;
         int totOps = operationList.getItems().size();
 
-        operationList.getFocusModel().focus(currOp + 1);
-        operationList.scrollTo(currOp + 1);
+        operationList.getFocusModel().focus(currOp - 3);
+        operationList.scrollTo(currOp - 3);
         operationList.getSelectionModel().select(currOp - 1);
 
         modelProgress.setProgress((double) currOp / totOps);
