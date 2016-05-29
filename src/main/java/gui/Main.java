@@ -41,6 +41,10 @@ public class Main extends Application {
      * Console for printing system and error messages.
      */
     public static ConsolePanel console;
+
+    /**
+     * Controller class for the GUI.
+     */
     private Controller         controller;
 
     // ============================================================= //
@@ -88,11 +92,6 @@ public class Main extends Application {
         // ============================================================= //
         Map<String, Object> namespace = fxmlLoader.getNamespace();
         console = new ConsolePanel((TextArea) namespace.get("console"));
-        // Window size
-        Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-        double windowWidth = screenSize.getWidth() * .9;
-        double windowHeight = screenSize.getHeight() * .9;
-        Scene scene = new Scene(root, windowWidth, windowHeight);
 
         // ============================================================= //
         /*
@@ -125,12 +124,22 @@ public class Main extends Application {
             examples.getItems().add(algoButton);
         }
 
-        // Load main window
+        // ============================================================= //
+        /*
+         * Build and show.
+         */
+        // ============================================================= //
         primaryStage.setTitle(Const.PROGRAM_NAME);
         primaryStage.setOnCloseRequest(event -> {
             event.consume(); // Better to do this now than missing it later.
             controller.closeProgram();
         });
+
+        Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+        double windowWidth = screenSize.getWidth() * .9;
+        double windowHeight = screenSize.getHeight() * .9;
+        Scene scene = new Scene(root, windowWidth, windowHeight);
+
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
         primaryStage.setScene(scene);
         primaryStage.show();

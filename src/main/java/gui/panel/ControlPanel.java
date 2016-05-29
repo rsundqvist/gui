@@ -101,9 +101,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         animationProgress = (ProgressBar) namespace.get("animationProgress");
 
         Slider speedSlider = (Slider) namespace.get("speedSlider");
-        speedSlider.setValue(emController.getAutoExecutionSpeed());
+        speedSlider.setValue(-emController.getAutoExecutionSpeed());
         speedSlider.setOnMouseReleased(event -> {
-            emController.setAutoExecutionSpeed((long) speedSlider.getValue());
+            emController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()));
         });
 
         // Panel sizing.
