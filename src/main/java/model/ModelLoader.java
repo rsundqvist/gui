@@ -36,49 +36,49 @@ public class ModelLoader {
     /**
      * The live model.
      */
-    private final ExecutionModel       liveModel;
+    private final ExecutionModel liveModel;
 
     /**
      * Automatic removal setting.
      */
-    private boolean           autoRemoveUnsued = true;
+    private boolean              autoRemoveUnsued = true;
 
     /**
      * Automatic add setting.
      */
-    private boolean           autoCreateOrphan = false;
+    private boolean              autoCreateOrphan = false;
 
     /**
      * Indicates that old data should always be cleared in case of an identifier
      * collision.
      */
-    private boolean           alwaysClearOld   = false;
+    private boolean              alwaysClearOld   = false;
     /**
      * Indicates that new data should always be rejected in case of an identifier
      * collision.
      */
-    private boolean           alwaysKeepOld    = false;
+    private boolean              alwaysKeepOld    = false;
 
     /**
      * List of used identifiers.
      */
-    private ArrayList<String> usedNames;
+    private ArrayList<String>    usedNames;
 
     /**
      * List of unused identifiers.
      */
-    private ArrayList<String> unusedNames;
+    private ArrayList<String>    unusedNames;
 
     /**
      * List of rejected identifiers.
      */
-    private ArrayList<String> removedNames;
+    private ArrayList<String>    removedNames;
 
     /**
      * List of the <b>data structure</b> (not operation type) names present in a list of
      * operations.
      */
-    private Set<String>       operationStructNames;
+    private Set<String>          operationStructNames;
 
     // ============================================================= //
     /*
@@ -122,7 +122,7 @@ public class ModelLoader {
             Map<String, DataStructure> newStructs) {
         return new ModelLoader(targetModel).insertIntoLiveModel(newStructs, newOps);
     }
-    
+
     /**
      * Attempt to insert structures and operations into a live model.
      * 
@@ -340,7 +340,7 @@ public class ModelLoader {
                 removedNames.add(name);
             }
         } else {
-            // TODO: Implement removal of unused names prompt.
+            // Not implemented.
         }
 
         if (!removedNames.isEmpty()) {
@@ -374,7 +374,7 @@ public class ModelLoader {
      *            The map of new structures.
      */
     public void runUseageTest (List<Operation> newOps, Map<String, DataStructure> newStructs) {
-        ExecutionModel testModel = new ExecutionModel("testModel " + Math.random()*Integer.MAX_VALUE, true);
+        ExecutionModel testModel = new ExecutionModel("testModel " + Math.random() * Integer.MAX_VALUE, true);
         // Add operations and structures from the live model.
         newStructs.putAll(liveModel.getDataStructures());
         newOps.addAll(liveModel.getOperations());

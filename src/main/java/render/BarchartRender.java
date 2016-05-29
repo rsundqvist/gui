@@ -25,7 +25,6 @@ public class BarchartRender extends ARender implements MinMaxListener {
 
     public static final ElementShape ELEMENT_STYLE = ElementShape.BAR_ELEMENT;
 
-
     // ============================================================= //
     /*
      *
@@ -33,7 +32,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
      *
      */
     // ============================================================= //
-    
+
     private double                   renderHeight;
 
     private final double             padding;
@@ -43,7 +42,6 @@ public class BarchartRender extends ARender implements MinMaxListener {
     private double                   rightWallX;
 
     private final Pane               axes          = new Pane();
-    
 
     // ============================================================= //
     /*
@@ -54,22 +52,16 @@ public class BarchartRender extends ARender implements MinMaxListener {
     // ============================================================= //
 
     /**
-     * Create a new BarchartRender. If both {@code renderHeight} and {@code nodeHeight} are greater
-     * than 0, the bars may stretch outside of the render depending on element numeric value. TODO
-     * UPPDATERA JAVDOC
+     * Create a new BarchartRender.
      *
      * @param struct
      *            The structure to render.
      * @param nodeWidth
      *            Width of the bars.
      * @param renderHeight
-     *            Height of the Render itself. A value lower than zero indicates that the
-     *            BarchartRender should update its height automatically, ignoring {@code nodeHeight}
-     *            .
+     *            Height of the Render itself.
      * @param nodeHeight
-     *            The height of the bars per unit. A value lower than 0 will scale all elements
-     *            relative to {@code renderHeight}, ignoring {@code nodeHeight}. <b>NOT IMPLEMENTED
-     *            YET </b>.
+     *            The height of the bars per unit.
      * @param hspace
      *            Space between bars.
      */
@@ -99,7 +91,6 @@ public class BarchartRender extends ARender implements MinMaxListener {
         this.setRelativeNodeSize(-1);
         reset();
     }
-    
 
     // ============================================================= //
     /*
@@ -127,7 +118,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
     }
 
     @Override public double getY (Element e) {
-        return xAxisY + 100; // TODO
+        return xAxisY + 100;
     }
 
     @Override public void render () {
@@ -171,7 +162,6 @@ public class BarchartRender extends ARender implements MinMaxListener {
         drawAxes();
         return true;
     }
-    
 
     // ============================================================= //
     /*
@@ -183,7 +173,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
 
     private void positionBars () {
         for (Node node : defaultNodePane.getChildren()) {
-            ((BarchartElement) node).setBotY(xAxisY + 5); // TODO fix
+            ((BarchartElement) node).setBotY(xAxisY + 5);
         }
     }
 
@@ -236,7 +226,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
     }
 
     /**
-     * Draw developer guides where the bar roof, x-axis, y-axis and rightmost limit should be.
+     * Draw developer guides where the bar roof, x-axis, y-axis and rightmost limit should
+     * be.
      */
     public void drawDeveloperGuides () {
 
@@ -378,12 +369,14 @@ public class BarchartRender extends ARender implements MinMaxListener {
     }
 
     @Override public void minChanged (double newMin) {
-        // TODO
+        // Do nothing.
     }
 
     /**
      * Calculate the height of the render.
-     * @param v The maximum value of the array.
+     * 
+     * @param v
+     *            The maximum value of the array.
      */
     public void calculateHeight (double v) {
         double oldHeight = renderHeight;

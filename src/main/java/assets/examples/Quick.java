@@ -10,6 +10,6 @@ abstract class Quick {
      * @return The operations performed by the algorithm on the given data.
      */
     public static void sort (double[] data) {
-        // TODO
+        // TODO: Find a QuickSort.
     }
 }

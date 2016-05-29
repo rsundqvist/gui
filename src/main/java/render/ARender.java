@@ -35,6 +35,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import render.ARenderAnimation.Effect;
+import render.assets.Const;
 import render.element.AVElement;
 import render.element.ElementShape;
 
@@ -92,6 +93,17 @@ public abstract class ARender extends Pane implements MinMaxListener {
     // new HashMap<Element, VisualElement>();
     protected final HashMap<String, AVElement> visualMap       = new HashMap<String, AVElement>();
 
+    /**
+     * If true, node sizes will be set relative to their value to the values of the other
+     * elements.
+     */
+    private boolean                            relativeNodeSize;
+    /**
+     * The size difference between the largest and the smallest element.
+     * {@code factor = 2} means the largest element is twice the size of the smallest one.
+     */
+    private double                             factor;
+
     // ============================================================= //
     /*
      *
@@ -147,17 +159,17 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
     /**
      * Default constructor. Will use default values: <br>
-     * Element width: {@link render.assets.Const#DEFAULT_ELEMENT_HSPACE}<br>
-     * Element height: {@link render.assets.Const#DEFAULT_ELEMENT_HEIGHT}<br>
-     * Element horizontal space: {@link render.assets.Const#DEFAULT_ELEMENT_HSPACE}<br>
-     * Element vertical space: {@link render.assets.Const#DEFAULT_ELEMENT_VSPACE}<br>
+     * Element width: {@link Const#DEFAULT_ELEMENT_HSPACE}<br>
+     * Element height: {@link Const#DEFAULT_ELEMENT_HEIGHT}<br>
+     * Element horizontal space: {@link Const#DEFAULT_ELEMENT_HSPACE}<br>
+     * Element vertical space: {@link Const#DEFAULT_ELEMENT_VSPACE}<br>
      *
      * @param struct
      *            The DataStructure this Render will draw.
      */
     public ARender (DataStructure struct) {
-        this(struct, render.assets.Const.DEFAULT_ELEMENT_WIDTH, render.assets.Const.DEFAULT_ELEMENT_HEIGHT,
-                render.assets.Const.DEFAULT_ELEMENT_HSPACE, render.assets.Const.DEFAULT_ELEMENT_VSPACE);
+        this(struct, Const.DEFAULT_ELEMENT_WIDTH, Const.DEFAULT_ELEMENT_HEIGHT, Const.DEFAULT_ELEMENT_HSPACE,
+                Const.DEFAULT_ELEMENT_VSPACE);
     }
 
     /**
@@ -190,16 +202,12 @@ public abstract class ARender extends Pane implements MinMaxListener {
         initDragAndZoom();
         bindAnimPane();
 
-        setRelativeNodeSize(render.assets.Const.DEFAULT_RELATIVE_NODE_FACTOR);
+        setRelativeNodeSize(Const.DEFAULT_RELATIVE_NODE_FACTOR);
 
         expand();
     }
 
     private void bindAnimPane () {
-        // this.animPane.translateXProperty().bind(this.translateXProperty());
-        // this.animPane.translateYProperty().bind(this.translateYProperty());
-        // this.animPane.layoutXProperty().bind(this.layoutXProperty());
-        // this.animPane.layoutYProperty().bind(this.layoutYProperty());
         animPane.scaleXProperty().bind(scaleXProperty());
         animPane.scaleYProperty().bind(scaleYProperty());
     }
@@ -377,11 +385,11 @@ public abstract class ARender extends Pane implements MinMaxListener {
 	    ARenderAnimation.linear(tar, x1, y1, x2, y2, millis, tarRender, Effect.GHOST).play();
 	} else if (hasSource) {
 	    // Source only
-	    ARenderAnimation.linear(src, x1, y1, x1, y1 - render.assets.Const.DEFAULT_ELEMENT_HEIGHT * 2, millis, srcRender,
+	    ARenderAnimation.linear(src, x1, y1, x1, y1 - Const.DEFAULT_ELEMENT_HEIGHT * 2, millis, srcRender,
 		    Effect.FADE_OUT, Effect.SHRINK).play();
 	} else {
 	    // Target only
-	    ARenderAnimation.linear(tar, x2, y2 - render.assets.Const.DEFAULT_ELEMENT_HEIGHT * 2, x2, y2, millis, tarRender,
+	    ARenderAnimation.linear(tar, x2, y2 - Const.DEFAULT_ELEMENT_HEIGHT * 2, x2, y2, millis, tarRender,
 		    Effect.FADE_IN, Effect.GROW, Effect.GHOST).play();
 	}
 
@@ -511,10 +519,10 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Print statistics for the structure this render carries.
      */
     public void printStats () {
-        //TODO Callback mechanism
+        // TODO Callback mechanism
         List<String> strList = OperationCounterHaver.printStatistics(struct);
         System.out.println("Statistics for \"" + struct + "\":");
-        for(String str : strList){
+        for (String str : strList) {
             System.out.println(str);
         }
     }
@@ -717,12 +725,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
         }
     }
 
-    /**
-     * TODO: Javadoc
-     */
-    private boolean relativeNodeSize = false;
-    private double  factor;
-
     public void setRelativeNodeSizes () {
         if (!relativeNodeSize) {
             return;
@@ -791,7 +793,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
     // ============================================================= //
     /*
      *
-     * Sizing and moving. TODO: Move into assets package.
+     * Sizing and moving.
      *
      */
     // ============================================================= //
@@ -811,7 +813,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
         initDrag();
     }
 
-    private void initArrowResize () {
+    public void initArrowResize () {
         setOnKeyPressed(event -> {
             if (!event.isControlDown()) {
                 return;
@@ -819,25 +821,23 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
             switch (event.getCode()) {
             case UP:
-                setNodeHeight(nodeHeight + render.assets.Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
+                setNodeHeight(nodeHeight + Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
                 break;
             case DOWN:
-                setNodeHeight(nodeHeight - render.assets.Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
+                setNodeHeight(nodeHeight - Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
                 break;
             case LEFT:
-                setNodeWidth(nodeWidth - render.assets.Const.DEFAULT_ELEMENT_WIDTH_DELTA);
+                setNodeWidth(nodeWidth - Const.DEFAULT_ELEMENT_WIDTH_DELTA);
                 break;
             case RIGHT:
-                setNodeWidth(nodeWidth + render.assets.Const.DEFAULT_ELEMENT_WIDTH_DELTA);
+                setNodeWidth(nodeWidth + Const.DEFAULT_ELEMENT_WIDTH_DELTA);
                 break;
             default:
                 return;
             }
 
-            setNodeWidth(
-                    nodeWidth < render.assets.Const.MIN_NODE_WIDTH ? render.assets.Const.MIN_NODE_WIDTH : nodeWidth);
-            setNodeHeight(nodeHeight < render.assets.Const.MIN_NODE_HEIGHT ? render.assets.Const.MIN_NODE_HEIGHT
-                    : nodeHeight);
+            setNodeWidth(nodeWidth < Const.MIN_NODE_WIDTH ? Const.MIN_NODE_WIDTH : nodeWidth);
+            setNodeHeight(nodeHeight < Const.MIN_NODE_HEIGHT ? Const.MIN_NODE_HEIGHT : nodeHeight);
 
             Platform.runLater( () -> ARender.this.requestFocus());
 
@@ -845,7 +845,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
         });
     }
 
-    private void initMouseWheelResize () {
+    public void initMouseWheelResize () {
         setOnScroll(event -> {
             if (!event.isControlDown()) {
                 return;
@@ -853,22 +853,20 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
             int sign = event.getDeltaY() < 0 ? -1 : 1;
 
-            setNodeWidth(nodeWidth + sign * render.assets.Const.DEFAULT_ELEMENT_WIDTH_DELTA);
-            setNodeHeight(nodeHeight + sign * render.assets.Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
+            setNodeWidth(nodeWidth + sign * Const.DEFAULT_ELEMENT_WIDTH_DELTA);
+            setNodeHeight(nodeHeight + sign * Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
 
-            hSpace = hSpace + sign * render.assets.Const.DEFAULT_ELEMENT_HSPACE_DELTA;
-            vSpace = vSpace + sign * render.assets.Const.DEFAULT_ELEMENT_VSPACE_DELTA;
+            hSpace = hSpace + sign * Const.DEFAULT_ELEMENT_HSPACE_DELTA;
+            vSpace = vSpace + sign * Const.DEFAULT_ELEMENT_VSPACE_DELTA;
 
-            setNodeWidth(
-                    nodeWidth < render.assets.Const.MIN_NODE_WIDTH ? render.assets.Const.MIN_NODE_WIDTH : nodeWidth);
-            setNodeHeight(nodeHeight < render.assets.Const.MIN_NODE_HEIGHT ? render.assets.Const.MIN_NODE_HEIGHT
-                    : nodeHeight);
+            setNodeWidth(nodeWidth < Const.MIN_NODE_WIDTH ? Const.MIN_NODE_WIDTH : nodeWidth);
+            setNodeHeight(nodeHeight < Const.MIN_NODE_HEIGHT ? Const.MIN_NODE_HEIGHT : nodeHeight);
 
             repaintAll();
         });
     }
 
-    private void initDrag () {
+    public void initDrag () {
         // Record a delta distance for the drag and drop operation.
         setOnMousePressed(event -> {
             transX = getTranslateX() - event.getSceneX();
@@ -892,7 +890,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
             if (header.visibleProperty().isBound()) {
                 name.setVisible(false);
             }
-            setBorder(render.assets.Const.BORDER_MOUSEOVER);
+            setBorder(Const.BORDER_MOUSEOVER);
         });
         setOnMouseExited(event -> {
             // this.setCursor(null);

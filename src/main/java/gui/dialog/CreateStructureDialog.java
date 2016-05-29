@@ -90,7 +90,6 @@ public class CreateStructureDialog {
             break;
         case tree:
             struct = null;
-            // TODO trees
             System.err.println("Raw type tree not supported yet.");
             break;
         case independentElement:
@@ -112,9 +111,5 @@ public class CreateStructureDialog {
         name.setText("Create Variable: \"" + identifier + "\"");
         root.showAndWait();
         return struct;
-    }
-
-    public void allOrphan () {
-        // TODO: implement
     }
 }

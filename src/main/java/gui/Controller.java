@@ -110,7 +110,7 @@ public class Controller implements ComListener {
     // ============================================================= //
 
     public void aboutProgram () {
-        // TODO
+        // TODO Implement aboutProgram ().
     }
 
     public void openInterpreterView () {
@@ -211,9 +211,6 @@ public class Controller implements ComListener {
 
         sourcePanel.addSources(lsm.getSources());
         visualization.clearAndCreateVisuals();
-        // vis.render(model.getLastOp()); //TODO
-
-        // Update operation list
         loadVisualMenu();
     }
 
@@ -258,7 +255,7 @@ public class Controller implements ComListener {
     }
 
     public void openVisualDialog (DataStructure struct) {
-        VisualDialog visualDialog = new VisualDialog(primaryStage);
+        VisualDialog visualDialog = new VisualDialog(null);
         if (visualDialog.show(struct)) {
             visualization.init();
         }
@@ -276,7 +273,6 @@ public class Controller implements ComListener {
         Platform.runLater( () -> {
             Controller.this.loadFromLSM();
             Controller.this.lsm.clearData();
-            // TODO
         });
     }
 
@@ -347,7 +343,7 @@ public class Controller implements ComListener {
     }
 
     public void showSettings () {
-        // TODO
+        // TODO: showSettings ()
     }
 
     public void play () {

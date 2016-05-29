@@ -14,13 +14,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="520.0" vgap="5.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="520.0" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <ImageView fitHeight="91.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icon_cogwheel.png" />
-         </image></ImageView>
-    <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="140.0" prefHeight="130.0" prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="0" GridPane.vgrow="NEVER">
+         </image>
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin></ImageView>
+    <VBox maxHeight="+Infinity" maxWidth="+Infinity" spacing="7.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="0" GridPane.vgrow="NEVER">
       <children>
         <Label fx:id="name" text="&lt;struct name&gt;" textAlignment="LEFT" wrapText="true">
           <font>
@@ -30,23 +33,19 @@
             <HBox prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label prefHeight="25.0" prefWidth="80.0" text="Raw Type:" />
-                  <ChoiceBox fx:id="rawType" prefHeight="25.0" prefWidth="309.0" />
+                  <ChoiceBox fx:id="rawType" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="25.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin></ChoiceBox>
                </children>
             </HBox>
-            <HBox prefHeight="25.0" prefWidth="200.0" />
-            <HBox prefHeight="25.0" prefWidth="200.0" />
       </children>
          <GridPane.margin>
-            <Insets bottom="-13.0" />
+            <Insets top="20.0" />
          </GridPane.margin>
     </VBox>
     <HBox maxHeight="30.0" maxWidth="+Infinity" minHeight="30.0" minWidth="-Infinity" prefHeight="30.0" style="-fx-background-color: #123456;" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
       <children>
-            <Button disable="true" maxHeight="24.0" minHeight="24.0" minWidth="80.0" mnemonicParsing="false" onAction="#allOrphan" text="Make All Orphan">
-               <HBox.margin>
-                  <Insets bottom="3.0" left="30.0" right="3.0" top="3.0" />
-               </HBox.margin>
-            </Button>
         <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="30.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
       <Button defaultButton="true" maxHeight="24.0" minHeight="24.0" minWidth="80.0" mnemonicParsing="false" onAction="#okButton" text="Create" HBox.hgrow="NEVER">
         <HBox.margin>
@@ -69,10 +68,13 @@
   </children>
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="+Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="1.7976931348623157E308" valignment="CENTER" vgrow="ALWAYS" />
     <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
   </rowConstraints>
+   <padding>
+      <Insets left="15.0" />
+   </padding>
 </GridPane>

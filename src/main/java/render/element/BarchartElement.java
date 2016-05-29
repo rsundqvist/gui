@@ -63,8 +63,6 @@ public class BarchartElement extends RectangleElement {
 
         Rectangle rect = (Rectangle) shape;
         rect.heightProperty().bind(element.numProperty.multiply(unitHeight));
-        // root.setPrefHeight(unitHeight * element.getNumValue()); //TODO
-        // Uncomment, but fucks up positioning on the Y-axis.
     }
 
     @Override public void setSize (double width, double height) {
@@ -96,10 +94,8 @@ public class BarchartElement extends RectangleElement {
     }
 
     private void fixPositioning (double y) {
-        DoubleBinding neg_half_height = rect.heightProperty().divide(2).multiply(-1); // -
-        // height/2
-        layoutYProperty().bind(neg_half_height.add(y).subtract(render.assets.Const.DEFAULT_ELEMENT_HEIGHT / 2)); // TODO
-        // fix
+        DoubleBinding neg_half_height = rect.heightProperty().divide(2).multiply(-1);
+        layoutYProperty().bind(neg_half_height.add(y).subtract(render.assets.Const.DEFAULT_ELEMENT_HEIGHT / 2));
     }
 
     @Override public BarchartElement clone () {

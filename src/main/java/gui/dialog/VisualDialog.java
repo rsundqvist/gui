@@ -18,10 +18,10 @@ import javafx.stage.Stage;
 public class VisualDialog {
 
     private final Stage     root;
-    private final Label     name;
+    private final Label     nameLabel;
     private DataStructure   struct;
     private final ChoiceBox visualTypeChoiceBox;
-    private boolean         changed;
+    private boolean         visualChanged;
 
     public VisualDialog (Stage parent) {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/dialog/VisualDialog.fxml"));
@@ -49,14 +49,14 @@ public class VisualDialog {
             }
         }
 
-        name = (Label) fxmlLoader.getNamespace().get("name");
+        nameLabel = (Label) fxmlLoader.getNamespace().get("name");
         Scene dialogScene = new Scene(p, p.getPrefWidth(), p.getPrefHeight());
         root.setScene(dialogScene);
         root.setResizable(false);
     }
 
     public void closeButton () {
-        changed = false;
+        visualChanged = false;
         root.close();
     }
 
@@ -70,13 +70,17 @@ public class VisualDialog {
      *
      * @param struct
      *            A DataStructure.
-     * @return True if the visualisation options have changed, false otherwise.
+     * @return {@code true} if the visualisation options have changed. {@code false}
+     *         otherwise.
      */
     public boolean show (DataStructure struct) {
+        // Modify the dialog for this structure.
         this.struct = struct;
-        name.setText(struct.toString());
-        root.showAndWait();
+        nameLabel.setText(struct.toString());
         visualTypeChoiceBox.getSelectionModel().select(struct.resolveVisual());
-        return changed;
+
+        // Show dialog.
+        root.showAndWait();
+        return visualChanged;
     }
 }

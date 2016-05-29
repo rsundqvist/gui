@@ -224,19 +224,13 @@ public class Visualization extends StackPane {
                 northEast++;
                 break;
             case bar:
-                xPos = padding + this.getWidth() * sWExpand;
+                xPos = padding + getWidth() * sWExpand;
                 yPos = getHeight() - 125 - (render.assets.Const.DEFAULT_RENDER_HEIGHT) * (southWest) - padding * 2;
-                if (!(checkXPos(xPos) && checkYPos(yPos))) {
-                    sWExpand++; // TODO
-                }
                 southWest++;
                 break;
             default:
                 xPos = padding + getWidth() * nWExpand;
                 yPos = (padding + render.assets.Const.DEFAULT_RENDER_HEIGHT) * northWest + padding;
-                if (!(checkXPos(xPos) & checkYPos(yPos))) {
-                    nWExpand++; // TODO
-                }
                 northWest++;
                 break;
 
@@ -244,7 +238,6 @@ public class Visualization extends StackPane {
 
             // Make sure users can see the render.
             if (checkPositions(xPos, yPos) == false) {
-                // Do not remove this printout //RS
                 if (Debug.ERR) {
                     System.err.println("Using default placement for \"" + arm.getStructure() + "\".");
                 }
