@@ -200,7 +200,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
         axes.getChildren().add(xAxis);
 
         Polyline xArrow = new Polyline(0, 0, 15, 5, 0, 10);
-        xArrow.setLayoutX(renderWidth - 15);
+        xArrow.setLayoutX(renderWidth - 20);
         xArrow.setLayoutY(xAxisY - 5);
         xArrow.setStrokeWidth(2);
         axes.getChildren().add(xArrow);
@@ -224,7 +224,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
         Polyline yArrow = new Polyline(0, 15, 5, 0, 10, 15);
         yArrow.setStrokeWidth(2);
         yArrow.setLayoutX(padding - 5);
-        yArrow.setLayoutY(-5);
+        yArrow.setLayoutY(0);
         axes.getChildren().add(yArrow);
 
         Label yLabel = new Label("Index");
@@ -267,10 +267,10 @@ public class BarchartRender extends ARender implements MinMaxListener {
     }
 
     private void notches () {
-        double lim = padding / 2;
+        double lim = padding / 2 + nodeHeight;
         int i = 1;
 
-        for (double y = xAxisY - nodeHeight; y >= lim; y = y - nodeHeight) {
+        for (double y = xAxisY - nodeHeight; y > lim; y = y - nodeHeight) {
             // Notch
             Line line = new Line(padding - 3, y, padding + 3, y);
             axes.getChildren().add(line);

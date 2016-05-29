@@ -212,6 +212,7 @@ public class Visualization extends StackPane {
 
             switch (arm.getStructure().visual) {
             case single:
+                arm.toFront();
                 yPos = northEast * 120 + padding;
                 xPos = getWidth() - (150 + padding) * (nEExpand + 1);
                 if (!(checkXPos(xPos) && checkYPos(yPos))) {
