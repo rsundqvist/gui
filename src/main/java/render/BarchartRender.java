@@ -3,7 +3,7 @@ package render;
 import java.util.Arrays;
 
 import contract.datastructure.Array;
-import contract.datastructure.Array.IndexedElement;
+import contract.datastructure.IndexedElement;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
@@ -100,7 +100,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
      */
     // ============================================================= //
 
-    @Override public double getX (Element e) {
+    @Override
+    public double getX (Element e) {
         if (e == null || e instanceof IndexedElement == false) {
             return -1;
         }
@@ -117,11 +118,13 @@ public class BarchartRender extends ARender implements MinMaxListener {
         return (nodeWidth + hSpace) * index + hSpace + padding + 5;
     }
 
-    @Override public double getY (Element e) {
+    @Override
+    public double getY (Element e) {
         return xAxisY + 100;
     }
 
-    @Override public void render () {
+    @Override
+    public void render () {
         if (struct.isRepaintAll()) {
             struct.setRepaintAll(false);
             repaintAll();
@@ -129,7 +132,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
         super.render();
     }
 
-    @Override public boolean repaintAll () {
+    @Override
+    public boolean repaintAll () {
         if (struct.getElements().isEmpty() || contentPane == null) {
             return false; // Nothing to render/not yet initialised.
         }
@@ -277,7 +281,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
         }
     }
 
-    @Override public void calculateSize () {
+    @Override
+    public void calculateSize () {
         renderWidth = struct.getElements().size() * (nodeWidth + hSpace) + padding * 3;
         xAxisY = renderHeight - padding;
         rightWallX = renderWidth - padding;
@@ -285,18 +290,21 @@ public class BarchartRender extends ARender implements MinMaxListener {
         setRestricedSize(renderWidth, renderHeight);
     }
 
-    @Override protected BarchartElement createVisualElement (Element e) {
+    @Override
+    protected BarchartElement createVisualElement (Element e) {
         BarchartElement ve = (BarchartElement) AVElementFactory.shape(ELEMENT_STYLE, e, nodeWidth,
                 nodeHeight * e.getNumValue());
         return ve;
     }
 
-    @Override protected AVElement createVisualElement (double value, Color color) {
+    @Override
+    protected AVElement createVisualElement (double value, Color color) {
         AVElement ve = AVElementFactory.shape(ELEMENT_STYLE, value, color, nodeWidth, nodeHeight * value);
         return ve;
     }
 
-    @Override protected void bellsAndWhistles (Element e, AVElement ve) {
+    @Override
+    protected void bellsAndWhistles (Element e, AVElement ve) {
         ((BarchartElement) ve).updateSize(nodeHeight, -1);
     }
 
@@ -320,7 +328,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
      *            An element owned by this BarcharRender.
      * @return The absolute y-coordinates of e.
      */
-    @Override public double absY (Element e, ARender relativeTo) {
+    @Override
+    public double absY (Element e, ARender relativeTo) {
         double by = getTranslateY() + getLayoutY() + contentPane.getLayoutY();
         return xAxisY + by;
     }
@@ -339,8 +348,8 @@ public class BarchartRender extends ARender implements MinMaxListener {
      * @param millis
      *            The time in milliseconds the animation should last.
      */
-    @Override public void animateReadWrite (Element src, ARender srcRender, Element tar, ARender tarRender,
-            long millis) {
+    @Override
+    public void animateReadWrite (Element src, ARender srcRender, Element tar, ARender tarRender, long millis) {
         if (tar != null || src == null) {
             super.animateReadWrite(src, srcRender, tar, tarRender, millis);
             return;
@@ -364,17 +373,19 @@ public class BarchartRender extends ARender implements MinMaxListener {
         st.play();
     }
 
-    @Override public void maxChanged (double newMax) {
+    @Override
+    public void maxChanged (double newMax) {
         calculateHeight(newMax);
     }
 
-    @Override public void minChanged (double newMin) {
+    @Override
+    public void minChanged (double newMin) {
         // Do nothing.
     }
 
     /**
      * Calculate the height of the render.
-     * 
+     *
      * @param v
      *            The maximum value of the array.
      */

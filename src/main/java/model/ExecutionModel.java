@@ -22,7 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 /**
- * 
+ *
  * @author Richard Sundqvist
  *
  */
@@ -105,7 +105,7 @@ public class ExecutionModel {
 
     /**
      * Create a new ExecutionModel.
-     * 
+     *
      * @param name
      *            The name of the model.
      * @param parallelExecution
@@ -128,7 +128,7 @@ public class ExecutionModel {
     /**
      * Create a new ExecutionModel. {@code parallelExecution} will be set to {@code true}
      * .
-     * 
+     *
      * @param name
      *            The name of the model.
      */
@@ -138,7 +138,7 @@ public class ExecutionModel {
 
     /**
      * Create a new ExecutionModel with a random name.
-     * 
+     *
      * @param parallelExecution
      *            If {@code true}, the model may execute several operations per step.
      */
@@ -164,7 +164,7 @@ public class ExecutionModel {
 
     /**
      * Execute the next operation, if possible.
-     * 
+     *
      * @return A list containing the executed operations.
      */
     public ObservableList<Operation> executeNext () {
@@ -183,7 +183,7 @@ public class ExecutionModel {
 
     /**
      * Execute the previous operation, if possible.
-     * 
+     *
      * @return A list containing the executed operations.
      */
     public ObservableList<Operation> executePrevious () {
@@ -206,7 +206,7 @@ public class ExecutionModel {
 
     /**
      * Test to see if it is possible to execute the previous operation(s) in in the queue.
-     * 
+     *
      * @return {@code true} if the model can execute backwards, {@code false} otherwise.
      */
     public boolean tryExecutePrevious () {
@@ -217,7 +217,7 @@ public class ExecutionModel {
 
     /**
      * Test to see if it is possible to execute the next operation(s) in in the queue.
-     * 
+     *
      * @return {@code true} if the model can execute forward, {@code false} otherwise.
      */
     public boolean tryExecuteNext () {
@@ -232,7 +232,7 @@ public class ExecutionModel {
      * than the current index, the model will reset and play from the beginning. Will
      * execute to the end if {@code index} is greater than the number of operations in the
      * queue.
-     * 
+     *
      * @param toIndex
      *            The index to execute at.
      * @return A list containing the executed operations.
@@ -410,7 +410,7 @@ public class ExecutionModel {
      * Set the data structures, operations, and atomic operations for this model. Will
      * keep the current collection if the corresponding argument is {@code null}. Always
      * calls {@link #updateProperties()}.
-     * 
+     *
      * @param dataStructures
      *            A map of data structures.
      * @param operations
@@ -435,7 +435,7 @@ public class ExecutionModel {
 
     /**
      * Set the data structures for this model.
-     * 
+     *
      * @param dataStructures
      *            A map of data structures.
      */
@@ -449,7 +449,7 @@ public class ExecutionModel {
 
     /**
      * Set the operations for this model.
-     * 
+     *
      * @param operations
      *            A list of operations.
      */
@@ -463,7 +463,7 @@ public class ExecutionModel {
 
     /**
      * Set the atomic operations for this model.
-     * 
+     *
      * @param atomicOperations
      *            A list of atomic operations.
      * @throws IllegalArgumentException
@@ -489,7 +489,7 @@ public class ExecutionModel {
 
     /**
      * Returns the list of atomic operations in use by this model.
-     * 
+     *
      * @return A list of atomic operations.
      */
     public ObservableList<Operation> getAtomicOperations () {
@@ -498,7 +498,7 @@ public class ExecutionModel {
 
     /**
      * Returns the list of operations in use by this model.
-     * 
+     *
      * @return A list of operations.
      */
     public ObservableList<Operation> getOperations () {
@@ -507,7 +507,7 @@ public class ExecutionModel {
 
     /**
      * Returns the map of data structures in use by this model.
-     * 
+     *
      * @return A map of data structures.
      */
     public Map<String, DataStructure> getDataStructures () {
@@ -516,7 +516,7 @@ public class ExecutionModel {
 
     /**
      * Returns the parallel execution setting of this model.
-     * 
+     *
      * @return {@code true} if parallel execution is enabled, false otherwise.
      */
     public boolean isParallelExecution () {
@@ -525,7 +525,7 @@ public class ExecutionModel {
 
     /**
      * Set the parallel execution setting of this model.
-     * 
+     *
      * @param parallelExecution
      *            The new parallel execution setting.
      */
@@ -539,7 +539,7 @@ public class ExecutionModel {
 
     /**
      * Returns {@code atomicIndex} for this model.
-     * 
+     *
      * @return The {@code atomicIndex} for this model.
      */
     public int getAtomicIndex () {
@@ -549,7 +549,7 @@ public class ExecutionModel {
     /**
      * Get the current execution index. Return value may vary from the value returned by
      * {@link getAtomicIndex()} if {@code parallelExecution} is set to {@code true}.
-     * 
+     *
      * @return The current execution index.
      */
     public int getIndex () {
@@ -581,7 +581,7 @@ public class ExecutionModel {
 
     /**
      * Add a listener to be called each time operation(s) are executed.
-     * 
+     *
      * @param operationsExecutedListener
      *            A {@code OperationsExecutedListener}.
      */
@@ -621,7 +621,7 @@ public class ExecutionModel {
 
     /**
      * Returns {@code true} if the model is clear, {@code false} otherwise.
-     * 
+     *
      * @return {@code true} if the model is clear, {@code false} otherwise.
      */
     private boolean isClear () {
@@ -632,7 +632,7 @@ public class ExecutionModel {
 
     /**
      * Returns a property indicating whether this model is cleared.
-     * 
+     *
      * @return A ReadOnlyBooleanProperty.
      */
     public ReadOnlyBooleanProperty clearProperty () {
@@ -641,7 +641,7 @@ public class ExecutionModel {
 
     /**
      * Returns a property indicating whether this model is in parallel execution mode.
-     * 
+     *
      * @return A ReadOnlyBooleanProperty.
      */
     public ReadOnlyBooleanProperty parallelExecutionProperty () {
@@ -651,7 +651,7 @@ public class ExecutionModel {
     /**
      * Returns a property indicating whether this model is able to execute forwards from
      * the current index.
-     * 
+     *
      * @return A ReadOnlyBooleanProperty.
      */
     public ReadOnlyBooleanProperty executeNextProperty () {
@@ -661,7 +661,7 @@ public class ExecutionModel {
     /**
      * Returns a property indicating whether this model is able to execute backwards from
      * the current index.
-     * 
+     *
      * @return A ReadOnlyBooleanProperty.
      */
     public ReadOnlyBooleanProperty executePreviousProperty () {
@@ -670,7 +670,7 @@ public class ExecutionModel {
 
     /**
      * Returns a property indicating which index this model is currently at.
-     * 
+     *
      * @return A ReadOnlyIntegerProperty.
      */
     public ReadOnlyIntegerProperty indexProperty () {
@@ -680,7 +680,7 @@ public class ExecutionModel {
     /**
      * Returns a property indicating which index this model is currently at in the atomic
      * operations list.
-     * 
+     *
      * @return A ReadOnlyIntegerProperty.
      */
     public ReadOnlyIntegerProperty atomicIndexProperty () {

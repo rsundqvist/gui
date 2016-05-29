@@ -231,11 +231,11 @@ public abstract class AVElement extends Pane {
         if (Debug.OUT) {
             System.out.println("w = " + width + ", h = " + height);
         }
-        
-        //TODO Callback mechanism
+
+        // TODO Callback mechanism
         List<String> strList = OperationCounterHaver.printStatistics(element);
         System.out.println("Statistics for \"" + element + "\":");
-        for(String str : strList){
+        for (String str : strList) {
             System.out.println(str);
         }
     }
@@ -367,7 +367,8 @@ public abstract class AVElement extends Pane {
      * @param pos
      *            The new position for the info label.
      */
-    @SuppressWarnings("incomplete-switch") public void setInfoPos (Pos pos) {
+    @SuppressWarnings("incomplete-switch")
+    public void setInfoPos (Pos pos) {
         infoPos = pos;
 
         if (infoPos == null) {
@@ -442,7 +443,8 @@ public abstract class AVElement extends Pane {
         valueLabel.setText(" " + value + " ");
     }
 
-    @Override public AVElement clone () {
+    @Override
+    public AVElement clone () {
         return AVElementFactory.clone(this);
     }
 

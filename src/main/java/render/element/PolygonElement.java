@@ -42,13 +42,15 @@ public class PolygonElement extends AVElement {
         super(element, node_width, node_height, points);
     }
 
-    @Override public void createShape () {
+    @Override
+    public void createShape () {
         super.createShape();
         shape = new Polygon(points);
         shape.setStroke(Color.BLACK);
     }
 
-    @Override public void setSize (double width, double height) {
+    @Override
+    public void setSize (double width, double height) {
         System.err.println("Resizing for polygons not yet supported.");
     }
 }

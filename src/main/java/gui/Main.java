@@ -29,12 +29,12 @@ import render.Visualization;
  * Entry class for the GUI.
  */
 public class Main extends Application {
-    
+
     // ============================================================= //
     /*
-     * 
+     *
      * Field variables.
-     * 
+     *
      */
     // ============================================================= //
     /**
@@ -45,13 +45,14 @@ public class Main extends Application {
 
     // ============================================================= //
     /*
-     * 
+     *
      * Constructors
-     * 
+     *
      */
     // ============================================================= //
 
-    @Override public void start (Stage primaryStage) throws Exception {
+    @Override
+    public void start (Stage primaryStage) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Root.fxml"));
 
@@ -137,13 +138,14 @@ public class Main extends Application {
 
     // ============================================================= //
     /*
-     * 
+     *
      * The rest.
-     * 
+     *
      */
     // ============================================================= //
 
-    @Override public void stop () {
+    @Override
+    public void stop () {
         controller.closeProgram();
     }
 

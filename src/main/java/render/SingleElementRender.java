@@ -13,7 +13,6 @@ public class SingleElementRender extends ARender {
 
     public static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.SINGLE;
 
-
     // ============================================================= //
     /*
      *
@@ -21,7 +20,7 @@ public class SingleElementRender extends ARender {
      *
      */
     // ============================================================= //
-    
+
     /**
      * Create a new SingleElementRender.
      *
@@ -38,7 +37,6 @@ public class SingleElementRender extends ARender {
         renderHeight = 150;
         this.setRelativeNodeSize(-1);
     }
-    
 
     // ============================================================= //
     /*
@@ -48,7 +46,8 @@ public class SingleElementRender extends ARender {
      */
     // ============================================================= //
 
-    @Override public void afterParentLoadFXML (FXMLLoader fxmlLoader) {
+    @Override
+    public void afterParentLoadFXML (FXMLLoader fxmlLoader) {
         // Make it a little smaller.
         String style = "-fx-font-size: 12; \n fx-font-weight: bold;";
         Label name2 = (Label) fxmlLoader.getNamespace().get("name_mo");
@@ -56,7 +55,8 @@ public class SingleElementRender extends ARender {
         name.setStyle(style);
     }
 
-    @Override public void render () {
+    @Override
+    public void render () {
         if (struct.isRepaintAll()) {
             struct.setRepaintAll(false);
             repaintAll();
@@ -64,14 +64,16 @@ public class SingleElementRender extends ARender {
         super.render();
     }
 
-    @Override public boolean repaintAll () {
+    @Override
+    public boolean repaintAll () {
         if (super.repaintAll() == false) {
             return false;
         }
         return true;
     }
 
-    @Override public void calculateSize () {
+    @Override
+    public void calculateSize () {
         renderWidth = 150;
         renderHeight = nodeHeight;
         setRestricedSize(renderWidth, renderHeight);
@@ -84,7 +86,8 @@ public class SingleElementRender extends ARender {
      *            An element.
      * @return 0 regardless of e.
      */
-    @Override public double getX (Element e) {
+    @Override
+    public double getX (Element e) {
         return 0;
     }
 
@@ -95,22 +98,26 @@ public class SingleElementRender extends ARender {
      *            An element.
      * @return 0 regardless of e.
      */
-    @Override public double getY (Element e) {
+    @Override
+    public double getY (Element e) {
         return 0; // Always 0.
     }
 
-    @Override protected AVElement createVisualElement (Element e) {
+    @Override
+    protected AVElement createVisualElement (Element e) {
         AVElement re = AVElementFactory.shape(DEFAULT_ELEMENT_STYLE, e, nodeWidth, nodeHeight);
         return re;
     }
 
-    @Override protected AVElement createVisualElement (double value, Color color) {
+    @Override
+    protected AVElement createVisualElement (double value, Color color) {
         AVElement re = AVElementFactory.shape(DEFAULT_ELEMENT_STYLE, value, color, nodeWidth, nodeHeight);
         re.setInfoPos(null);
         return re;
     }
 
-    @Override protected void bellsAndWhistles (Element e, AVElement ve) {
+    @Override
+    protected void bellsAndWhistles (Element e, AVElement ve) {
         // System.out.println("single: bells shape = " + ve.getShape());
     }
 }

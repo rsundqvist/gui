@@ -13,8 +13,8 @@ public abstract class ARenderFactory {
     } // Not to be instantiated.
 
     /**
-     * Determines and creates a Render for use by this DataStructure. Some parameters may be
-     * ignored, depending on the render desired by {@code struct}.
+     * Determines and creates a Render for use by this DataStructure. Some parameters may
+     * be ignored, depending on the render desired by {@code struct}.
      *
      * @param struct
      *            The DataStructure to create a Render for.

@@ -6,9 +6,7 @@ import java.util.Map;
 
 import contract.json.Operation;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +24,7 @@ import model.ExecutionTickListener;
 import render.Visualization;
 
 /**
- * 
+ *
  * @author Richard Sundqvist
  *
  */
@@ -47,10 +45,10 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
     private final ProgressBar              animationProgress;
 
     // Model progress list + related items.
-    private ProgressBar                    modelProgress;
-    private ListView<Operation>            operationList;
-    private TextField                      listSizeLabel;
-    private TextField                      currentOperationLabel;
+    private final ProgressBar              modelProgress;
+    private final ListView<Operation>      operationList;
+    private final TextField                listSizeLabel;
+    private final TextField                currentOperationLabel;
 
     // ============================================================= //
     /*
@@ -62,14 +60,14 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
 
     /**
      * Create a new ControlPanel
-     * 
+     *
      * @param executionModelController
      *            Used to control the model
      * @param visualization
      *            Used to control visualization.
      */
-    @SuppressWarnings("unchecked") public ControlPanel (ExecutionModelController executionModelController,
-            Visualization visualization) {
+    @SuppressWarnings("unchecked")
+    public ControlPanel (ExecutionModelController executionModelController, Visualization visualization) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/panel/ControlPanel.fxml"));
         fxmlLoader.setController(this);
@@ -87,11 +85,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         emController.setExecutionTickListener(this, tickCount);
         this.visualization = visualization;
 
-        emController.getExecutionModel().indexProperty().addListener(new InvalidationListener() {
-            @Override public void invalidated (Observable observable) {
-                int index = emController.getExecutionModel().indexProperty().get();
-                updateOperationOverview(index);
-            }
+        emController.getExecutionModel().indexProperty().addListener((InvalidationListener) observable -> {
+            int index = emController.getExecutionModel().indexProperty().get();
+            updateOperationOverview(index);
         });
 
         // ============================================================= //
@@ -126,18 +122,13 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         Button play = (Button) namespace.get("play");
         play.disableProperty().bind(emController.getExecutionModel().executeNextProperty().not());
 
-        emController.autoExecutingProperty().addListener(new ChangeListener<Boolean>() {
+        emController.autoExecutingProperty().addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
 
-            @Override public void changed (ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                    Boolean newValue) {
-
-                if (newValue) {
-                    play.setText("Pause");
-                } else {
-                    play.setText("Play");
-                }
+            if (newValue) {
+                play.setText("Pause");
+            } else {
+                play.setText("Play");
             }
-
         });
 
         Button forward = (Button) namespace.get("forward");
@@ -208,7 +199,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
             int index = Integer.parseInt(input) - 1;
             emController.execute(index);
         } catch (Exception exc) {
-            tf.setText((emController.getExecutionModel().getIndex()) + "");
+            tf.setText(emController.getExecutionModel().getIndex() + "");
             URL resource = this.getClass().getResource("/assets/shortcircuit.mp3");
             Media media = new Media(resource.toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -218,7 +209,8 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
 
     }
 
-    @SuppressWarnings("rawtypes") public void listViewGoto (Event e) {
+    @SuppressWarnings("rawtypes")
+    public void listViewGoto (Event e) {
         ListView lw = (ListView) e.getSource();
 
         int index = lw.getSelectionModel().getSelectedIndex() - 1;
@@ -233,7 +225,8 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
      */
     // ============================================================= //
 
-    @Override public void tickUpdate (int tickNumber) {
+    @Override
+    public void tickUpdate (int tickNumber) {
         animationProgress.setProgress((double) tickNumber / tickCount);
     }
 

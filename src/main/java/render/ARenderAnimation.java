@@ -3,7 +3,7 @@ package render;
 import java.util.Arrays;
 
 import assets.Debug;
-import contract.datastructure.Array.IndexedElement;
+import contract.datastructure.IndexedElement;
 import contract.datastructure.Element;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;

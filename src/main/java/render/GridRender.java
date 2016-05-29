@@ -3,7 +3,7 @@ package render;
 import assets.Debug;
 import assets.Tools;
 import contract.datastructure.Array;
-import contract.datastructure.Array.IndexedElement;
+import contract.datastructure.IndexedElement;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
 import javafx.geometry.Pos;
@@ -45,7 +45,8 @@ public class GridRender extends ARender {
         this.majorOrder = majorOrder;
     }
 
-    @Override public void render () {
+    @Override
+    public void render () {
         if (struct.isRepaintAll()) {
             struct.setRepaintAll(false);
             repaintAll();
@@ -53,7 +54,8 @@ public class GridRender extends ARender {
         super.render();
     }
 
-    @Override public boolean repaintAll () {
+    @Override
+    public boolean repaintAll () {
 
         if (super.repaintAll() == false) {
             return false; // Nothing to render.
@@ -71,7 +73,8 @@ public class GridRender extends ARender {
         return true;
     }
 
-    @Override public double getX (Element e) {
+    @Override
+    public double getX (Element e) {
         if (e == null || e instanceof IndexedElement == false) {
             return -1;
         }
@@ -91,7 +94,8 @@ public class GridRender extends ARender {
         return hSpace + (hSpace + nodeWidth) * column;
     }
 
-    @Override public double getY (Element e) {
+    @Override
+    public double getY (Element e) {
         if (e == null || e instanceof IndexedElement == false) {
             return -1;
         }
@@ -112,7 +116,8 @@ public class GridRender extends ARender {
         return vSpace + (vSpace + nodeHeight) * row;
     }
 
-    @Override public void calculateSize () {
+    @Override
+    public void calculateSize () {
 
         ensureDimensionsSet();
 
@@ -167,8 +172,8 @@ public class GridRender extends ARender {
         }
 
         /**
-         * Returns the Order corresponding to the given option number. Defaults to ROW_MAJOR for
-         * unknown option numbers.
+         * Returns the Order corresponding to the given option number. Defaults to
+         * ROW_MAJOR for unknown option numbers.
          *
          * @param optionNbr
          *            The option to resolve an order for.
@@ -184,7 +189,8 @@ public class GridRender extends ARender {
         }
     }
 
-    @Override protected AVElement createVisualElement (Element e) {
+    @Override
+    protected AVElement createVisualElement (Element e) {
         elementStyle = elementStyle == null ? DEFAULT_ELEMENT_STYLE : elementStyle;
 
         AVElement re = AVElementFactory.shape(elementStyle, e, nodeWidth, nodeHeight);
@@ -193,7 +199,8 @@ public class GridRender extends ARender {
         return re;
     }
 
-    @Override protected AVElement createVisualElement (double value, Color color) {
+    @Override
+    protected AVElement createVisualElement (double value, Color color) {
         elementStyle = elementStyle == null ? DEFAULT_ELEMENT_STYLE : elementStyle;
 
         AVElement re = AVElementFactory.shape(elementStyle, value, color, nodeWidth, nodeHeight);
@@ -201,7 +208,8 @@ public class GridRender extends ARender {
         return re;
     }
 
-    @Override protected void bellsAndWhistles (Element e, AVElement ve) {
+    @Override
+    protected void bellsAndWhistles (Element e, AVElement ve) {
         // System.out.println("grid: baw shape = " + ve.getShape());
     }
 }

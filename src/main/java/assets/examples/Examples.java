@@ -64,7 +64,7 @@ public abstract class Examples {
         public final String name;
 
         private Algorithm (String prettyName) {
-            this.name = prettyName;
+            name = prettyName;
         }
     }
 }

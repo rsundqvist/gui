@@ -5,7 +5,7 @@ import java.util.List;
 import contract.json.Operation;
 
 /**
- * 
+ *
  * @author Richard Sundqvist
  *
  */

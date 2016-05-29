@@ -19,7 +19,7 @@ import gui.dialog.CreateStructureDialog;
 import gui.dialog.IdentifierCollisionDialog;
 
 /**
- * 
+ *
  * @author Richard
  *
  */
@@ -90,7 +90,7 @@ public class ModelLoader {
 
     /**
      * Creates a new ModelManager for the live model
-     * 
+     *
      * @param liveModel
      *            The live model in use.
      */
@@ -108,7 +108,7 @@ public class ModelLoader {
 
     /**
      * Attempt to insert structures and operations into a model.
-     * 
+     *
      * @param model
      *            The model to insert into.
      * @param newOps
@@ -125,12 +125,12 @@ public class ModelLoader {
 
     /**
      * Attempt to insert structures and operations into a live model.
-     * 
+     *
      * @param newStructs
      *            The new data structures to insert.
      * @param newOps
      *            The new operations to insert.
-     * 
+     *
      * @return {@code false} if the live model hasn't changed. True if there is a
      *         possibility that is has.
      */
@@ -174,7 +174,7 @@ public class ModelLoader {
 
     /**
      * Strip all unused variables from a model, without user prompt.
-     * 
+     *
      * @param liveModel
      *            The model to strip unused names from.
      */
@@ -367,7 +367,7 @@ public class ModelLoader {
 
     /**
      * Test usage of structures without altering the {@code liveModel}.
-     * 
+     *
      * @param newOps
      *            The list of new operations.
      * @param newStructs
@@ -386,7 +386,7 @@ public class ModelLoader {
 
     /**
      * Check for collision between keys
-     * 
+     *
      * @param newNames
      *            The new identifiers.
      * @param oldNames
@@ -412,7 +412,7 @@ public class ModelLoader {
 
     /**
      * If {@code true}, unused structures will be removed automatically.
-     * 
+     *
      * @param autoRemoveUnsued
      *            The automatic removal settings.
      */
@@ -422,7 +422,7 @@ public class ModelLoader {
 
     /**
      * If {@code true}, undeclared structures will be created as Orphans automatically.
-     * 
+     *
      * @param autoRemoveUnsued
      *            The automatic adding of orphans settings.
      */

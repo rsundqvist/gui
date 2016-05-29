@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import contract.datastructure.Array.IndexedElement;
+import contract.datastructure.IndexedElement;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
 import javafx.geometry.Insets;

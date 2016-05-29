@@ -63,7 +63,8 @@ public class InterpreterView implements InvalidationListener {
      */
     // ============================================================= //
 
-    @SuppressWarnings("unchecked") public InterpreterView (Stage parent) {
+    @SuppressWarnings("unchecked")
+    public InterpreterView (Stage parent) {
         this.parent = parent;
         interpreter = new Interpreter();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/InterpreterView.fxml"));
@@ -237,7 +238,8 @@ public class InterpreterView implements InvalidationListener {
      */
     // ============================================================= //
 
-    @Override public void invalidated (Observable o) {
+    @Override
+    public void invalidated (Observable o) {
         beforeCount.setText("" + beforeItems.size());
         afterCount.setText("" + afterItems.size());
     }

@@ -11,7 +11,7 @@ import java.util.List;
 import assets.Debug;
 import assets.Tools;
 import contract.datastructure.Array;
-import contract.datastructure.Array.IndexedElement;
+import contract.datastructure.IndexedElement;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
@@ -689,7 +689,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
         return visualMap;
     }
 
-    @Override public String toString () {
+    @Override
+    public String toString () {
         return getClass().getSimpleName() + " (" + struct + ")";
     }
 
@@ -712,12 +713,12 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * {@code 0 < factor < 1}.<br>
      * <br>
      * Will disable for {@code factor <= 0} and {@code factor == 1}
-     * 
+     *
      * @param factor
      *            The min-max size factor for this render.
      */
     public void setRelativeNodeSize (double factor) {
-        relativeNodeSize = (factor >= 0 && factor != 1);
+        relativeNodeSize = factor >= 0 && factor != 1;
 
         if (relativeNodeSize && struct instanceof Array) {
             this.factor = factor;
@@ -973,11 +974,13 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     // ============================================================= //
 
-    @Override public void maxChanged (double newMax) {
+    @Override
+    public void maxChanged (double newMax) {
         setRelativeNodeSizes();
     }
 
-    @Override public void minChanged (double newMin) {
+    @Override
+    public void minChanged (double newMin) {
         setRelativeNodeSizes();
     }
 }

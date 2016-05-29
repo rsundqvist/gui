@@ -190,7 +190,7 @@ public class Visualization extends StackPane {
      * Attempt to place visuals with minimal overlap. Will return {@code false} if
      * placement failed. Note that {@code true} does not guarantee that there is no
      * overlap between renders.
-     * 
+     *
      * @return {@code false} if placement failed.
      */
     public boolean autoPosition () {
@@ -225,7 +225,7 @@ public class Visualization extends StackPane {
                 break;
             case bar:
                 xPos = padding + getWidth() * sWExpand;
-                yPos = getHeight() - 125 - (render.assets.Const.DEFAULT_RENDER_HEIGHT) * (southWest) - padding * 2;
+                yPos = getHeight() - 125 - render.assets.Const.DEFAULT_RENDER_HEIGHT * southWest - padding * 2;
                 southWest++;
                 break;
             default:
@@ -264,7 +264,7 @@ public class Visualization extends StackPane {
 
     /**
      * Returns the managers used by this Visualization.
-     * 
+     *
      * @return An ARenderManager collection.
      */
     public Collection<ARenderManager> getManagers () {
@@ -294,7 +294,7 @@ public class Visualization extends StackPane {
 
     /**
      * Returns the animation setting for the visualization.
-     * 
+     *
      * @return {@code true} if animation is enabled, {@code false} otherwise.
      */
     public boolean getAnimate () {

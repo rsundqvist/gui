@@ -4,6 +4,7 @@ import java.util.List;
 
 import assets.Debug;
 import contract.json.Operation;
+import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,7 +18,7 @@ import render.assets.Const;
 
 /**
  * ExecutionModel convenience class.
- * 
+ *
  * @author Richard Sundqvist
  *
  */
@@ -83,7 +84,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Create a new model controller.
-     * 
+     *
      * @param executionModel
      *            The model to control.
      * @param The
@@ -100,7 +101,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
         // Auto execution timeline.
         autoExecutionTimeline = new Timeline();
         autoExecutionTimeline.setAutoReverse(false);
-        autoExecutionTimeline.setCycleCount(Timeline.INDEFINITE);
+        autoExecutionTimeline.setCycleCount(Animation.INDEFINITE);
 
         // Auto execution tick timeline.
         executionTickTimeline = new Timeline();
@@ -108,7 +109,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Create a new model controller for {@link ExecutionModel#INSTANCE}.
-     * 
+     *
      */
     public ExecutionModelController () {
         this(ExecutionModel.INSTANCE, new Visualization(ExecutionModel.INSTANCE));
@@ -143,7 +144,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Begin timed execution for the model.
-     * 
+     *
      * @param millis
      *            The time between executions.
      */
@@ -153,7 +154,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
         KeyFrame executionFrame = new KeyFrame(Duration.millis(millis), event -> {
 
             currentExecutionTick = 1; // Reset the tick counter.
-            
+
             if (executionModel.tryExecuteNext()) {
                 executeNext();
                 startExecutionTickUpdates(millis);
@@ -170,7 +171,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Start execution tick updates, if there is a listener.
-     * 
+     *
      * @param millis
      *            The time between executions.
      */
@@ -190,7 +191,8 @@ public class ExecutionModelController implements OperationsExecutedListener {
         }
     }
 
-    @Override public void operationsExecuted (List<Operation> executedOperations) {
+    @Override
+    public void operationsExecuted (List<Operation> executedOperations) {
         for (Operation op : executedOperations) {
             visualization.render(op);
         }
@@ -217,7 +219,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
     /**
      * Set the auto execution speed in milliseconds. Will stop auto execution, update the
      * speed, and resume if auto execution was on when this method was called.
-     * 
+     *
      * @param autoExecutionSpeed
      *            The time between execution calls in milliseconds.
      * @throws IllegalArgumentException
@@ -245,7 +247,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Returns the time between execution calls in milliseconds.
-     * 
+     *
      * @return The time between execution calls in milliseconds.
      */
     public long getAutoExecutionSpeed () {
@@ -274,12 +276,12 @@ public class ExecutionModelController implements OperationsExecutedListener {
         }
 
         this.executionTickListener = executionTickListener;
-        this.executionTickCount = tickCount;
+        executionTickCount = tickCount;
     }
 
     /**
      * Returns the execution model for this controller.
-     * 
+     *
      * @return An {@code ExecutionModel}.
      */
     public ExecutionModel getExecutionModel () {
@@ -288,7 +290,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Returns the Visualization used by this controller.
-     * 
+     *
      * @return A Visualization.
      */
     public Visualization getVisualization () {
@@ -308,7 +310,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
 
     /**
      * Returns a property indicating whether auto execution is currently on.
-     * 
+     *
      * @return A ReadOnlyLongProperty.
      */
     public ReadOnlyBooleanProperty autoExecutingProperty () {
@@ -318,7 +320,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
     /**
      * Returns a property indicating the time between execution calls when using autoplay,
      * in milliseconds.
-     * 
+     *
      * @return A ReadOnlyLongProperty.
      */
     public ReadOnlyLongProperty autoExecutionSpeedProperty () {
@@ -360,7 +362,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
     }
 
     /**
-     * 
+     *
      * @see model.ExecutionModel#reset()
      */
     public void reset () {
@@ -371,7 +373,7 @@ public class ExecutionModelController implements OperationsExecutedListener {
     }
 
     /**
-     * 
+     *
      * @see model.ExecutionModel#clear()
      */
     public void clear () {

@@ -28,7 +28,8 @@ public abstract class AVElementFactory {
      * @param pri
      *            Primary size value, usually width.
      * @param sec
-     *            Secondary size value, usually height. Sometimes ignored for shapes like circles.
+     *            Secondary size value, usually height. Sometimes ignored for shapes like
+     *            circles.
      * @return The element to bind.
      */
     public static AVElement shape (ElementShape shape, Element e, double pri, double sec) {
@@ -82,7 +83,8 @@ public abstract class AVElementFactory {
      * @param pri
      *            Primary size value, usually width.
      * @param sec
-     *            Secondary size value, usually height. Sometimes ignored for shapes like circles.
+     *            Secondary size value, usually height. Sometimes ignored for shapes like
+     *            circles.
      * @return A VisualElement.
      */
     public static AVElement shape (ElementShape shape, double value, Paint paint, double pri, double sec) {
@@ -132,7 +134,8 @@ public abstract class AVElementFactory {
      * @param pri
      *            Primary size value, usually width.
      * @param sec
-     *            Secondary size value, usually height. Sometimes ignored for shapes like circles.
+     *            Secondary size value, usually height. Sometimes ignored for shapes like
+     *            circles.
      * @return A {@link PolygonElement}.
      */
     public static PolygonElement polygon (Element e, double pri, double sec, double[] points) {
@@ -154,7 +157,8 @@ public abstract class AVElementFactory {
      * @param pri
      *            Primary size value, usually width.
      * @param sec
-     *            Secondary size value, usually height. Sometimes ignored for shapes like circles.
+     *            Secondary size value, usually height. Sometimes ignored for shapes like
+     *            circles.
      * @return A {@link PolygonElement}.
      */
     public static PolygonElement polygon (double value, Paint paint, double pri, double sec, double[] points) {
@@ -167,8 +171,9 @@ public abstract class AVElementFactory {
      * Polygon methods
      */
     /**
-     * Creates the points for a relative polygon. Values in {@code points} are scaled using the
-     * width and height arguments. All values in {@code points} should lie in [0, 1].<br>
+     * Creates the points for a relative polygon. Values in {@code points} are scaled
+     * using the width and height arguments. All values in {@code points} should lie in
+     * [0, 1].<br>
      *
      * The original list is not changed.
      *
@@ -228,7 +233,8 @@ public abstract class AVElementFactory {
      */
 
     /**
-     * Attempt to a visual element. Should not be used unless there is no other alternative.
+     * Attempt to a visual element. Should not be used unless there is no other
+     * alternative.
      *
      * @param orig
      *            The original element.

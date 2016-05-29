@@ -11,8 +11,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 /**
- * Class and methods for displaying and jumping to relevant source code. Can only highlight full
- * rows.
+ * Class and methods for displaying and jumping to relevant source code. Can only
+ * highlight full rows.
  *
  * @author Richard Sundqvist
  *
@@ -105,7 +105,8 @@ public class SourcePanel extends TabPane {
      * @param op
      *            The Operation to show.
      */
-    @SuppressWarnings("unchecked") public void show (Operation op) {
+    @SuppressWarnings("unchecked")
+    public void show (Operation op) {
         if (op == null || op.source == null) {
             return;
         }
@@ -133,7 +134,8 @@ public class SourcePanel extends TabPane {
         return sources;
     }
 
-    @Deprecated private void initTab () {
+    @Deprecated
+    private void initTab () {
         Tab newTab = new Tab();
         newTab.setText("sample_source.java");
         // Build ListView

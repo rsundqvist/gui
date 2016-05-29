@@ -37,7 +37,8 @@ public class RectangleElement extends AVElement {
         super(element, node_width, node_height);
     }
 
-    @Override public void createShape () {
+    @Override
+    public void createShape () {
         super.createShape();
         Rectangle rect = new Rectangle();
         rect.setStroke(Color.BLACK);
@@ -46,7 +47,8 @@ public class RectangleElement extends AVElement {
         shape = rect;
     }
 
-    @Override public void setSize (double newWidth, double newHeight) {
+    @Override
+    public void setSize (double newWidth, double newHeight) {
         super.setSize(newWidth, newHeight);
         Rectangle rect = (Rectangle) shape;
         rect.setWidth(width);

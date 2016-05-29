@@ -36,7 +36,8 @@ public class SingleElement extends RectangleElement {
         super(element, node_width, node_height);
     }
 
-    @Override public void createShape () {
+    @Override
+    public void createShape () {
         super.createShape();
         Rectangle rect = (Rectangle) shape;
         rect.setArcWidth(width / 3);
