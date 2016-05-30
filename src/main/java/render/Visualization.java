@@ -7,6 +7,7 @@ import assets.Debug;
 import assets.Tools;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
+import contract.datastructure.VisualType;
 import contract.json.Locator;
 import contract.json.Operation;
 import contract.operation.OP_ReadWrite;
@@ -109,13 +110,16 @@ public class Visualization extends StackPane {
     public void clearAndCreateVisuals () {
         clear();
         for (DataStructure struct : executionModel.getDataStructures().values()) {
-            ARenderManager manager = new ARenderManager(struct, animationPane);
-            managerPane.getChildren().add(manager);
-            managerMap.put(struct.identifier, manager);
+            ARenderManager arm = new ARenderManager(struct, animationPane);
+            managerPane.getChildren().add(arm);
+            managerMap.put(struct.identifier, arm);
+            if (arm.getDataStructure().resolveVisual() == VisualType.single) {
+                arm.toFront();
+            }
         }
         // overlay.expandAll();
-        autoPosition();
         Tools.HINT_PANE.setVisible(managerPane.getChildren().isEmpty());
+        autoPosition();
     }
 
     /**
@@ -210,9 +214,8 @@ public class Visualization extends StackPane {
         for (Node node : managerPane.getChildren()) {
             arm = (ARenderManager) node;
 
-            switch (arm.getStructure().visual) {
+            switch (arm.getDataStructure().visual) {
             case single:
-                arm.toFront();
                 yPos = northEast * 120 + padding;
                 xPos = getWidth() - (150 + padding) * (nEExpand + 1);
                 if (!(checkXPos(xPos) && checkYPos(yPos))) {
@@ -239,7 +242,7 @@ public class Visualization extends StackPane {
             // Make sure users can see the render.
             if (checkPositions(xPos, yPos) == false) {
                 if (Debug.ERR) {
-                    System.err.println("Using default placement for \"" + arm.getStructure() + "\".");
+                    System.err.println("Using default placement for \"" + arm.getDataStructure() + "\".");
                 }
                 yPos = padding;
                 xPos = padding;
