@@ -44,7 +44,7 @@ public class Visualization extends StackPane {
     /**
      * Animation time in milliseconds.
      */
-    private long                                  animationTime = render.assets.Const.DEFAULT_ANIMATION_TIME;
+    private long                                  animationTime = Const.DEFAULT_ANIMATION_TIME;
     /**
      * Determines whether operations are animated on the animated_nodes canvas.
      */
@@ -117,7 +117,6 @@ public class Visualization extends StackPane {
                 arm.toFront();
             }
         }
-        // overlay.expandAll();
         Tools.HINT_PANE.setVisible(managerPane.getChildren().isEmpty());
         autoPosition();
     }

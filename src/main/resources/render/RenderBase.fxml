@@ -34,7 +34,7 @@
       <Pane fx:id="content" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
       <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
          <children>
-            <Label fx:id="name" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" text="Identifier" underline="true">
+            <Label fx:id="name" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mouseTransparent="true" text="Identifier" underline="true">
                <padding>
                   <Insets left="4.0" />
                </padding>
@@ -47,7 +47,7 @@
             </Label>
             <StackPane fx:id="header" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: rgba(18, 52, 86, 0.7);">
                <children>
-                  <Label fx:id="name_mo" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="0.0" prefHeight="25.0" prefWidth="1000.0" text="Identifier (mouseover)" textFill="WHITE" underline="true">
+                  <Label fx:id="name_mo" focusTraversable="false" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="0.0" mouseTransparent="true" prefHeight="25.0" prefWidth="1000.0" text="Identifier (mouseover)" textFill="WHITE" underline="true">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -92,15 +92,15 @@
                               <Insets bottom="-2.0" top="-2.0" />
                            </padding>
                         </Button>
-                        <Label fx:id="scale" text="| Scale: 1.0" textFill="WHITE">
+                        <Label fx:id="scale" focusTraversable="false" mouseTransparent="true" text="| Scale: 1.0" textFill="WHITE">
                            <font>
                               <Font size="8.0" />
                            </font></Label>
-                        <Label fx:id="ypos" text="| YPos: 0.0" textFill="WHITE">
+                        <Label fx:id="ypos" focusTraversable="false" mouseTransparent="true" text="| YPos: 0.0" textFill="WHITE">
                            <font>
                               <Font size="8.0" />
                            </font></Label>
-                        <Label text="XPos: 0.0" textFill="WHITE" fx:id="xpos">
+                        <Label focusTraversable="false" mouseTransparent="true" text="XPos: 0.0" textFill="WHITE" fx:id="xpos">
                            <font>
                               <Font size="8.0" />
                            </font></Label>

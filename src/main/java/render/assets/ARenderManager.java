@@ -133,7 +133,7 @@ public class ARenderManager extends BorderPane implements VisualListener {
      *
      * @return A DataStructure.
      */
-    public DataStructure getStructure () {
+    public DataStructure getDataStructure () {
         return struct;
     }
 
