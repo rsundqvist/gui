@@ -47,16 +47,6 @@ public class ExecutionModel {
     private final ObservableMap<String, DataStructure> dataStructures;
 
     /**
-     * List of low level operations. <br>
-     * <b>Atomic operations:</br>
-     * {@link OperationType#read}<br>
-     * {@link OperationType#write}<br>
-     * {@link OperationType#message}<br>
-     */
-    // TODO Atomic Operations Execution.
-    private final ObservableList<Operation>            atomicOperations;
-
-    /**
      * List of operations which may include height level, non-atomic operations. <br>
      * <b>Atomic operations:</br>
      * {@link OperationType#read}<br>
@@ -69,6 +59,11 @@ public class ExecutionModel {
      * Current operation index for the atomic operations execution list.
      */
     private int                                        atomicIndex;
+
+    /**
+     * The size of the list when running in atomic mode.
+     */
+    private int                                        atomicSize;
 
     /**
      * Current operation index.
@@ -115,7 +110,6 @@ public class ExecutionModel {
         this.name = name;
 
         dataStructures = FXCollections.observableHashMap();
-        atomicOperations = FXCollections.observableArrayList();
         operations = FXCollections.observableArrayList();
         executedOperations = FXCollections.observableArrayList();
         operationsExecutedListeners = new ArrayList<OperationsExecutedListener>();
@@ -271,6 +265,7 @@ public class ExecutionModel {
             dataStructure.clear();
         });
         atomicIndex = 0;
+        countAtomic();
         index = 0;
         updateProperties();
     }
@@ -281,10 +276,10 @@ public class ExecutionModel {
     public void clear () {
         dataStructures.clear();
         operations.clear();
-        atomicOperations.clear();
 
         index = -1;
         atomicIndex = -1;
+        countAtomic();
         updateProperties();
     }
 
@@ -400,6 +395,22 @@ public class ExecutionModel {
         }
     }
 
+    /**
+     * Count the number of operations for running in atomic mode.
+     */
+    private void countAtomic () {
+        int count = 0;
+        for (Operation op : operations) {
+            if (op.operation.numAtomicOperations > 1) {
+                count = count + op.operation.numAtomicOperations;
+            } else {
+                count = count + 1;
+            }
+        }
+
+        this.atomicSize = count;
+    }
+
     // ============================================================= //
     /*
      *
@@ -420,8 +431,7 @@ public class ExecutionModel {
      * @param atomicOperations
      *            A list of atomic operations.
      */
-    public void set (Map<String, DataStructure> dataStructures, List<Operation> operations,
-            ObservableList<Operation> atomicOperations) {
+    public void set (Map<String, DataStructure> dataStructures, List<Operation> operations) {
 
         if (dataStructures != null) {
             setDataStructures(dataStructures);
@@ -429,10 +439,6 @@ public class ExecutionModel {
         if (operations != null) {
             setOperations(operations);
         }
-        if (atomicOperations != null) {
-            setAtomicOperations(atomicOperations);
-        }
-
     }
 
     /**
@@ -461,41 +467,6 @@ public class ExecutionModel {
             this.operations.addAll(operations);
             updateProperties();
         }
-    }
-
-    /**
-     * Set the atomic operations for this model.
-     *
-     * @param atomicOperations
-     *            A list of atomic operations.
-     * @throws IllegalArgumentException
-     *             If the list contained non-atomic operations.
-     */
-    public void setAtomicOperations (List<Operation> atomicOperations) {
-        if (atomicOperations != null) {
-
-            // Search for forbidden operation types.
-            for (Operation op : atomicOperations) {
-
-                if (!OpUtil.isAtomic(op)) {
-                    int index = atomicOperations.indexOf(op);
-                    throw new IllegalArgumentException("Non-atomic operation: " + op + " at index: " + index);
-                }
-            }
-
-            this.atomicOperations.clear();
-            this.atomicOperations.addAll(atomicOperations);
-            updateProperties();
-        }
-    }
-
-    /**
-     * Returns the list of atomic operations in use by this model.
-     *
-     * @return A list of atomic operations.
-     */
-    public ObservableList<Operation> getAtomicOperations () {
-        return atomicOperations;
     }
 
     /**
@@ -574,8 +545,8 @@ public class ExecutionModel {
     private void setAtomicIndex (int atomicIndex) {
         if (atomicIndex < 0) {
             atomicIndex = 0;
-        } else if (atomicIndex > atomicOperations.size()) {
-            atomicIndex = atomicOperations.size();
+        } else if (atomicIndex > atomicSize) {
+            atomicIndex = atomicSize;
         }
         atomicIndexProperty.set(atomicIndex);
         this.atomicIndex = atomicIndex;
@@ -627,7 +598,7 @@ public class ExecutionModel {
      * @return {@code true} if the model is clear, {@code false} otherwise.
      */
     private boolean isClear () {
-        boolean isClear = dataStructures.isEmpty() && operations.isEmpty() && atomicOperations.isEmpty();
+        boolean isClear = dataStructures.isEmpty() && operations.isEmpty();
         clearProperty.set(isClear);
         return isClear;
     }

@@ -214,7 +214,7 @@ public class ModelLoader {
         newLiveModelOperations.addAll(liveModel.getOperations());
         newLiveModelOperations.addAll(newOps);
 
-        liveModel.set(newLiveModelStructures, newLiveModelOperations, null);
+        liveModel.set(newLiveModelStructures, newLiveModelOperations);
         liveModel.reset();
     }
 
@@ -380,7 +380,7 @@ public class ModelLoader {
         newOps.addAll(liveModel.getOperations());
 
         // Set and run
-        testModel.set(newStructs, newOps, null);
+        testModel.set(newStructs, newOps);
         testModel.execute(Integer.MAX_VALUE);
     }
 
