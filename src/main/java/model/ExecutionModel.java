@@ -54,12 +54,13 @@ public class ExecutionModel {
      * {@link OperationType#write}<br>
      * {@link OperationType#message}<br>
      */
-    private ObservableList<Operation>                  currentExecutionList;
+    private final ObservableList<Operation>            currentExecutionList;
 
     /**
      * List permitting all kinds of operations.
      */
     private final ObservableList<Operation>            unrestrictedOperations;
+    
     /**
      * List permitting atomic operations only.
      */
@@ -456,8 +457,16 @@ public class ExecutionModel {
      */
     public void setOperations (List<Operation> operations) {
         if (operations != null) {
-            this.currentExecutionList.clear();
-            this.currentExecutionList.addAll(operations);
+
+            atomicOperations.setAll(asAtomic(operations));
+            unrestrictedOperations.setAll(operations);
+
+            if (atomicExecution) {
+                currentExecutionList.setAll(atomicOperations);
+            } else {
+                currentExecutionList.setAll(unrestrictedOperations);
+            }
+
             updateProperties();
         }
     }
@@ -503,23 +512,44 @@ public class ExecutionModel {
         }
     }
 
+    /**
+     * Set the atomic execution setting for the model. If {@code true}, high level
+     * operations such as swap will be replaced with their atomic components.
+     * 
+     * @param atomicExecution
+     *            The new atomic execution setting.
+     */
     public void setAtomicExecution (boolean atomicExecution) {
         if (this.atomicExecution != atomicExecution) {
 
             this.atomicExecution = atomicExecution;
             atomicExecutionProperty.set(atomicExecution);
 
-            currentExecutionList = atomicExecution ? atomicOperations : unrestrictedOperations;
-            // TODO: Translate index atomic/non-atomic.
+            if (atomicExecution) {
+                currentExecutionList.setAll(atomicOperations);
+            } else {
+                currentExecutionList.setAll(unrestrictedOperations);
+            }
+
+            reset();
         }
     }
 
-    private List<Operation> convertToAtomicList (List<Operation> mixedList) {
+    /**
+     * Converts any {@link #HighLevelOperation} found into a group of low level
+     * operations.
+     * 
+     * @param mixedList
+     *            A list of atomic and high level operations.
+     * @return A list a atomic operations.
+     */
+    public List<Operation> asAtomic (List<Operation> mixedList) {
         List<Operation> answer = new ArrayList<Operation>(mixedList.size() * 2);
 
         for (Operation op : mixedList) {
             if (op.operation.numAtomicOperations > 1) {
                 HighLevelOperation hlo = (HighLevelOperation) op;
+
                 if (hlo.atomicOperations == null || hlo.atomicOperations.size() != hlo.operation.numAtomicOperations) {
                     System.err.println("WARNING: Bad atomic operations list: " + hlo.atomicOperations + " in " + hlo);
                     answer.add(hlo);
