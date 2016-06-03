@@ -120,9 +120,9 @@ public class SourcePanel extends TabPane {
         getSelectionModel().select(sourceTabIndex);
         // Select lines
         ListView<String> linesView = (ListView<String>) getTabs().get(nameTabMapping.get(op.source)).getContent();
-        linesView.getSelectionModel().select(op.beginLine - 1);
-        linesView.getFocusModel().focus(op.beginLine);
-        linesView.scrollTo(op.beginLine - 1);
+        linesView.getSelectionModel().select(op.sourceRows[0] - 1);
+        linesView.getFocusModel().focus(op.sourceRows[0]);
+        linesView.scrollTo(op.sourceRows[0] - 1);
     }
 
     /**

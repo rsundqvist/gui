@@ -7,6 +7,7 @@ import contract.datastructure.Array;
 import contract.datastructure.DataStructure;
 import contract.datastructure.IndependentElement;
 import contract.datastructure.RawType;
+import contract.datastructure.AbstractType;
 import contract.datastructure.VisualType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
@@ -21,15 +22,15 @@ import javafx.stage.Stage;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CreateStructureDialog {
 
-    private final Stage          parent, root;
-    private final ChoiceBox      rawType;
-    private final Label          name;
+    private final Stage              parent, root;
+    private final ChoiceBox<RawType> rawType;
+    private final Label              name;
     // Volatile
-    private RawType              raw;
-    private RawType.AbstractType abs;
-    private VisualType           vis;
-    private DataStructure        struct;
-    private String               identifier;
+    private RawType                  raw;
+    private AbstractType             abs;
+    private VisualType               vis;
+    private DataStructure            struct;
+    private String                   identifier;
 
     public CreateStructureDialog (Stage parent) {
         this.parent = parent;
