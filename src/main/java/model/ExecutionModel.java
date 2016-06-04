@@ -473,7 +473,6 @@ public class ExecutionModel {
                 currentExecutionList.setAll(unrstrOperations);
             }
 
-            System.out.println("Set operations called: atom/unr lists updated!");
             updateProperties();
         }
     }
@@ -532,32 +531,36 @@ public class ExecutionModel {
             this.atomicExecution = atomicExecution;
             atomicExecutionProperty.set(atomicExecution);
 
-            System.out.println("index = " + index);
+            int preSwitchIndex = index;
+            
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
 
                 Operation op;
-                for (int i = 0; i <= index; i++) {
+                int numAtom;
+                for (int i = 0; i <= preSwitchIndex; i++) {
                     op = unrstrOperations.get(i);
-                    if (op.operation.numAtomicOperations > 1) {
-                        System.out.println("forward 2 steps");
-                        index = index + (op.operation.numAtomicOperations - 1);
+                    numAtom = op.operation.numAtomicOperations;
+                    
+                    if (numAtom > 1) {
+                        index = index + (numAtom - 1);
                     }
                 }
             } else {
                 currentExecutionList.setAll(unrstrOperations);
 
+                int numAtom;
                 Operation op;
-                for (int i = 0; i <= index; i++) {
+                for (int i = 0; i <= preSwitchIndex; i++) {
                     op = unrstrOperations.get(i);
-                    if (op.operation.numAtomicOperations > 1) {
-                        System.out.println("back 2 steps");
-                        index = index - (op.operation.numAtomicOperations - 1);
+                    numAtom = op.operation.numAtomicOperations;
+                    
+                    if (numAtom > 1) {
+                        index = index - (numAtom - 1);
                     }
                 }
             }
 
-            System.out.println("curr size = " + this.currentExecutionList.size());
             updateProperties();
         }
     }
