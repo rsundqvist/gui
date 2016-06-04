@@ -56,11 +56,13 @@ public class ExecutionModel {
      */
     private final ObservableList<Operation>            currentExecutionList;
 
+    private final ObservableList<Operation>            readOnlyCurrentExecutionList;
+
     /**
      * List permitting all kinds of operations.
      */
-    private final ObservableList<Operation>            unrestrictedOperations;
-    
+    private final ObservableList<Operation>            unrstrOperations;
+
     /**
      * List permitting atomic operations only.
      */
@@ -119,10 +121,14 @@ public class ExecutionModel {
         this.name = name;
 
         dataStructures = FXCollections.observableHashMap();
+
         currentExecutionList = FXCollections.observableArrayList();
+        readOnlyCurrentExecutionList = FXCollections.unmodifiableObservableList(currentExecutionList);
+
         atomicOperations = FXCollections.observableArrayList();
-        unrestrictedOperations = FXCollections.observableArrayList();
+        unrstrOperations = FXCollections.observableArrayList();
         executedOperations = FXCollections.observableArrayList();
+
         operationsExecutedListeners = new ArrayList<OperationsExecutedListener>();
 
         setParallelExecution(parallelExecution);
@@ -459,25 +465,26 @@ public class ExecutionModel {
         if (operations != null) {
 
             atomicOperations.setAll(asAtomic(operations));
-            unrestrictedOperations.setAll(operations);
+            unrstrOperations.setAll(operations);
 
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
             } else {
-                currentExecutionList.setAll(unrestrictedOperations);
+                currentExecutionList.setAll(unrstrOperations);
             }
 
+            System.out.println("Set operations called: atom/unr lists updated!");
             updateProperties();
         }
     }
 
     /**
-     * Returns the list of operations in use by this model.
+     * Returns the list of operations in use by this model as an unmodifiable instance.
      *
      * @return A list of operations.
      */
     public ObservableList<Operation> getOperations () {
-        return currentExecutionList;
+        return readOnlyCurrentExecutionList;
     }
 
     /**
@@ -525,13 +532,33 @@ public class ExecutionModel {
             this.atomicExecution = atomicExecution;
             atomicExecutionProperty.set(atomicExecution);
 
+            System.out.println("index = " + index);
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
+
+                Operation op;
+                for (int i = 0; i <= index; i++) {
+                    op = unrstrOperations.get(i);
+                    if (op.operation.numAtomicOperations > 1) {
+                        System.out.println("forward 2 steps");
+                        index = index + (op.operation.numAtomicOperations - 1);
+                    }
+                }
             } else {
-                currentExecutionList.setAll(unrestrictedOperations);
+                currentExecutionList.setAll(unrstrOperations);
+
+                Operation op;
+                for (int i = 0; i <= index; i++) {
+                    op = unrstrOperations.get(i);
+                    if (op.operation.numAtomicOperations > 1) {
+                        System.out.println("back 2 steps");
+                        index = index - (op.operation.numAtomicOperations - 1);
+                    }
+                }
             }
 
-            reset();
+            System.out.println("curr size = " + this.currentExecutionList.size());
+            updateProperties();
         }
     }
 

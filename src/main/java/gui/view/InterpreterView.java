@@ -1,6 +1,7 @@
 package gui.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,6 @@ public class InterpreterView implements InvalidationListener {
     private final TextField                 beforeCount, afterCount;
     private final Interpreter               interpreter;
     private final Stage                     parent;
-    private boolean                         keep;
     /**
      * Items received from the caller of show ().
      */
@@ -94,6 +94,8 @@ public class InterpreterView implements InvalidationListener {
         beforeItems.addListener(this);
         afterItems.addListener(this);
 
+        receivedItems = new ArrayList<Operation>();
+
         // Counters
         beforeCount = (TextField) namespace.get("beforeCount");
         afterCount = (TextField) namespace.get("afterCount");
@@ -124,12 +126,12 @@ public class InterpreterView implements InvalidationListener {
      *
      * @param ops
      *            The list of operations to use.
-     * @return True if the interpreted operations should be kept, false otherwise.
+     * @return A list of interpreted operations, or {@code null} if the user cancelled.
      */
-    public boolean show (List<Operation> ops) {
+    public List<Operation> show (List<Operation> ops) {
         interpretButton.setDisable(ops.isEmpty());
         moveToBeforeButton.setDisable(true);
-        receivedItems = ops;
+        receivedItems = new ArrayList<Operation>(ops);
         beforeItems.setAll(receivedItems);
         afterItems.clear();
         loadTestCases();
@@ -137,7 +139,7 @@ public class InterpreterView implements InvalidationListener {
         root.setWidth(parent.getWidth() * 0.75);
         root.setHeight(parent.getHeight() * 0.75);
         root.showAndWait();
-        return keep;
+        return receivedItems;
     }
 
     /**
@@ -147,10 +149,9 @@ public class InterpreterView implements InvalidationListener {
         if (afterItems.isEmpty() == false) {
             receivedItems.clear();
             receivedItems.addAll(afterItems);
-            keep = true;
             root.close();
         } else {
-            keep = false;
+            receivedItems = null;
         }
     }
 
@@ -158,7 +159,7 @@ public class InterpreterView implements InvalidationListener {
      * Listener for the "Discard" button.
      */
     public void discardInterpreted () {
-        keep = false;
+        receivedItems = null;
         root.close();
     }
 

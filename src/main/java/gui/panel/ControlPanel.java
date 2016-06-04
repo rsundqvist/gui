@@ -16,6 +16,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -115,6 +117,13 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         CheckBox animate = (CheckBox) namespace.get("animate");
         animate.setSelected(visualization.getAnimate());
 
+        CheckBox atomicExecution = (CheckBox) namespace.get("atomicExecution");
+        atomicExecution.setSelected(visualController.getModelController().getModel().atomicExecutionProperty().get());
+
+        Spinner<Double> minMaxFactor = (Spinner<Double>) namespace.get("minMaxFactor");
+        DoubleSpinnerValueFactory dsvf = new DoubleSpinnerValueFactory(0.20, 5, 2, 0.20);
+        minMaxFactor.setValueFactory(dsvf);
+
         // ============================================================= //
         /*
          * Binding
@@ -192,9 +201,20 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         visualization.setAnimate(cb.isSelected());
     }
 
+    public void atomicExecution (Event e) {
+        CheckBox cb = (CheckBox) e.getSource();
+        visualController.getModelController().getModel().setAtomicExecution(cb.isSelected());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void minMaxFactor (Event e) {
+        Spinner<Double> s = (Spinner<Double>) e.getSource();
+        visualization.setRelativeNodeSize(s.getValue());
+    }
+
     public void oooooOOoooOOOooooOOooo (Event e) {
         Button b = (Button) e.getSource();
-        b.setOpacity(0.05);
+        b.setOpacity(1);
 
         // https://www.youtube.com/watch?v=inli9ukUKIs
         URL resource = this.getClass().getResource("/assets/oooooOOoooOOOooooOOooo.mp3");
@@ -221,9 +241,8 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
 
     }
 
-    @SuppressWarnings("rawtypes")
     public void listViewGoto (Event e) {
-        ListView lw = (ListView) e.getSource();
+        ListView<?> lw = (ListView<?>) e.getSource();
 
         int index = lw.getSelectionModel().getSelectedIndex() - 1;
         visualController.execute(index);

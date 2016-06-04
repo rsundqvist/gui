@@ -190,6 +190,22 @@ public class ARenderManager extends BorderPane implements VisualListener {
         }
     }
 
+    /**
+     * Set the relative node size for the all renders. If {@code factor == 2}, the largest
+     * element will be twice as large as the smallest. Relation is inversed for
+     * {@code 0 < factor < 1}.<br>
+     * <br>
+     * Will disable for {@code factor <= 0} and {@code factor == 1}
+     *
+     * @param factor
+     *            The min-max size factor for this render.
+     */
+    public void setRelativeNodeSize (double factor) {
+        for (ARender render : renders.values()) {
+            render.setRelativeNodeSize(factor);
+        }
+    }
+
     // ============================================================= //
     /*
      *

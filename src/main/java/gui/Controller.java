@@ -118,7 +118,9 @@ public class Controller implements ComListener {
         visualController.stopAutoExecution();
         InterpreterView interpreterView = new InterpreterView(primaryStage);
 
-        if (interpreterView.show(execModel.getOperations())) {
+        List<Operation> interpretedOperations = interpreterView.show(execModel.getOperations());
+        if (interpretedOperations != null) {
+            execModel.setOperations(interpretedOperations);
             execModel.reset();
             visualization.clearAndCreateVisuals();
         }
