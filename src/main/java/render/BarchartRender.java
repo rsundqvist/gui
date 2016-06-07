@@ -396,4 +396,9 @@ public class BarchartRender extends ARender implements MinMaxListener {
         repaintAll();
         setTranslateY(getTranslateY() + (oldHeight - renderHeight));
     }
+
+    @Override
+    public void setRelativeNodeSize (double factor) {
+        // Do nothing.
+    }
 }

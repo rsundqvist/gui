@@ -718,7 +718,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      *            The min-max size factor for this render.
      */
     public void setRelativeNodeSize (double factor) {
-        relativeNodeSize = factor >= 0 && factor != 1;
+        relativeNodeSize = factor > 1;
 
         if (relativeNodeSize && struct instanceof Array) {
             this.factor = factor;
@@ -743,12 +743,12 @@ public abstract class ARender extends Pane implements MinMaxListener {
             return;
         }
 
-        double min = Math.abs(((Array) struct).getMin());
-        double max = Math.abs(((Array) struct).getMax());
+        double lower = Math.abs(((Array) struct).getMin());
+        double upper = Math.abs(((Array) struct).getMax());
 
-        double span = min + max;
+        double span = lower + upper;
 
-        this.setRelativeNodeSize(ave, span);
+        setRelativeNodeSize(ave, span);
     }
 
     protected void setRelativeNodeSize (AVElement ave, double span) {
@@ -756,19 +756,18 @@ public abstract class ARender extends Pane implements MinMaxListener {
             return;
         }
 
-        double relNodeWidth;
-        double relNodeHeight;
-        double fact;
+        double relNodeWidth, relNodeHeight;
+        double r;
 
+        r = (1 - 1 / factor) * ave.getElement().getNumValue() / span;
         // Cap at 1 for nodes with the value set outside model.
-        fact = (factor - 1) * ave.getElement().getNumValue() / span;
-        fact = fact < 1 ? fact : 1;
+        r = r < 1 ? r : 1;
 
         relNodeWidth = nodeWidth / factor;
         relNodeHeight = nodeHeight / factor;
 
-        relNodeWidth = relNodeWidth + relNodeWidth * fact;
-        relNodeHeight = relNodeHeight + relNodeHeight * fact;
+        relNodeWidth = relNodeWidth + relNodeWidth * r;
+        relNodeHeight = relNodeHeight + relNodeHeight * r;
 
         ave.setSize(relNodeWidth, relNodeHeight);
     }

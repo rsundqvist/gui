@@ -118,10 +118,10 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         animate.setSelected(visualization.getAnimate());
 
         CheckBox atomicExecution = (CheckBox) namespace.get("atomicExecution");
-        atomicExecution.setSelected(visualController.getModelController().getModel().atomicExecutionProperty().get());
+        atomicExecution.setSelected(visualController.getModelController().getModel().isAtomicExecution());
 
         Spinner<Double> minMaxFactor = (Spinner<Double>) namespace.get("minMaxFactor");
-        DoubleSpinnerValueFactory dsvf = new DoubleSpinnerValueFactory(0.20, 5, 2, 0.20);
+        DoubleSpinnerValueFactory dsvf = new DoubleSpinnerValueFactory(1, 4, 2, 0.20);
         minMaxFactor.setValueFactory(dsvf);
 
         // ============================================================= //

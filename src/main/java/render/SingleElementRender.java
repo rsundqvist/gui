@@ -120,4 +120,9 @@ public class SingleElementRender extends ARender {
     protected void bellsAndWhistles (Element e, AVElement ve) {
         // System.out.println("single: bells shape = " + ve.getShape());
     }
+    
+    @Override
+    public void setRelativeNodeSize (double factor) {
+        // Do nothing.
+    }
 }

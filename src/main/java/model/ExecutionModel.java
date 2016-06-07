@@ -61,7 +61,7 @@ public class ExecutionModel {
     /**
      * List permitting all kinds of operations.
      */
-    private final ObservableList<Operation>            unrstrOperations;
+    private final ObservableList<Operation>            mixedOperations;
 
     /**
      * List permitting atomic operations only.
@@ -126,7 +126,7 @@ public class ExecutionModel {
         readOnlyCurrentExecutionList = FXCollections.unmodifiableObservableList(currentExecutionList);
 
         atomicOperations = FXCollections.observableArrayList();
-        unrstrOperations = FXCollections.observableArrayList();
+        mixedOperations = FXCollections.observableArrayList();
         executedOperations = FXCollections.observableArrayList();
 
         operationsExecutedListeners = new ArrayList<OperationsExecutedListener>();
@@ -465,12 +465,12 @@ public class ExecutionModel {
         if (operations != null) {
 
             atomicOperations.setAll(asAtomic(operations));
-            unrstrOperations.setAll(operations);
+            mixedOperations.setAll(operations);
 
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
             } else {
-                currentExecutionList.setAll(unrstrOperations);
+                currentExecutionList.setAll(mixedOperations);
             }
 
             updateProperties();
@@ -496,15 +496,6 @@ public class ExecutionModel {
     }
 
     /**
-     * Returns the parallel execution setting of this model.
-     *
-     * @return {@code true} if parallel execution is enabled, false otherwise.
-     */
-    public boolean isParallelExecution () {
-        return parallelExecution;
-    }
-
-    /**
      * Set the parallel execution setting of this model.
      *
      * @param parallelExecution
@@ -516,6 +507,15 @@ public class ExecutionModel {
             this.parallelExecution = parallelExecution;
             parallelExecutionProperty.set(parallelExecution);
         }
+    }
+
+    /**
+     * Returns the parallel execution setting of this model.
+     *
+     * @return {@code true} if parallel execution is enabled, {@code false} otherwise.
+     */
+    public boolean isParallelExecution () {
+        return parallelExecution;
     }
 
     /**
@@ -531,38 +531,38 @@ public class ExecutionModel {
             this.atomicExecution = atomicExecution;
             atomicExecutionProperty.set(atomicExecution);
 
-            int preSwitchIndex = index;
+            Operation op;
+            int numAtomic;
+            int offset = 0;
             
+            for (int i = 0; i <= index; i++) {
+                op = mixedOperations.get(i);
+                numAtomic = op.operation.numAtomicOperations;
+
+                if (numAtomic > 1) {
+                    offset = offset + (numAtomic - 1);
+                }
+            }
+
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
-
-                Operation op;
-                int numAtom;
-                for (int i = 0; i <= preSwitchIndex; i++) {
-                    op = unrstrOperations.get(i);
-                    numAtom = op.operation.numAtomicOperations;
-                    
-                    if (numAtom > 1) {
-                        index = index + (numAtom - 1);
-                    }
-                }
+                index = index + offset;
             } else {
-                currentExecutionList.setAll(unrstrOperations);
-
-                int numAtom;
-                Operation op;
-                for (int i = 0; i <= preSwitchIndex; i++) {
-                    op = unrstrOperations.get(i);
-                    numAtom = op.operation.numAtomicOperations;
-                    
-                    if (numAtom > 1) {
-                        index = index - (numAtom - 1);
-                    }
-                }
+                currentExecutionList.setAll(mixedOperations);
+                index = index - offset;
             }
 
             updateProperties();
         }
+    }
+
+    /**
+     * Returns the atomic execution setting of this model.
+     *
+     * @return {@code true} if atomic execution is enabled, {@code false} otherwise.
+     */
+    public boolean isAtomicExecution () {
+        return atomicExecution;
     }
 
     /**
