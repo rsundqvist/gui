@@ -311,7 +311,7 @@ public class KTreeRender extends ARender {
         calculateDepthAndBreadth();
         renderWidth = totBreadth * (nodeWidth + hSpace) + hSpace * 3;
         renderHeight = (totDepth + 1) * (nodeHeight + vSpace) + vSpace;
-        setRestricedSize(renderWidth, renderHeight);
+        setRestrictedSize(renderWidth, renderHeight);
     }
 
     @Override

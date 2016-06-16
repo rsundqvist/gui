@@ -76,7 +76,7 @@ public class SingleElementRender extends ARender {
     public void calculateSize () {
         renderWidth = 150;
         renderHeight = nodeHeight;
-        setRestricedSize(renderWidth, renderHeight);
+        setRestrictedSize(renderWidth, renderHeight);
     }
 
     /**

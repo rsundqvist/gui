@@ -40,10 +40,6 @@ public abstract class Tools {
     // A FXML pane showing user instructions.
     public static final HintPane HINT_PANE = new HintPane();
 
-    /*
-     * Render base stuff
-     */
-
     public static Background createArrayBg () {
         Image image = new Image(ARender.class.getResourceAsStream("/assets/array.png"));
         BackgroundImage bgi = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -97,7 +93,7 @@ public abstract class Tools {
         if (sums == null) {
             // Start a new list.
             sums = new ArrayList<Integer>();
-            sums.add(new Integer(0));
+            sums.add(0);
             Tools.lowerLevelSums.put(K, sums);
         }
 
@@ -105,7 +101,7 @@ public abstract class Tools {
         for (; cDepth <= targetDepth; cDepth++) {
             int prev = sums.get(cDepth - 1);
             int cur = pow(K, cDepth - 1);
-            sums.add(new Integer(prev + cur));
+            sums.add(prev + cur);
         }
 
         return sums.get(targetDepth);
@@ -201,5 +197,29 @@ public abstract class Tools {
             return (render.getNodeHeight() - ave.height) / 2;
         }
         return 0;
+    }
+
+    /**
+     * Constrain an argument to {@code [low, high]}. Returns: <br>
+     * {@code low} if {@code arg < low} <br>
+     * {@code high} if {@code arg > high}<br>
+     * {@code arg} otherwise.
+     *
+     * @param arg The argument to constrain.
+     * @param low The lower limit.
+     * @param high The upper limit.
+     * @return A number in {@code [low, high]}.
+     */
+    public static double bindInRange (double arg, double low, double high) {
+        if(arg == high){
+            System.out.println("arg == high");
+        }
+        if (arg < low) {
+            arg = low;
+        } else if (arg > high) {
+            arg = high;
+        }
+
+        return arg;
     }
 }

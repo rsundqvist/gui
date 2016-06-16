@@ -287,7 +287,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
         xAxisY = renderHeight - padding;
         rightWallX = renderWidth - padding;
         renderHeight = renderHeight < 100 ? 100 : renderHeight;
-        setRestricedSize(renderWidth, renderHeight);
+        setRestrictedSize(renderWidth, renderHeight);
     }
 
     @Override

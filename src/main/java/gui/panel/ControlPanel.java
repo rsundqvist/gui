@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.Map;
 
 import contract.json.Operation;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -77,7 +75,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
 
         Pane root = null;
         try {
-            root = (Pane) fxmlLoader.load();
+            root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -89,7 +87,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         this.visualization = visualization;
 
         visualController.getModelController().getModel().indexProperty()
-                .addListener((InvalidationListener) observable -> {
+                .addListener(observable -> {
                     int index = visualController.getModelController().getModel().indexProperty().get();
                     updateOperationOverview(index);
                 });
@@ -106,9 +104,9 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
 
         Slider speedSlider = (Slider) namespace.get("speedSlider");
         speedSlider.setValue(-visualController.getAutoExecutionSpeed());
-        speedSlider.setOnMouseReleased(event -> {
-            visualController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()));
-        });
+        speedSlider.setOnMouseReleased(event ->
+            visualController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()))
+        );
 
         // Panel sizing.
         root.prefWidthProperty().bind(widthProperty());
@@ -134,7 +132,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         play.disableProperty().bind(visualController.getModelController().getModel().executeNextProperty().not());
 
         visualController.getModelController().autoExecutingProperty()
-                .addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+                .addListener((observable, oldValue, newValue) -> {
 
                     if (newValue) {
                         play.setText("Pause");
@@ -217,7 +215,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         b.setOpacity(1);
 
         // https://www.youtube.com/watch?v=inli9ukUKIs
-        URL resource = this.getClass().getResource("/assets/oooooOOoooOOOooooOOooo.mp3");
+        URL resource = getClass().getResource("/assets/oooooOOoooOOOooooOOooo.mp3");
         Media media = new Media(resource.toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
@@ -232,7 +230,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
             visualController.execute(index);
         } catch (Exception exc) {
             tf.setText(visualController.getModelController().getModel().getIndex() + "");
-            URL resource = this.getClass().getResource("/assets/shortcircuit.mp3");
+            URL resource = this.getClass().getResource("/assets/short_circuit.mp3");
             Media media = new Media(resource.toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setVolume(0.1);
