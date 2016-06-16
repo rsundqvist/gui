@@ -1,13 +1,5 @@
 package render;
 
-import java.io.IOException;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import assets.Debug;
 import assets.Tools;
 import contract.datastructure.Array;
@@ -39,11 +31,18 @@ import render.assets.Const;
 import render.element.AVElement;
 import render.element.ElementShape;
 
+import java.io.IOException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Base class for renders.
  *
  * @author Richard
- *
  */
 public abstract class ARender extends Pane implements MinMaxListener {
 
@@ -58,51 +57,51 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * The DataStructure this render represents.
      */
-    protected final DataStructure              struct;
+    protected final DataStructure struct;
 
     /**
      * Width of individual elements bounding boxes.
      */
-    protected double                           nodeWidth;
+    protected double nodeWidth;
     /**
      * Height of individual elements bounding boxes.
      */
-    protected double                           nodeHeight;
+    protected double nodeHeight;
 
     /**
      * Horizontal space between elements.
      */
-    protected double                           hSpace;
+    protected double hSpace;
     /**
      * Vertical space between elements.
      */
-    protected double                           vSpace;
+    protected double vSpace;
     /**
      * The width of the render.
      */
-    protected double                           renderWidth;
+    protected double renderWidth;
     /**
      * The height of the render.
      */
-    protected double                           renderHeight;
+    protected double renderHeight;
 
     /**
      * A mapping of actual Elements to VisualElements.
      */
     // protected final HashMap<Element, VisualElement> visualMap =
     // new HashMap<Element, VisualElement>();
-    protected final HashMap<String, AVElement> visualMap       = new HashMap<String, AVElement>();
+    protected final HashMap<String, AVElement> visualMap = new HashMap<String, AVElement>();
 
     /**
      * If true, node sizes will be set relative to their value to the values of the other
      * elements.
      */
-    private boolean                            relativeNodeSize;
+    private boolean relativeNodeSize;
     /**
      * The size difference between the largest and the smallest element.
      * {@code factor = 2} means the largest element is twice the size of the smallest one.
      */
-    private double                             factor;
+    private double factor;
 
     // ============================================================= //
     /*
@@ -113,41 +112,41 @@ public abstract class ARender extends Pane implements MinMaxListener {
     // ============================================================= //
 
     /**
-     * Pane for rendering of visual element nodes. Added to {@link contentPane}
+     * Pane for rendering of visual element nodes. Added to {@link #contentPane}
      * automatically.
      */
-    protected final Pane                       defaultNodePane = new Pane();
+    protected final Pane defaultNodePane = new Pane();
     /**
      * The content pane for the render. By default, a Pane for nodes (
      * {@link #defaultNodePane}) will be added, but renders can add their own panes to
      * {@code contentPane} if need be.
      */
-    protected Pane                             contentPane;
+    protected Pane contentPane;
 
     /**
      * The pane used when drawing animated elements.
      */
-    public final Pane                          animPane;
+    public final Pane animPane;
     /**
      * The root for the FXML Render.
      */
-    protected GridPane                         root;
+    protected GridPane root;
     /**
      * Name label.
      */
-    protected Label                            name;
+    protected Label name;
     /**
      * Header bar.
      */
-    protected Node                             header;
+    protected Node header;
     /**
      * Info labels.
      */
-    protected Label                            xposLabel, yposLabel, scaleLabel;
+    protected Label xPosLabel, yPosLabel, scaleLabel;
     /**
      * The element style to use.
      */
-    protected ElementShape                     elementStyle;
+    protected ElementShape elementStyle;
 
     // ============================================================= //
     /*
@@ -164,8 +163,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Element horizontal space: {@link Const#DEFAULT_ELEMENT_HSPACE}<br>
      * Element vertical space: {@link Const#DEFAULT_ELEMENT_VSPACE}<br>
      *
-     * @param struct
-     *            The DataStructure this Render will draw.
+     * @param struct The DataStructure this Render will draw.
      */
     public ARender (DataStructure struct) {
         this(struct, Const.DEFAULT_ELEMENT_WIDTH, Const.DEFAULT_ELEMENT_HEIGHT, Const.DEFAULT_ELEMENT_HSPACE,
@@ -175,16 +173,11 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * Creates a new Render.
      *
-     * @param struct
-     *            The structure to render.
-     * @param nodeWidth
-     *            The width of the elements in this Render.
-     * @param nodeHeight
-     *            The height of the elements in this Render.
-     * @param hSpace
-     *            The horizontal space between elements in this Render.
-     * @param vSpace
-     *            The vertical space between elements in this Render.
+     * @param struct The structure to render.
+     * @param nodeWidth The width of the elements in this Render.
+     * @param nodeHeight The height of the elements in this Render.
+     * @param hSpace The horizontal space between elements in this Render.
+     * @param vSpace The vertical space between elements in this Render.
      */
     public ARender (DataStructure struct, double nodeWidth, double nodeHeight, double hSpace, double vSpace) {
         this.struct = struct;
@@ -237,7 +230,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
         ToolBar headerButtonBar = (ToolBar) fxmlLoader.getNamespace().get("buttons");
         for (Node node : headerButtonBar.getItems()) {
-            if (node instanceof ToggleButton == false) {
+            if (!(node instanceof ToggleButton)) {
                 optionalHeaderContent.add(node);
             }
         }
@@ -247,8 +240,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
         // Info labels
         name = (Label) fxmlLoader.getNamespace().get("name");
         name.setText(struct.toString());
-        xposLabel = (Label) fxmlLoader.getNamespace().get("xpos");
-        yposLabel = (Label) fxmlLoader.getNamespace().get("ypos");
+        xPosLabel = (Label) fxmlLoader.getNamespace().get("xpos");
+        yPosLabel = (Label) fxmlLoader.getNamespace().get("ypos");
         scaleLabel = (Label) fxmlLoader.getNamespace().get("scale");
 
         // Hint text
@@ -264,8 +257,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Called after the parent class has finished with loading the fxml, in case the child
      * wants to change anything. The default implementation of this method does nothing.
      *
-     * @param fxmlLoader
-     *            The {@code FXMLLoader} used to load the render.
+     * @param fxmlLoader The {@code FXMLLoader} used to load the render.
      */
     protected void afterParentLoadFXML (FXMLLoader fxmlLoader) {
         // Do nothing.
@@ -276,7 +268,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void reset () {
         contentPane.setBackground(Tools.getRawTypeBackground(struct));
-        setRestricedSize(150, 125); // Size of background images
+        setRestrictedSize(150, 125); // Size of background images
 
         for (Node node : contentPane.getChildren()) {
             if (node instanceof Pane) {
@@ -286,12 +278,12 @@ public abstract class ARender extends Pane implements MinMaxListener {
     }
 
     // Make header visible only on mousever.
-    protected void bindHeader () {
+    private void bindHeader () {
         header.visibleProperty().bind(name.visibleProperty().not());
     }
 
     // Make header visible and enable manual setting of visiblity
-    protected void unbindHeader () {
+    private void unbindHeader () {
         name.setVisible(false);
         header.visibleProperty().unbind();
     }
@@ -307,120 +299,107 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * Default animation for a Remove operation.
      *
-     * @param remove
-     *            The operation to animate.
-     * @param millis
-     *            The time in milliseconds the animation should last.
+     * @param millis The time in milliseconds the animation should last.
      */
     // @formatter:off
-    public void animateToggleScope(Element tar, long millis) {
-	if (Debug.ERR) {
-	    System.err.println("ARender.animateRemove(): " + struct + " is animating.");
-	}
+    public void animateToggleScope (Element tar, long millis) {
+        if (Debug.ERR) {
+            System.err.println("ARender.animateRemove(): " + struct + " is animating.");
+        }
 
-	ParallelTransition base = ARenderAnimation.stationary(tar, absX(tar, null), absY(tar, null), millis,
-		this, Effect.GHOST, Effect.FLIP);
+        ParallelTransition base = ARenderAnimation.stationary(tar, absX(tar, null), absY(tar, null), millis,
+                this, Effect.GHOST, Effect.FLIP);
 
-	base.getNode().setRotationAxis(new Point3D(0, 1, 0));
+        base.getNode().setRotationAxis(new Point3D(0, 1, 0));
 
-	Color from = tar.getNumValue() == Double.NaN ? Color.WHITE : Color.BLACK;
-	Color to = tar.getNumValue() != Double.NaN ? Color.WHITE : Color.BLACK;
+        Color from = tar.getNumValue() == Double.NaN ? Color.WHITE : Color.BLACK;
+        Color to = tar.getNumValue() != Double.NaN ? Color.WHITE : Color.BLACK;
 
-	FillTransition ft = new FillTransition(Duration.millis(millis), from, to);
-	ft.setShape(((AVElement) base.getNode()).getElementShape());
+        FillTransition ft = new FillTransition(Duration.millis(millis), from, to);
+        ft.setShape(((AVElement) base.getNode()).getElementShape());
 
-	ft.setOnFinished(event -> {
-	    int[] i = ((IndexedElement) tar).getIndex();
-	    AVElement orig = visualMap.get(Arrays.toString(i));
+        ft.setOnFinished(event -> {
+            int[] i = ((IndexedElement) tar).getIndex();
+            AVElement orig = visualMap.get(Arrays.toString(i));
 
-	    orig.setRotationAxis(new Point3D(0, 1, 0));
+            orig.setRotationAxis(new Point3D(0, 1, 0));
 
-	    boolean active = orig.getElement().getNumValue() == Double.NaN;
-	    orig.setRotate(active ? 0 : 180);
-	});
+            boolean active = orig.getElement().getNumValue() == Double.NaN;
+            orig.setRotate(active ? 0 : 180);
+        });
 
-	base.play();
-	ft.play();
+        base.play();
+        ft.play();
     }
     // @formatter:on
 
     /**
      * Default animations for a read or write.
      *
-     * @param src
-     *            The source element.
-     * @param srcRender
-     *            The render for the source element.
-     * @param tar
-     *            The target element.
-     * @param tarRender
-     *            The render for the target element.
-     * @param millis
-     *            The time the animation should last in milliseconds.
+     * @param src The source element.
+     * @param srcRender The render for the source element.
+     * @param tar The target element.
+     * @param tarRender The render for the target element.
+     * @param millis The time the animation should last in milliseconds.
      */
     // @formatter:off
-    public void animateReadWrite(Element src, ARender srcRender, Element tar, ARender tarRender, long millis) {
-	boolean hasSource = src != null;
-	boolean hasTarget = tar != null;
-	double x1 = -1;
-	double y1 = -1;
-	double x2 = -1;
-	double y2 = -1;
+    public void animateReadWrite (Element src, ARender srcRender, Element tar, ARender tarRender, long millis) {
+        boolean hasSource = src != null;
+        boolean hasTarget = tar != null;
+        double x1 = -1;
+        double y1 = -1;
+        double x2 = -1;
+        double y2 = -1;
 
-	if (hasSource) {
-	    x1 = srcRender.absX(src, tarRender);
-	    y1 = srcRender.absY(src, tarRender);
-	}
+        if (hasSource) {
+            x1 = srcRender.absX(src, tarRender);
+            y1 = srcRender.absY(src, tarRender);
+        }
 
-	if (hasTarget) {
-	    x2 = tarRender.absX(tar, srcRender);
-	    y2 = tarRender.absY(tar, srcRender);
-	}
+        if (hasTarget) {
+            x2 = tarRender.absX(tar, srcRender);
+            y2 = tarRender.absY(tar, srcRender);
+        }
 
-	if (Debug.ERR) {
-	    System.err.println("ARender.animateReadWrite(): " + struct + " is animating.");
-	}
+        if (Debug.ERR) {
+            System.err.println("ARender.animateReadWrite(): " + struct + " is animating.");
+        }
 
-	if (hasSource && hasTarget) {
-	    ARenderAnimation.linear(tar, x1, y1, x2, y2, millis, tarRender, Effect.GHOST).play();
-	} else if (hasSource) {
-	    // Source only
-	    ARenderAnimation.linear(src, x1, y1, x1, y1 - Const.DEFAULT_ELEMENT_HEIGHT * 2, millis, srcRender,
-		    Effect.FADE_OUT, Effect.SHRINK).play();
-	} else {
-	    // Target only
-	    ARenderAnimation.linear(tar, x2, y2 - Const.DEFAULT_ELEMENT_HEIGHT * 2, x2, y2, millis, tarRender,
-		    Effect.FADE_IN, Effect.GROW, Effect.GHOST).play();
-	}
+        if (hasSource && hasTarget) {
+            ARenderAnimation.linear(tar, x1, y1, x2, y2, millis, tarRender, Effect.GHOST).play();
+        } else if (hasSource) {
+            // Source only
+            ARenderAnimation.linear(src, x1, y1, x1, y1 - Const.DEFAULT_ELEMENT_HEIGHT * 2, millis, srcRender,
+                    Effect.FADE_OUT, Effect.SHRINK).play();
+        } else {
+            // Target only
+            ARenderAnimation.linear(tar, x2, y2 - Const.DEFAULT_ELEMENT_HEIGHT * 2, x2, y2, millis, tarRender,
+                    Effect.FADE_IN, Effect.GROW, Effect.GHOST).play();
+        }
 
-	if (Debug.ERR && !hasSource && !hasTarget) {
-	    System.err.println("Failed to resolve target and source.");
-	}
+        if (Debug.ERR && !hasSource && !hasTarget) {
+            System.err.println("Failed to resolve target and source.");
+        }
     }
     // @formatter:off
 
     /**
      * Default animation of a swap between two elements.
      *
-     * @param var1
-     *            The first element.
-     * @param render1
-     *            The render for the first element.
-     * @param var2
-     *            The second element.
-     * @param render2
-     *            The render for the second element.
-     * @param millis
-     *            The time in milliseconds the animation should last.
+     * @param var1 The first element.
+     * @param render1 The render for the first element.
+     * @param var2 The second element.
+     * @param render2 The render for the second element.
+     * @param millis The time in milliseconds the animation should last.
      */
     // @formatter:off
-    public void animateSwap(Element var1, ARender render1, Element var2, ARender render2, long millis) {
-	if (Debug.ERR) {
-	    System.err.println("ARender.animateSwap(): " + struct + " is animating.");
-	}
+    public void animateSwap (Element var1, ARender render1, Element var2, ARender render2, long millis) {
+        if (Debug.ERR) {
+            System.err.println("ARender.animateSwap(): " + struct + " is animating.");
+        }
 
-	ARenderAnimation.linear(var1, render1.absX(var2, render2), render2.absY(var2, render2),
-		render2.absX(var1, render1), render1.absY(var1, render1), millis, this, Effect.GHOST).play();
+        ARenderAnimation.linear(var1, render1.absX(var2, render2), render2.absY(var2, render2),
+                render2.absX(var1, render1), render1.absY(var1, render1), millis, this, Effect.GHOST).play();
     }
     // @formatter:on
 
@@ -428,12 +407,10 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Calls, setPrefSize, setMaxSize, setWidth and setHeight. Will limit how small the
      * render can become.
      *
-     * @param width
-     *            The width of this Render.
-     * @param height
-     *            The height of this Render.
+     * @param width The width of this Render.
+     * @param height The height of this Render.
      */
-    protected void setRestricedSize (double width, double height) {
+    protected void setRestrictedSize (double width, double height) {
 
         // contentPane not visible indicates that the render is hidden.
         if (contentPane.isVisible()) {
@@ -465,8 +442,9 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
     /**
      * Order the Render to draw the elements of the Data Structure it carries. <br>
-     * The default implementation of this method calls
-     * {@link DataStructure#elementsDrawn(javafx.scene.paint.Paint)} and
+     * <br>
+     * The default implementation of this method calls:<br>
+     * {@link DataStructure#elementsDrawn(javafx.scene.paint.Paint)} <br>
      * {@link #setRelativeNodeSizes()}.
      */
     public void render () {
@@ -479,7 +457,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * elements and add them to the standard pane. It will clear the children of all
      * children in {@link #contentPane} before beginning. {@link #bellsAndWhistles} will
      * be called on every element.
-     *
      *
      * @return True if there was anything to draw.
      */
@@ -522,17 +499,14 @@ public abstract class ARender extends Pane implements MinMaxListener {
         // TODO Callback mechanism
         List<String> strList = OperationCounterHaver.printStatistics(struct);
         System.out.println("Statistics for \"" + struct + "\":");
-        for (String str : strList) {
-            System.out.println(str);
-        }
+        strList.forEach(System.out::println);
     }
 
     /**
      * Show options for the render.
      */
     public void showOptions () {
-        VisualDialog vd = new VisualDialog(null);
-        vd.show(struct);
+        new VisualDialog(null).show(struct);
     }
 
     /**
@@ -540,7 +514,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     protected final ArrayList<Node> optionalHeaderContent = new ArrayList<Node>();
     // Centre on button when hiding or showing.
-    private double                  conbwhs               = 0;
+    private double resizingOffset = 0;
 
     public void toggleHidden (Event e) {
         ToggleButton tb = (ToggleButton) e.getSource();
@@ -559,8 +533,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void collapse () {
         // Make the render expand and collapse and NE corner.
-        conbwhs = contentPane.getPrefWidth() - 150;
-        setTranslateX(getTranslateX() + conbwhs);
+        resizingOffset = contentPane.getPrefWidth() - 150;
+        setTranslateX(getTranslateX() + resizingOffset);
 
         // Show only header
         root.setPrefSize(150, 20);
@@ -579,14 +553,14 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void expand () {
         contentPane.setVisible(true);
-        setTranslateX(getTranslateX() - conbwhs);
+        setTranslateX(getTranslateX() - resizingOffset);
         bindHeader();
         calculateSize(); // Size recalculation is disabled while hidden.
 
         if (contentPane.getBackground() == null) {
             calculateSize();
         } else {
-            setRestricedSize(150, 90);
+            setRestrictedSize(150, 90);
         }
         for (Node n : optionalHeaderContent) {
             n.setVisible(true);
@@ -614,8 +588,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Returns the absolute x-coordinate for the element e. Returns -1 if the calculation
      * fails.
      *
-     * @param e
-     *            An element owned by this Render.
+     * @param e An element owned by this Render.
      * @return The absolute x-coordinates of e.
      */
     public double absX (Element e, ARender relativeTo) {
@@ -627,8 +600,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Returns the absolute y-coordinate for the element e. Returns -1 if the calculation
      * fails.
      *
-     * @param e
-     *            An element owned by this Render.
+     * @param e An element owned by this Render.
      * @return The absolute y-coordinates of e.
      */
     public double absY (Element e, ARender relativeTo) {
@@ -647,9 +619,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
     /**
      * Returns the Pane used for drawing animated elements.
-     *
-     * @param animPane
-     *            The used Pane for animation.
      */
     public Pane getAnimationPane () {
         return animPane;
@@ -660,8 +629,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void updateInfoLabels () {
         DecimalFormat df = new DecimalFormat("#0.00");
-        xposLabel.setText("XPos: " + (int) (getTranslateX() + 0.5));
-        yposLabel.setText("| YPos: " + (int) (getTranslateY() + 0.5));
+        xPosLabel.setText("XPos: " + (int) (getTranslateX() + 0.5));
+        yPosLabel.setText("| YPos: " + (int) (getTranslateY() + 0.5));
         scaleLabel.setText("| Scale: " + df.format(scale));
     }
 
@@ -669,7 +638,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Makes the header red and play a sound when something goes wrong.
      */
     public void renderFailure () {
-        URL resource = this.getClass().getResource("/assets/shortcircuit.mp3");
+        URL resource = getClass().getResource("/assets/short_circuit.mp3");
         Media media = new Media(resource.toString());
         MediaPlayer mp3 = new MediaPlayer(media);
         mp3.play();
@@ -697,8 +666,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * Set the currently used element style.
      *
-     * @param newStyle
-     *            The new Style to use.
+     * @param newStyle The new Style to use.
      */
     public void setElementStyle (ElementShape newStyle) {
         if (newStyle != elementStyle) {
@@ -709,13 +677,9 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
     /**
      * Set the relative node size for the render. If {@code factor == 2}, the largest
-     * element will be twice as large as the smallest. Relation is inversed for
-     * {@code 0 < factor < 1}.<br>
-     * <br>
-     * Will disable for {@code factor <= 0} and {@code factor == 1}
+     * element will be twice as large as the smallest. Any {@code factor <= 1} disables relative sizing.
      *
-     * @param factor
-     *            The min-max size factor for this render.
+     * @param factor The min-max size factor for this render.
      */
     public void setRelativeNodeSize (double factor) {
         relativeNodeSize = factor > 1;
@@ -732,36 +696,38 @@ public abstract class ARender extends Pane implements MinMaxListener {
         }
 
         for (Node n : defaultNodePane.getChildren()) {
-            if (n instanceof AVElement) {
+            if (n instanceof AVElement)
                 this.setRelativeNodeSize((AVElement) n);
-            }
         }
     }
 
-    protected void setRelativeNodeSize (AVElement ave) {
-        if (!relativeNodeSize) {
-            return;
-        }
-
+    private void setRelativeNodeSize (AVElement ave) {
         double lower = Math.abs(((Array) struct).getMin());
         double upper = Math.abs(((Array) struct).getMax());
 
-        double span = lower + upper;
-
-        setRelativeNodeSize(ave, span);
+        setRelativeNodeSize(ave, lower, upper);
     }
 
-    protected void setRelativeNodeSize (AVElement ave, double span) {
-        if (!relativeNodeSize) {
+    /**
+     * Set the size of a node relative its value in the range [L, H] using this renders current {@link #factor} value.
+     * @param ave The visual element to adjust the size for.
+     * @param L The lower bound.
+     * @param H The upper bound.
+     */
+    private void setRelativeNodeSize (AVElement ave, double L, double H) {
+
+        if (L == H) {
+            restoreNodeSizes();
             return;
         }
 
         double relNodeWidth, relNodeHeight;
         double r;
+        double v = ave.getElement().getNumValue();
 
-        r = (1 - 1 / factor) * ave.getElement().getNumValue() / span;
-        // Cap at 1 for nodes with the value set outside model.
-        r = r < 1 ? r : 1;
+        r = ((v - L) / (H - L));
+        r = render.assets.Tools.bindInRange(r, 0, 1);
+        r = r * (factor - 1);
 
         relNodeWidth = nodeWidth / factor;
         relNodeHeight = nodeHeight / factor;
@@ -772,10 +738,30 @@ public abstract class ARender extends Pane implements MinMaxListener {
         ave.setSize(relNodeWidth, relNodeHeight);
     }
 
+    /**
+     * Retore the default node size for all nodes by calling {@link AVElement#setSize(double, double)}
+     * with ({@link #nodeWidth}, {@link #nodeHeight}).
+     */
+    public void restoreNodeSizes () {
+        for (Node n : defaultNodePane.getChildren()) {
+            if (n instanceof AVElement)
+                ((AVElement) n).setSize(nodeWidth, nodeHeight);
+        }
+    }
+
+    /**
+     * Returns the node height for this render.
+     *
+     * @return The node height for this render.
+     */
     public double getNodeHeight () {
         return nodeHeight;
     }
 
+    /**
+     * Set the node height of the render and returns the result of {@link #repaintAll()}, if the value changed.
+     * Returns @code false if the value was the same as before.
+     */
     public boolean setNodeHeight (double nodeHeight) {
         this.nodeHeight = nodeHeight;
         return repaintAll();
@@ -798,14 +784,11 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     // ============================================================= //
 
-    private double       transX, transY;
+    private double transX, transY;
     private final double scale = 1;
 
     /**
      * Create listeners to drag and zoom.
-     *
-     * @param tParent
-     *            The parent to apply transformation to.
      */
     private void initDragAndZoom () {
         initArrowResize();
@@ -820,32 +803,32 @@ public abstract class ARender extends Pane implements MinMaxListener {
             }
 
             switch (event.getCode()) {
-            case UP:
-                setNodeHeight(nodeHeight + Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
-                break;
-            case DOWN:
-                setNodeHeight(nodeHeight - Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
-                break;
-            case LEFT:
-                setNodeWidth(nodeWidth - Const.DEFAULT_ELEMENT_WIDTH_DELTA);
-                break;
-            case RIGHT:
-                setNodeWidth(nodeWidth + Const.DEFAULT_ELEMENT_WIDTH_DELTA);
-                break;
-            default:
-                return;
+                case UP:
+                    setNodeHeight(nodeHeight + Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
+                    break;
+                case DOWN:
+                    setNodeHeight(nodeHeight - Const.DEFAULT_ELEMENT_HEIGHT_DELTA);
+                    break;
+                case LEFT:
+                    setNodeWidth(nodeWidth - Const.DEFAULT_ELEMENT_WIDTH_DELTA);
+                    break;
+                case RIGHT:
+                    setNodeWidth(nodeWidth + Const.DEFAULT_ELEMENT_WIDTH_DELTA);
+                    break;
+                default:
+                    return;
             }
 
             setNodeWidth(nodeWidth < Const.MIN_NODE_WIDTH ? Const.MIN_NODE_WIDTH : nodeWidth);
             setNodeHeight(nodeHeight < Const.MIN_NODE_HEIGHT ? Const.MIN_NODE_HEIGHT : nodeHeight);
 
-            Platform.runLater( () -> ARender.this.requestFocus());
+            Platform.runLater(ARender.this::requestFocus);
 
             repaintAll();
         });
     }
 
-    public void initMouseWheelResize () {
+    private void initMouseWheelResize () {
         setOnScroll(event -> {
             if (!event.isControlDown()) {
                 return;
@@ -874,9 +857,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
             setCursor(Cursor.CLOSED_HAND);
         });
         // Restore cursor
-        setOnMouseReleased(event -> {
-            setCursor(null);
-        });
+        setOnMouseReleased(event -> setCursor(null));
         // Translate canvases
         setOnMouseDragged(event -> {
             setTranslateX(event.getSceneX() + transX);
@@ -885,7 +866,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
         });
         // Set cursor
         setOnMouseEntered(event -> {
-            // this.setCursor(Cursor.OPEN_HAND);
             requestFocus();
             if (header.visibleProperty().isBound()) {
                 name.setVisible(false);
@@ -913,8 +893,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Returns the absolute x-coordinate of an element. Returns -1 if the calculation
      * fails.
      *
-     * @param e
-     *            An element to resolve coordinates for.
+     * @param e An element to resolve coordinates for.
      * @return The absolute x-coordinate of the element.
      */
     public abstract double getX (Element e);
@@ -923,8 +902,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * Returns the absolute y-coordinate of an element. Returns -1 if the calculation
      * fails.
      *
-     * @param e
-     *            An element to resolve coordinates for.
+     * @param e An element to resolve coordinates for.
      * @return The absolute y-coordinate of the element.
      */
     public abstract double getY (Element e);
@@ -937,8 +915,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * Create a bound node element in whatever style the Render prefers to use.
      *
-     * @param e
-     *            The element to bind.
+     * @param e The element to bind.
      * @return A new bound VisualElement.
      */
     protected abstract AVElement createVisualElement (Element e);
@@ -946,22 +923,18 @@ public abstract class ARender extends Pane implements MinMaxListener {
     /**
      * Create an unbound node element in whatever style the Render prefers to use.
      *
-     * @param value
-     *            The value of the element.
-     * @param color
-     *            The colour of the element.
+     * @param value The value of the element.
+     * @param color The colour of the element.
      * @return A new unbound VisualElement.
      */
     protected abstract AVElement createVisualElement (double value, Color color);
 
     /**
      * Decorator method used to attach bells and whistles to the current element.
-     * {@link #init} will called this method on every element.
+     * {@link #repaintAll()} will called this method on every element.
      *
-     * @param e
-     *            The element to attach a whistle to.
-     * @param ve
-     *            The VisualElement to attach a bell to.
+     * @param e The element to attach a whistle to.
+     * @param ve The VisualElement to attach a bell to.
      */
     protected abstract void bellsAndWhistles (Element e, AVElement ve);
 
