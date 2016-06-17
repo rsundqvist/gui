@@ -177,7 +177,7 @@ public abstract class AVElement extends Pane {
         fxmlLoader.setController(this);
 
         try {
-            root = (GridPane) fxmlLoader.load();
+            root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);

@@ -55,7 +55,6 @@ public class HelpView {
         stage.setOnCloseRequest(event -> {
             event.consume(); // Better to do this now than missing it later.
             stopBoxRotation();
-            ;
             stage.close();
         });
 

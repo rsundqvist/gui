@@ -1,7 +1,5 @@
 package render;
 
-import java.util.Arrays;
-
 import assets.Debug;
 import contract.datastructure.Element;
 import contract.datastructure.IndexedElement;
@@ -16,11 +14,12 @@ import javafx.collections.ObservableList;
 import javafx.util.Duration;
 import render.element.AVElement;
 
+import java.util.Arrays;
+
 /**
  * Utility class for animating operations. Cannot be instantiated.
  *
  * @author Richard Sundqvist
- *
  */
 public abstract class ARenderAnimation {
 
@@ -32,29 +31,20 @@ public abstract class ARenderAnimation {
      * {@link ParallelTransition#setOnFinished(javafx.event.EventHandler)} on the
      * transition returned by this method may have unwanted side effects.
      *
-     * @param e
-     *            The element to animate.
-     * @param x1
-     *            Start point x-coordinate.
-     * @param y1
-     *            Start point y-coordinate.
-     * @param x2
-     *            End point x-coordinate.
-     * @param y2
-     *            End point y-coordinate.
-     * @param millis
-     *            The time in milliseconds the animation should last.
-     * @param effects
-     *            A list of effects to apply.
+     * @param e The element to animate.
+     * @param x1 Start point x-coordinate.
+     * @param y1 Start point y-coordinate.
+     * @param x2 End point x-coordinate.
+     * @param y2 End point y-coordinate.
+     * @param millis The time in milliseconds the animation should last.
+     * @param effects A list of effects to apply.
      * @return A ParallelTransition with the requested transitions as children.
      */
-    // @formatter:off
-    public static ParallelTransition linear(Element e,
-            double x1, double y1,
-            double x2, double y2,
-            long millis, ARender render,
-            Effect... effects) {
-	// @formatter:on
+    public static ParallelTransition linear (Element e,
+                                             double x1, double y1,
+                                             double x2, double y2,
+                                             long millis, ARender render,
+                                             Effect... effects) {
 
         // Fetch the element to animate
         // VisualElement orig = visualElementsMapping.get(e);
@@ -92,24 +82,17 @@ public abstract class ARenderAnimation {
      * {@link ParallelTransition#setOnFinished(javafx.event.EventHandler)} on the
      * transition returned by this method may have unwanted side effects.
      *
-     * @param e
-     *            The element to animate.
-     * @param x
-     *            X-coordinate for the animation.
-     * @param y
-     *            Y-coordinate for the animation.
-     * @param millis
-     *            The time in milliseconds the animation should last.
-     * @param effects
-     *            A list of effects to apply.
+     * @param e The element to animate.
+     * @param x X-coordinate for the animation.
+     * @param y Y-coordinate for the animation.
+     * @param millis The time in milliseconds the animation should last.
+     * @param effects A list of effects to apply.
      * @return A ParallelTransition with the requested transitions as children.
      */
-    // @formatter:off
-    public static ParallelTransition stationary(Element e,
-            double x, double y,
-            long millis, ARender render,
-	    Effect... effects) {
-	// @formatter:on
+    public static ParallelTransition stationary (Element e,
+                                                 double x, double y,
+                                                 long millis, ARender render,
+                                                 Effect... effects) {
 
         // Fetch the element to animate
         // VisualElement orig = visualElementsMapping.get(e);
@@ -134,12 +117,12 @@ public abstract class ARenderAnimation {
     }
 
     /**
-     * Animation options.
+     * Used to apply animation effects. Note that some effects, such as {@link #FADE_IN} and {@link #FADE_OUT}
+     * may not behave properly if combined.
      *
      * @author Richard
-     *
      */
-    public static enum Effect {
+    public enum Effect {
         /**
          * Make the element to fade in.
          */
@@ -153,8 +136,7 @@ public abstract class ARenderAnimation {
          */
         FLIP,
         /**
-         * Turn the element into a ghost until animation is complete. The ghost will use
-         * the old value (and size, if applicable) until animation is complete.
+         * Turn the element into a ghost until animation is complete.
          */
         GHOST,
         /**
@@ -169,19 +151,15 @@ public abstract class ARenderAnimation {
         /**
          * Add transitions for the given options to the parent transition.
          *
-         * @param orig
-         *            The original element. Will not change, but <b>must not be null.</b>
-         * @param render
-         *            The render which should do the animation. <b>Must not be null.</b>
-         * @param millis
-         *            The animation time in milliseconds.
-         * @param effects
-         *            A list of effects to apply.
+         * @param orig The original element. Will not change, but <b>must not be null.</b>
+         * @param render The render which should do the animation. <b>Must not be null.</b>
+         * @param millis The animation time in milliseconds.
+         * @param effects A list of effects to apply.
          * @return A ParallelTransition with child transitions specified by
-         *         {@code options}.
+         * {@code options}.
          */
         public static ParallelTransition buildTransition (AVElement orig, ARender render, long millis,
-                Effect... effects) {
+                                                          Effect... effects) {
 
             if (orig == null) {
                 System.err.println("Error in ARenderAnimation.ParallelTransition(): orig == null");
@@ -210,24 +188,24 @@ public abstract class ARenderAnimation {
 
             for (Effect opt : effects) {
                 switch (opt) {
-                case FADE_IN:
-                    ptChildren.add(fadeIn(millis));
-                    break;
-                case FADE_OUT:
-                    ptChildren.add(fadeOut(millis));
-                    break;
-                case SHRINK:
-                    ptChildren.add(shrink(millis));
-                    break;
-                case GROW:
-                    ptChildren.add(grow(millis));
-                    break;
-                case FLIP:
-                    ptChildren.add(flip(millis));
-                    break;
-                case GHOST:
-                    useGhost = true;
-                    break;
+                    case FADE_IN:
+                        ptChildren.add(fadeIn(millis));
+                        break;
+                    case FADE_OUT:
+                        ptChildren.add(fadeOut(millis));
+                        break;
+                    case SHRINK:
+                        ptChildren.add(shrink(millis));
+                        break;
+                    case GROW:
+                        ptChildren.add(grow(millis));
+                        break;
+                    case FLIP:
+                        ptChildren.add(flip(millis));
+                        break;
+                    case GHOST:
+                        useGhost = true;
+                        break;
                 }
             }
 
@@ -237,7 +215,7 @@ public abstract class ARenderAnimation {
         }
 
         private static void setOnFinished (ARender render, AVElement orig, final AVElement clone, ParallelTransition pt,
-                final boolean ghost) {
+                                           final boolean ghost) {
 
             if (ghost) {
                 orig.setGhost(true);

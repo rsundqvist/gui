@@ -71,7 +71,7 @@ public class CreateStructureDialog {
     }
 
     private void chooseRawType () {
-        raw = (RawType) rawType.getSelectionModel().getSelectedItem();
+        raw = rawType.getSelectionModel().getSelectedItem();
     }
 
     public void closeButton () {
@@ -84,7 +84,7 @@ public class CreateStructureDialog {
     }
 
     private void createStruct () {
-        raw = (RawType) rawType.getSelectionModel().getSelectedItem();
+        raw = rawType.getSelectionModel().getSelectedItem();
         switch (raw) {
         case array:
             struct = new Array(identifier, abs, vis, null);

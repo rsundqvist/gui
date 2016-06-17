@@ -63,7 +63,7 @@ public abstract class Examples {
 
         public final String name;
 
-        private Algorithm (String prettyName) {
+        Algorithm (String prettyName) {
             name = prettyName;
         }
     }

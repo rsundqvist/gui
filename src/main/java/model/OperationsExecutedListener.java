@@ -14,5 +14,5 @@ public interface OperationsExecutedListener {
     /**
      * Called when operations have been executed, altering the model.
      */
-    public void operationsExecuted (List<Operation> executedOperations);
+    void operationsExecuted (List<Operation> executedOperations);
 }

@@ -12,5 +12,5 @@ public interface ExecutionTickListener {
      * @param tickNumber
      *            The current tick number.
      */
-    public void tickUpdate (int tickNumber);
+    void tickUpdate (int tickNumber);
 }

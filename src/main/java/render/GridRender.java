@@ -157,7 +157,7 @@ public class GridRender extends ARender {
         // Else assume dims are okay.
     }
 
-    public static enum Order {
+    public enum Order {
         ROW_MAJOR("Row Major", "The first index will indicate row.", 0), COLUMN_MAJOR("Column Major",
                 "The first index will indicate column.", 1);
 
@@ -165,7 +165,7 @@ public class GridRender extends ARender {
         public final String description;
         public final int    optionNbr;
 
-        private Order (String name, String description, int optionNbr) {
+        Order (String name, String description, int optionNbr) {
             this.name = name;
             this.description = description;
             this.optionNbr = optionNbr;

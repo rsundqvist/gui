@@ -210,7 +210,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
         fxmlLoader.setController(this);
 
         try {
-            root = (GridPane) fxmlLoader.load();
+            root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -374,7 +374,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
         } else {
             // Target only
             ARenderAnimation.linear(tar, x2, y2 - Const.DEFAULT_ELEMENT_HEIGHT * 2, x2, y2, millis, tarRender,
-                    Effect.FADE_IN, Effect.GROW, Effect.GHOST).play();
+                    Effect.FADE_IN, Effect.GROW, Effect.GHOST).ply();
         }
 
         if (Debug.ERR && !hasSource && !hasTarget) {

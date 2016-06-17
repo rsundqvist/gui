@@ -27,12 +27,12 @@ public enum ElementShape {
      */
     private final boolean random;
 
-    private ElementShape () {
+    ElementShape () {
         randomPolygon = false;
         random = true;
     }
 
-    private ElementShape (boolean random) {
+    ElementShape (boolean random) {
         randomPolygon = random;
         this.random = random;
     }

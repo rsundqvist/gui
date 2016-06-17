@@ -66,10 +66,7 @@ public class SingleElementRender extends ARender {
 
     @Override
     public boolean repaintAll () {
-        if (super.repaintAll() == false) {
-            return false;
-        }
-        return true;
+        return super.repaintAll() != false;
     }
 
     @Override
