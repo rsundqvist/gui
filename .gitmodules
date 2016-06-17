@@ -1,0 +1,6 @@
+[submodule "contract"]
+	path = contract
+	url = https://github.com/whisp91/contract
+[submodule "interpreter"]
+	path = interpreter
+	url = https://github.com/whisp91/interpreter
