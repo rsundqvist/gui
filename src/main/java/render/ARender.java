@@ -685,6 +685,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
         if (relativeNodeSize && struct instanceof Array) {
             this.factor = factor;
             ((Array) struct).setListener(this);
+        } else {
+            restoreNodeSizes();
         }
     }
 
