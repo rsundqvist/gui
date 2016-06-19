@@ -342,7 +342,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
      * @param tarRender The render for the target element.
      * @param millis The time the animation should last in milliseconds.
      */
-    // @formatter:off
     public void animateReadWrite (Element src, ARender srcRender, Element tar, ARender tarRender, long millis) {
         boolean hasSource = src != null;
         boolean hasTarget = tar != null;
@@ -381,7 +380,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
             System.err.println("Failed to resolve target and source.");
         }
     }
-    // @formatter:off
 
     /**
      * Default animation of a swap between two elements.
@@ -710,6 +708,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
 
     /**
      * Set the size of a node relative its value in the range [L, H] using this renders current {@link #factor} value.
+     *
      * @param ave The visual element to adjust the size for.
      * @param L The lower bound.
      * @param H The upper bound.
