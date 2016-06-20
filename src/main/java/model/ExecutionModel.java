@@ -1,9 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import assets.Debug;
 import contract.datastructure.DataStructure;
 import contract.json.Locator;
@@ -22,17 +18,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
+ * Model used to estimate execution state of a group of observed variables.
  *
  * @author Richard Sundqvist
- *
  */
 public class ExecutionModel {
 
     /**
      * The default model instance.
      */
-    public static final ExecutionModel                 INSTANCE = new ExecutionModel("INSTANCE");
+    public static final ExecutionModel INSTANCE = new ExecutionModel("INSTANCE");
 
     // ============================================================= //
     /*
@@ -54,53 +54,53 @@ public class ExecutionModel {
      * {@link OperationType#write}<br>
      * {@link OperationType#message}<br>
      */
-    private final ObservableList<Operation>            currentExecutionList;
+    private final ObservableList<Operation> currentExecutionList;
 
     /**
      * List returned to {@link #getOperations()} callers.
      */
-    private final ObservableList<Operation>            readOnlyCurrentExecutionList;
+    private final ObservableList<Operation> readOnlyCurrentExecutionList;
 
     /**
      * Current operation index.
      */
-    private int                                        index;
+    private int index;
 
     /**
      * List permitting all kinds of operations.
      */
-    private final ObservableList<Operation>            mixedOperations;
+    private final ObservableList<Operation> mixedOperations;
 
     /**
      * List permitting atomic operations only.
      */
-    private final ObservableList<Operation>            atomicOperations;
+    private final ObservableList<Operation> atomicOperations;
 
     /**
      * Indicates whether the model is in atomic execution mode.
      */
-    private boolean                                    atomicExecution;
+    private boolean atomicExecution;
 
 
     /**
      * Indicates whether parallel execution is permitted.
      */
-    private boolean                                    parallelExecution;
+    private boolean parallelExecution;
 
     /**
      * The name of the model.
      */
-    public final String                                name;
+    public final String name;
 
     /**
      * A list of the most recently executed operations.
      */
-    private final ObservableList<Operation>            executedOperations;
+    private final ObservableList<Operation> executedOperations;
 
     /**
      * The operations executed listener for the model.
      */
-    private final List<OperationsExecutedListener>     operationsExecutedListeners;
+    private final List<OperationsExecutedListener> operationsExecutedListeners;
 
     // ============================================================= //
     /*
@@ -113,13 +113,10 @@ public class ExecutionModel {
     /**
      * Create a new ExecutionModel.
      *
-     * @param name
-     *            The name of the model.
-     * @param parallelExecution
-     *            If {@code true}, the model may execute several operations per step.
-     * @param atomicExecution
-     *            If {@code true}, the model will convert high-level into groups of atomic
-     *            operations.
+     * @param name The name of the model.
+     * @param parallelExecution If {@code true}, the model may execute several operations per step.
+     * @param atomicExecution If {@code true}, the model will convert high-level into groups of atomic
+     * operations.
      */
     public ExecutionModel (String name, boolean parallelExecution, boolean atomicExecution) {
         this.name = name;
@@ -144,8 +141,7 @@ public class ExecutionModel {
      * Create a new ExecutionModel. {@code parallelExecution} will be set to {@code true}
      * and {@code atomicExecution} will be set to {@code false}. .
      *
-     * @param name
-     *            The name of the model.
+     * @param name The name of the model.
      */
     public ExecutionModel (String name) {
         this(name, true, false);
@@ -154,12 +150,9 @@ public class ExecutionModel {
     /**
      * Create a new ExecutionModel with a random name.
      *
-     *
-     * @param parallelExecution
-     *            If {@code true}, the model may execute several operations per step.
-     * @param atomicExecution
-     *            If {@code true}, the model will convert high-level into groups of atomic
-     *            operations.
+     * @param parallelExecution If {@code true}, the model may execute several operations per step.
+     * @param atomicExecution If {@code true}, the model will convert high-level into groups of atomic
+     * operations.
      */
     public ExecutionModel (boolean parallelExecution, boolean atomicExecution) {
         this(Math.random() * Integer.MAX_VALUE + "", parallelExecution, atomicExecution);
@@ -258,8 +251,7 @@ public class ExecutionModel {
      * execute to the end if {@code index} is greater than the number of operations in the
      * queue.
      *
-     * @param toIndex
-     *            The index to execute at.
+     * @param toIndex The index to execute at.
      * @return A list containing the executed operations.
      */
     public ObservableList<Operation> execute (int toIndex) {
@@ -345,71 +337,70 @@ public class ExecutionModel {
     /**
      * Execute an operation.
      *
-     * @param op
-     *            The operation to execute.
+     * @param op The operation to execute.
      */
     private void execute (Operation op) {
         switch (op.operation) {
 
-        case message:
-            // ============================================================= //
+            case message:
+                // ============================================================= //
             /*
              * Message
              */
-            // ============================================================= //
-            // TODO: Callback mechanism.
-            Main.console.info("MESSAGE: " + ((OP_Message) op).getMessage());
-            break;
-        case read:
-        case write:
-            // ============================================================= //
+                // ============================================================= //
+                // TODO: Callback mechanism.
+                Main.console.info("MESSAGE: " + ((OP_Message) op).getMessage());
+                break;
+            case read:
+            case write:
+                // ============================================================= //
             /*
              * Read and Write
              */
-            // ============================================================= //
-            Locator source = OpUtil.getLocator(op, Key.source);
-            if (source != null) {
-                DataStructure sourceStruct = dataStructures.get(source.identifier);
-                if (sourceStruct != null) {
-                    sourceStruct.applyOperation(op);
+                // ============================================================= //
+                Locator source = OpUtil.getLocator(op, Key.source);
+                if (source != null) {
+                    DataStructure sourceStruct = dataStructures.get(source.identifier);
+                    if (sourceStruct != null) {
+                        sourceStruct.applyOperation(op);
+                    }
                 }
-            }
 
-            Locator target = OpUtil.getLocator(op, Key.target);
-            if (target != null) {
-                DataStructure targetStruct = dataStructures.get(target.identifier);
-                if (targetStruct != null) {
-                    targetStruct.applyOperation(op);
+                Locator target = OpUtil.getLocator(op, Key.target);
+                if (target != null) {
+                    DataStructure targetStruct = dataStructures.get(target.identifier);
+                    if (targetStruct != null) {
+                        targetStruct.applyOperation(op);
+                    }
                 }
-            }
-            break;
-        case swap:
-            // ============================================================= //
+                break;
+            case swap:
+                // ============================================================= //
             /*
              * Swap
              */
-            // ============================================================= //
-            Locator var1 = OpUtil.getLocator(op, Key.var1);
-            dataStructures.get(var1.identifier).applyOperation(op);
+                // ============================================================= //
+                Locator var1 = OpUtil.getLocator(op, Key.var1);
+                dataStructures.get(var1.identifier).applyOperation(op);
 
-            Locator var2 = OpUtil.getLocator(op, Key.var2);
-            dataStructures.get(var2.identifier).applyOperation(op);
-            break;
-        case remove:
-            // ============================================================= //
+                Locator var2 = OpUtil.getLocator(op, Key.var2);
+                dataStructures.get(var2.identifier).applyOperation(op);
+                break;
+            case remove:
+                // ============================================================= //
             /*
              * TODO Fix after renaming remove.
              */
-            // ============================================================= //
-            Locator removeTarget = OpUtil.getLocator(op, Key.target);
-            DataStructure targetStruct = dataStructures.get(removeTarget.identifier);
-            if (targetStruct != null) {
-                targetStruct.applyOperation(op);
-            }
-            break;
-        default:
-            System.err.print("Unknown operation type: \"" + op.operation + "\"");
-            break;
+                // ============================================================= //
+                Locator removeTarget = OpUtil.getLocator(op, Key.target);
+                DataStructure targetStruct = dataStructures.get(removeTarget.identifier);
+                if (targetStruct != null) {
+                    targetStruct.applyOperation(op);
+                }
+                break;
+            default:
+                System.err.print("Unknown operation type: \"" + op.operation + "\"");
+                break;
         }
 
         if (Debug.OUT) {
@@ -429,10 +420,8 @@ public class ExecutionModel {
      * Set the data structures, operations, and atomic operations for this model. Will
      * keep the current collection if the corresponding argument is {@code null}.
      *
-     * @param dataStructures
-     *            A map of data structures.
-     * @param operations
-     *            A list of operations.
+     * @param dataStructures A map of data structures.
+     * @param operations A list of operations.
      */
     public void set (Map<String, DataStructure> dataStructures, List<Operation> operations) {
 
@@ -447,8 +436,7 @@ public class ExecutionModel {
     /**
      * Set the data structures for this model.
      *
-     * @param dataStructures
-     *            A map of data structures.
+     * @param dataStructures A map of data structures.
      */
     public void setDataStructures (Map<String, DataStructure> dataStructures) {
         if (dataStructures != null) {
@@ -461,8 +449,7 @@ public class ExecutionModel {
     /**
      * Set the operations for this model.
      *
-     * @param operations
-     *            A list of operations.
+     * @param operations A list of operations.
      */
     public void setOperations (List<Operation> operations) {
         if (operations != null) {
@@ -501,8 +488,7 @@ public class ExecutionModel {
     /**
      * Set the parallel execution setting of this model.
      *
-     * @param parallelExecution
-     *            The new parallel execution setting.
+     * @param parallelExecution The new parallel execution setting.
      */
     public void setParallelExecution (boolean parallelExecution) {
         if (this.parallelExecution != parallelExecution) {
@@ -525,8 +511,7 @@ public class ExecutionModel {
      * Set the atomic execution setting for the model. If {@code true}, high level
      * operations such as swap will be replaced with their atomic components.
      *
-     * @param atomicExecution
-     *            The new atomic execution setting.
+     * @param atomicExecution The new atomic execution setting.
      */
     public void setAtomicExecution (boolean atomicExecution) {
         if (this.atomicExecution != atomicExecution) {
@@ -537,30 +522,30 @@ public class ExecutionModel {
             Operation op;
             int numAtomic;
             int offset = 0;
+            int index = this.index;
 
             // Translate index
             for (int i = 0; i <= index; i++) {
                 op = mixedOperations.get(i);
                 numAtomic = op.operation.numAtomicOperations;
+                //TODO: Måste justera index när vi använder non-atomic index på mixad lista
 
                 if (numAtomic > 1) {
-                    offset = offset + numAtomic - 1;
-                    System.out.println("hlo found!");
+                    offset += numAtomic - 1;
+
+                    if (atomicExecution) {
+                        index += numAtomic - 1;
+                    }
                 }
             }
 
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
-                index = index + offset;
-                System.out.println("offset = " + offset);
-                System.out.println("");
+                this.index += offset;
             } else {
                 currentExecutionList.setAll(mixedOperations);
-                index = index - offset;
-                System.out.println("offset = " + (-offset));
-                System.out.println("");
+                this.index -= offset;
             }
-
 
             updateProperties();
         }
@@ -579,8 +564,7 @@ public class ExecutionModel {
      * Converts any {@link HighLevelOperation} found into a group of low level
      * operations.
      *
-     * @param mixedList
-     *            A list of atomic and high level operations.
+     * @param mixedList A list of atomic and high level operations.
      * @return A list a atomic operations.
      */
     public List<Operation> asAtomic (List<Operation> mixedList) {
@@ -630,8 +614,7 @@ public class ExecutionModel {
     /**
      * Add a listener to be called each time operation(s) are executed.
      *
-     * @param operationsExecutedListener
-     *            A {@code OperationsExecutedListener}.
+     * @param operationsExecutedListener A {@code OperationsExecutedListener}.
      */
     public void addOperationsExecutedListener (OperationsExecutedListener operationsExecutedListener) {
         if (Debug.ERR) {
@@ -649,11 +632,11 @@ public class ExecutionModel {
     // ============================================================= //
 
     private final ReadOnlyBooleanWrapper parallelExecutionProperty = new ReadOnlyBooleanWrapper();
-    private final ReadOnlyBooleanWrapper atomicExecutionProperty   = new ReadOnlyBooleanWrapper();
+    private final ReadOnlyBooleanWrapper atomicExecutionProperty = new ReadOnlyBooleanWrapper();
 
-    private final ReadOnlyBooleanWrapper executeNextProperty       = new ReadOnlyBooleanWrapper(false);
-    private final ReadOnlyBooleanWrapper executePreviousProperty   = new ReadOnlyBooleanWrapper(false);
-    private final ReadOnlyBooleanWrapper clearProperty             = new ReadOnlyBooleanWrapper(true);
+    private final ReadOnlyBooleanWrapper executeNextProperty = new ReadOnlyBooleanWrapper(false);
+    private final ReadOnlyBooleanWrapper executePreviousProperty = new ReadOnlyBooleanWrapper(false);
+    private final ReadOnlyBooleanWrapper clearProperty = new ReadOnlyBooleanWrapper(true);
 
     private final ReadOnlyIntegerWrapper indexProperty = new ReadOnlyIntegerWrapper();
 

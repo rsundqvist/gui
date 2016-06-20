@@ -1,8 +1,5 @@
 package render;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import assets.Debug;
 import assets.Tools;
 import contract.datastructure.DataStructure;
@@ -20,11 +17,13 @@ import model.ExecutionModel;
 import render.assets.ARenderManager;
 import render.assets.Const;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 /**
  * Handler class for rendering an ExecutionModel.
  *
  * @author Richard Sundqvist
- *
  */
 public class Visualization extends StackPane {
 
@@ -39,28 +38,28 @@ public class Visualization extends StackPane {
     /**
      * Pane for drawing of animated elements.
      */
-    private final Pane                            animationPane = new Pane();
+    private final Pane animationPane = new Pane();
 
     /**
      * Animation time in milliseconds.
      */
-    private long                                  animationTime = Const.DEFAULT_ANIMATION_TIME;
+    private long animationTime = Const.DEFAULT_ANIMATION_TIME;
     /**
      * Determines whether operations are animated on the animated_nodes canvas.
      */
-    private boolean                               animate;
+    private boolean animate;
     /**
      * The ExecutionModel to visualise.
      */
-    private final ExecutionModel                  executionModel;
+    private final ExecutionModel executionModel;
     /**
      * A list of render managers for the data structures.
      */
-    private final Pane                            managerPane   = new Pane();
+    private final Pane managerPane = new Pane();
     /**
      * A mapping of renders and their managers.
      */
-    private final HashMap<String, ARenderManager> managerMap    = new HashMap<String, ARenderManager>();
+    private final HashMap<String, ARenderManager> managerMap = new HashMap<>();
 
     // ============================================================= //
     /*
@@ -73,8 +72,7 @@ public class Visualization extends StackPane {
     /**
      * Create a new Visualization.
      *
-     * @param executionModel
-     *            The ExecutionModel to render.
+     * @param executionModel The ExecutionModel to render.
      */
     public Visualization (ExecutionModel executionModel) {
         this.executionModel = executionModel;
@@ -124,8 +122,7 @@ public class Visualization extends StackPane {
     /**
      * Command the Visualization to update its renders and animate the given operation.
      *
-     * @param op
-     *            An operation to animate.
+     * @param op An operation to animate.
      */
     public void render (Operation op) {
         for (Object rm : managerPane.getChildren()) {
@@ -149,27 +146,26 @@ public class Visualization extends StackPane {
     /**
      * Animate an operation.
      *
-     * @param op
-     *            The operation to animate.
+     * @param op The operation to animate.
      */
     public void animate (Operation op) {
         if (op == null) {
             return;
         }
         switch (op.operation) {
-        case read:
-        case write:
-            animateReadWrite((OP_ReadWrite) op);
-            break;
-        case remove:
-            animateToggleScope((OP_ToggleScope) op);
-            break;
-        case swap:
-            animateSwap((OP_Swap) op);
-            break;
-        default:
-            // Do nothing.
-            break;
+            case read:
+            case write:
+                animateReadWrite((OP_ReadWrite) op);
+                break;
+            case remove:
+                animateToggleScope((OP_ToggleScope) op);
+                break;
+            case swap:
+                animateSwap((OP_Swap) op);
+                break;
+            default:
+                // Do nothing.
+                break;
         }
     }
 
@@ -184,9 +180,7 @@ public class Visualization extends StackPane {
      * Reset the renders' states.
      */
     public void reset () {
-        for (ARenderManager rm : managerMap.values()) {
-            rm.reset();
-        }
+        managerMap.values().forEach(ARenderManager::reset);
     }
 
     /**
@@ -201,45 +195,48 @@ public class Visualization extends StackPane {
 
         ARenderManager arm;
         double padding = Const.DEFAULT_RENDER_PADDING;
-        double xPos = 0;
-        double yPos = 0;
+        double xPos;
+        double yPos;
 
         //@formatter:off
-        int northWest = 0; int nWExpand = 0; // Default.
-        int southWest = 0; int sWExpand = 0; // Bar Chart.
-        int northEast = 0; int nEExpand = 0; // Single Elements.
+        int northWest = 0;
+        int nWExpand = 0; // Default.
+        int southWest = 0;
+        int sWExpand = 0; // Bar Chart.
+        int northEast = 0;
+        int nEExpand = 0; // Single Elements.
         //@formatter:on
 
         for (Node node : managerPane.getChildren()) {
             arm = (ARenderManager) node;
 
             switch (arm.getDataStructure().visual) {
-            case single:
-                yPos = northEast * 120 + padding;
-                xPos = getWidth() - (150 + padding) * (nEExpand + 1);
-                if (!(checkXPos(xPos) && checkYPos(yPos))) {
-                    northEast = 0;
-                    nEExpand++;
+                case single:
                     yPos = northEast * 120 + padding;
-                    xPos = getWidth() - 150 * (nEExpand + 1) - padding;
-                }
-                northEast++;
-                break;
-            case bar:
-                xPos = padding + getWidth() * sWExpand;
-                yPos = getHeight() - 125 - render.assets.Const.DEFAULT_RENDER_HEIGHT * southWest - padding * 2;
-                southWest++;
-                break;
-            default:
-                xPos = padding + getWidth() * nWExpand;
-                yPos = (padding + render.assets.Const.DEFAULT_RENDER_HEIGHT) * northWest + padding;
-                northWest++;
-                break;
+                    xPos = getWidth() - (150 + padding) * (nEExpand + 1);
+                    if (!(checkXPos(xPos) && checkYPos(yPos))) {
+                        northEast = 0;
+                        nEExpand++;
+                        yPos = northEast * 120 + padding;
+                        xPos = getWidth() - 150 * (nEExpand + 1) - padding;
+                    }
+                    northEast++;
+                    break;
+                case bar:
+                    xPos = padding + getWidth() * sWExpand;
+                    yPos = getHeight() - 125 - render.assets.Const.DEFAULT_RENDER_HEIGHT * southWest - padding * 2;
+                    southWest++;
+                    break;
+                default:
+                    xPos = padding + getWidth() * nWExpand;
+                    yPos = (padding + render.assets.Const.DEFAULT_RENDER_HEIGHT) * northWest + padding;
+                    northWest++;
+                    break;
 
             }
 
             // Make sure users can see the render.
-            if (checkPositions(xPos, yPos) == false) {
+            if (!checkPositions(xPos, yPos)) {
                 if (Debug.ERR) {
                     System.err.println("Using default placement for \"" + arm.getDataStructure() + "\".");
                 }
@@ -263,8 +260,7 @@ public class Visualization extends StackPane {
      * <br>
      * Will disable for {@code factor <= 0} and {@code factor == 1}
      *
-     * @param factor
-     *            The min-max size factor for this render.
+     * @param factor The min-max size factor for this render.
      */
     public void setRelativeNodeSize (double factor) {
         for (ARenderManager manager : managerMap.values()) {
@@ -293,8 +289,7 @@ public class Visualization extends StackPane {
      * Set the animation time in milliseconds for all animations. Actual animation time
      * will be {@code millis * 0.65} to allow rest time after the animation.
      *
-     * @param animationTime
-     *            The new animation time in milliseconds.
+     * @param animationTime The new animation time in milliseconds.
      */
     public void setAnimationTime (long animationTime) {
         this.animationTime = (long) (animationTime * 0.65000);
@@ -303,8 +298,7 @@ public class Visualization extends StackPane {
     /**
      * Set animation on or off.
      *
-     * @param animate
-     *            The new animation option.
+     * @param animate The new animation option.
      */
     public void setAnimate (boolean animate) {
         this.animate = animate;
@@ -378,13 +372,13 @@ public class Visualization extends StackPane {
          * Start animations
          */
         if (src_e != null && tar_e != null) {
-            // Render data transfer between two known structures
+            // Render data transfer between two known structures.
             tar_render.animateReadWrite(src_e, src_render, tar_e, tar_render, animationTime);
-        } else if (tar_e == null && src_e != null) {
-            // Render read without target
+        } else if (src_e != null && tar_e == null) {
+            // Render read without target.
             src_render.animateReadWrite(src_e, src_render, null, null, animationTime);
-        } else if (src_e == null && tar_e != null) {
-            // Render write without source
+        } else if (tar_e != null) {
+            // Render write without source.
             tar_render.animateReadWrite(null, null, tar_e, tar_render, animationTime);
         }
     }
@@ -392,8 +386,7 @@ public class Visualization extends StackPane {
     /**
      * Trigger an animation of a swap.
      *
-     * @param swap
-     *            The swap to animate.
+     * @param swap The swap to animate.
      */
     private void animateSwap (OP_Swap swap) {
         Locator var1 = swap.getVar1();
@@ -431,6 +424,12 @@ public class Visualization extends StackPane {
             System.err.println("\nVisualization.animateSwap():");
         }
 
+        if (v1_render == null || v2_render == null) {
+            System.err.println("Error in Visualization.animateSwap(): Failed to resolve render: " +
+                    "v1_render = " + v1_render + ", v2_render = " + v2_render);
+            return;
+        }
+
         v1_render.animateSwap(v1_e, v1_render, v2_e, v2_render, animationTime);
         v2_render.animateSwap(v2_e, v2_render, v1_e, v1_render, animationTime);
     }
@@ -438,13 +437,13 @@ public class Visualization extends StackPane {
     private boolean checkPositions (double xPos, double yPos) {
         boolean result = true;
 
-        if (checkXPos(xPos) == false) {
+        if (!checkXPos(xPos)) {
             if (Debug.OUT) {
                 System.out.println("Bad X-Coordinate: " + xPos + " not in " + xRange() + ".");
             }
             result = false;
         }
-        if (checkYPos(yPos) == false) {
+        if (!checkYPos(yPos)) {
             if (Debug.OUT) {
                 System.out.println("Bad Y-Coordinate: " + yPos + " not in " + yRange() + ".");
             }
@@ -457,8 +456,7 @@ public class Visualization extends StackPane {
     /**
      * Check to see if an X-Coordinate is in the acceptable range.
      *
-     * @param xPos
-     *            An x-coordinate.
+     * @param xPos An x-coordinate.
      * @return True if the coordinate good, false otherwise.
      */
     private boolean checkXPos (double xPos) {
@@ -486,8 +484,7 @@ public class Visualization extends StackPane {
     /**
      * Check to see if an Y-Coordinate is in the acceptable range.
      *
-     * @param yPos
-     *            An y-coordinate.
+     * @param yPos An y-coordinate.
      * @return True if the coordinate good, false otherwise.
      */
 

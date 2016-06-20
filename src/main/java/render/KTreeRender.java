@@ -20,7 +20,7 @@ import render.element.ElementShape;
  * A Render for Arrays with abstract type Tree. Can draw any K-ary tree for K >= 2, where
  * K is the number of children a node has (at most). All nodes except root have one
  * parent.<br>
- * All the elements of the supplied DataStruture must have an index[] of length 1. No
+ * All the elements of the supplied DataStructure must have an index[] of length 1. No
  * checking of index length is performed. Behaviour is undefined for index.length != 1.
  *
  * @author Richard Sundqvist
@@ -28,7 +28,7 @@ import render.element.ElementShape;
  */
 public class KTreeRender extends ARender {
 
-    public static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.ELLIPSE;
+    private static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.ELLIPSE;
 
     // ============================================================= //
     /*
@@ -114,7 +114,7 @@ public class KTreeRender extends ARender {
     @Override
     public boolean repaintAll () {
 
-        if (super.repaintAll() == false) {
+        if (!super.repaintAll()) {
             return false; // Nothing to render.
         }
 
@@ -196,7 +196,7 @@ public class KTreeRender extends ARender {
      *            The index to start from.
      */
     private void createGhosts (int index) {
-        AVElement ghostVis = null;
+        AVElement ghostVis;
         for (; index < completedSize; index++) {
             IndexedElement ghostElem = new IndexedElement(Double.MAX_VALUE, new int[] { index });
             ghostVis = this.createVisualElement(ghostElem);
@@ -211,7 +211,7 @@ public class KTreeRender extends ARender {
 
     @Override
     public double getX (Element e) {
-        if (e == null || e instanceof IndexedElement == false) {
+        if (e == null || !(e instanceof IndexedElement)) {
             return -1;
         }
 
@@ -249,7 +249,7 @@ public class KTreeRender extends ARender {
 
     @Override
     public double getY (Element e) {
-        if (e == null || e instanceof IndexedElement == false) {
+        if (e == null || !(e instanceof IndexedElement)) {
             return -1;
         }
 

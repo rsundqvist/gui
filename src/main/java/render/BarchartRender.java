@@ -1,7 +1,5 @@
 package render;
 
-import java.util.Arrays;
-
 import contract.datastructure.Array;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
@@ -21,6 +19,8 @@ import render.element.AVElementFactory;
 import render.element.BarchartElement;
 import render.element.ElementShape;
 
+import java.util.Arrays;
+
 public class BarchartRender extends ARender implements MinMaxListener {
 
     public static final ElementShape ELEMENT_STYLE = ElementShape.BAR_ELEMENT;
@@ -33,15 +33,15 @@ public class BarchartRender extends ARender implements MinMaxListener {
      */
     // ============================================================= //
 
-    private double                   renderHeight;
+    private double renderHeight;
 
-    private final double             padding;
+    private final double padding;
 
-    private double                   xAxisY;
+    private double xAxisY;
 
-    private double                   rightWallX;
+    private double rightWallX;
 
-    private final Pane               axes          = new Pane();
+    private final Pane axes = new Pane();
 
     // ============================================================= //
     /*
@@ -54,19 +54,14 @@ public class BarchartRender extends ARender implements MinMaxListener {
     /**
      * Create a new BarchartRender.
      *
-     * @param struct
-     *            The structure to render.
-     * @param nodeWidth
-     *            Width of the bars.
-     * @param renderHeight
-     *            Height of the Render itself.
-     * @param nodeHeight
-     *            The height of the bars per unit.
-     * @param hspace
-     *            Space between bars.
+     * @param struct The structure to render.
+     * @param nodeWidth Width of the bars.
+     * @param renderHeight Height of the Render itself.
+     * @param nodeHeight The height of the bars per unit.
+     * @param hspace Space between bars.
      */
     public BarchartRender (DataStructure struct, double nodeWidth, double renderHeight, double nodeHeight,
-            double hspace) {
+                           double hspace) {
         super(struct, nodeWidth, nodeHeight, hspace, 0);
 
         // Convenient names
@@ -102,7 +97,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
 
     @Override
     public double getX (Element e) {
-        if (e == null || e instanceof IndexedElement == false) {
+        if (e == null || !(e instanceof IndexedElement)) {
             return -1;
         }
         int[] index = ((IndexedElement) e).getIndex();
@@ -111,10 +106,10 @@ public class BarchartRender extends ARender implements MinMaxListener {
             renderFailure();
             return -1;
         }
-        return this.getX(index [0]);
+        return this.getX(index[0]);
     }
 
-    public double getX (int index) {
+    private double getX (int index) {
         return (nodeWidth + hSpace) * index + hSpace + padding + 5;
     }
 
@@ -211,9 +206,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
         yAxis.setStrokeWidth(2);
         axes.getChildren().add(yAxis);
         notches();
-        for (Element e : struct.getElements()) {
-            createIndexLabel(e);
-        }
+        struct.getElements().forEach(this::createIndexLabel);
 
         Polyline yArrow = new Polyline(0, 15, 5, 0, 10, 15);
         yArrow.setStrokeWidth(2);
@@ -292,15 +285,12 @@ public class BarchartRender extends ARender implements MinMaxListener {
 
     @Override
     protected BarchartElement createVisualElement (Element e) {
-        BarchartElement ve = (BarchartElement) AVElementFactory.shape(ELEMENT_STYLE, e, nodeWidth,
-                nodeHeight * e.getNumValue());
-        return ve;
+        return (BarchartElement) AVElementFactory.shape(ELEMENT_STYLE, e, nodeWidth, nodeHeight * e.getNumValue());
     }
 
     @Override
     protected AVElement createVisualElement (double value, Color color) {
-        AVElement ve = AVElementFactory.shape(ELEMENT_STYLE, value, color, nodeWidth, nodeHeight * value);
-        return ve;
+        return AVElementFactory.shape(ELEMENT_STYLE, value, color, nodeWidth, nodeHeight * value);
     }
 
     @Override
@@ -324,8 +314,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
     /**
      * Have to override since elements are translated to position them in the bar.
      *
-     * @param e
-     *            An element owned by this BarcharRender.
+     * @param e An element owned by this BarcharRender.
      * @return The absolute y-coordinates of e.
      */
     @Override
@@ -337,16 +326,11 @@ public class BarchartRender extends ARender implements MinMaxListener {
     /**
      * Custom animation for read operations with only one locator.
      *
-     * @param src
-     *            The source element.
-     * @param srcRender
-     *            The render for the source element.
-     * @param tar
-     *            The target element.
-     * @param tarRender
-     *            The render for the target element.
-     * @param millis
-     *            The time in milliseconds the animation should last.
+     * @param src The source element.
+     * @param srcRender The render for the source element.
+     * @param tar The target element.
+     * @param tarRender The render for the target element.
+     * @param millis The time in milliseconds the animation should last.
      */
     @Override
     public void animateReadWrite (Element src, ARender srcRender, Element tar, ARender tarRender, long millis) {
@@ -355,18 +339,17 @@ public class BarchartRender extends ARender implements MinMaxListener {
             return;
         }
 
-        double x1 = absX(src, tarRender);
+        double x = absX(src, tarRender);
         double y1 = absY(src, tarRender);
 
-        double x2 = x1;
         double y2 = y1 - nodeWidth / 2;
         int[] i = ((IndexedElement) src).getIndex();
         Arrays.copyOf(i, i.length);
         final AVElement orig = visualMap.get(Arrays.toString(i));
         orig.setGhost(true);
 
-        ParallelTransition up = ARenderAnimation.linear(src, x1, y1, x2, y2, millis / 3, this);
-        ParallelTransition down = ARenderAnimation.linear(src, x2, y2, x1, y1, millis / 3, this, Effect.GHOST);
+        ParallelTransition up = ARenderAnimation.linear(src, x, y1, x, y2, millis / 3, this);
+        ParallelTransition down = ARenderAnimation.linear(src, x, y2, x, y1, millis / 3, this, Effect.GHOST);
 
         SequentialTransition st = new SequentialTransition();
         st.getChildren().addAll(up, down);
@@ -386,10 +369,9 @@ public class BarchartRender extends ARender implements MinMaxListener {
     /**
      * Calculate the height of the render.
      *
-     * @param v
-     *            The maximum value of the array.
+     * @param v The maximum value of the array.
      */
-    public void calculateHeight (double v) {
+    private void calculateHeight (double v) {
         double oldHeight = renderHeight;
         renderHeight = v * nodeHeight + padding * 2 + nodeHeight / 2;
         calculateSize();

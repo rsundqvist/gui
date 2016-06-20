@@ -11,7 +11,7 @@ import render.element.ElementShape;
 
 public class SingleElementRender extends ARender {
 
-    public static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.SINGLE;
+    private static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.SINGLE;
 
     // ============================================================= //
     /*
@@ -65,11 +65,6 @@ public class SingleElementRender extends ARender {
     }
 
     @Override
-    public boolean repaintAll () {
-        return super.repaintAll() != false;
-    }
-
-    @Override
     public void calculateSize () {
         renderWidth = 150;
         renderHeight = nodeHeight;
@@ -102,8 +97,7 @@ public class SingleElementRender extends ARender {
 
     @Override
     protected AVElement createVisualElement (Element e) {
-        AVElement re = AVElementFactory.shape(DEFAULT_ELEMENT_STYLE, e, nodeWidth, nodeHeight);
-        return re;
+        return AVElementFactory.shape(DEFAULT_ELEMENT_STYLE, e, nodeWidth, nodeHeight);
     }
 
     @Override

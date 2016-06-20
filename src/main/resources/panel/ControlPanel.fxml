@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="245.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="245.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
     <TitledPane text="Control" VBox.vgrow="NEVER">
          <content>
@@ -94,23 +94,41 @@
          <content>
             <FlowPane hgap="5.0" prefWrapLength="245.0" vgap="1.0">
                <children>
-                  <CheckBox fx:id="animate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleAnimate" selected="true" text="Animate" />
-                  <CheckBox fx:id="atomicExecution" mnemonicParsing="false" onAction="#atomicExecution" text="Atomic Execution Mode">
+                  <CheckBox fx:id="animate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleAnimate" selected="true" text="Animate">
+                     <tooltip>
+                        <Tooltip text="Toggle animation, enabling or disabling node movement across the canvas when operations are executed." />
+                     </tooltip></CheckBox>
+                  <CheckBox disable="true" focusTraversable="false" indeterminate="true" mnemonicParsing="false" text="Parallel">
+                     <tooltip>
+                        <Tooltip text="Toggle Parallel Exectution Mode, allowing several operations to be drawn at once. Has no effect when animation is disabled." />
+                     </tooltip>
+                  </CheckBox>
+                  <CheckBox fx:id="atomicExecution" mnemonicParsing="false" onAction="#atomicExecution" text="Atomic">
                      <FlowPane.margin>
                         <Insets />
                      </FlowPane.margin>
-                  </CheckBox>
-                  <Label prefHeight="20.0" text="Speed:" />
-                  <Slider fx:id="speedSlider" blockIncrement="250.0" majorTickUnit="5.0" max="-5.0" maxHeight="20.0" maxWidth="1.7976931348623157E308" min="-1500.0" minHeight="20.0" minWidth="0.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="195.0" value="-750.0">
                      <tooltip>
-                        <Tooltip text="Playback speed." />
+                        <Tooltip text="Toggle Atomic Exectution Mode, replacing all high level operations (such as swaps) with low level operations." />
                      </tooltip>
-                  </Slider>
+                  </CheckBox>
+                  <HBox>
+                     <children>
+                        <Label prefHeight="20.0" text="Speed:" />
+                        <Slider fx:id="speedSlider" blockIncrement="250.0" majorTickUnit="5.0" max="-5.0" maxHeight="20.0" maxWidth="1.7976931348623157E308" min="-1500.0" minHeight="20.0" minWidth="0.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="195.0" value="-750.0">
+                           <tooltip>
+                              <Tooltip text="Adjust playback speed. Range: [5, 1500] ms." />
+                           </tooltip>
+                        </Slider>
+                     </children>
+                  </HBox>
                   <Label text="Min/max factor:" />
                   <Spinner fx:id="minMaxFactor" editable="true" onMouseClicked="#minMaxFactor" prefHeight="25.0" prefWidth="90.0">
                      <FlowPane.margin>
                         <Insets left="5.0" />
                      </FlowPane.margin>
+                     <tooltip>
+                        <Tooltip text="Adjust the size difference between the largest and the smallest element, measured in distance from zero (that is, 1337 and -1337 will have the same size). For example, a value of 2 will make the greatest element twice as large as the smallest on the canvas. Some render types ignore this setting." wrapText="true" />
+                     </tooltip>
                   </Spinner>
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#oooooOOoooOOOooooOOooo" opacity="0.03" prefHeight="29.0" prefWidth="42.0">
                      <graphic>

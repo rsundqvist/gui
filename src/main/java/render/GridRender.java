@@ -20,7 +20,7 @@ import render.element.ElementShape;
  */
 public class GridRender extends ARender {
 
-    public static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.RECTANGLE;
+    private static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.RECTANGLE;
 
     private final Order              majorOrder;
     private int[]                    dims;
@@ -57,7 +57,7 @@ public class GridRender extends ARender {
     @Override
     public boolean repaintAll () {
 
-        if (super.repaintAll() == false) {
+        if (!super.repaintAll()) {
             return false; // Nothing to render.
         }
 
@@ -75,7 +75,7 @@ public class GridRender extends ARender {
 
     @Override
     public double getX (Element e) {
-        if (e == null || e instanceof IndexedElement == false) {
+        if (e == null || !(e instanceof IndexedElement)) {
             return -1;
         }
         int[] index = ((IndexedElement) e).getIndex();
@@ -96,7 +96,7 @@ public class GridRender extends ARender {
 
     @Override
     public double getY (Element e) {
-        if (e == null || e instanceof IndexedElement == false) {
+        if (e == null || !(e instanceof IndexedElement)) {
             return -1;
         }
 
@@ -150,8 +150,7 @@ public class GridRender extends ARender {
                 System.err.println("Size was null or empty for \"" + struct + "\"!");
             }
         } else if (dims.length == 1) {
-            int[] newSize = { dims [0], 1 };
-            dims = newSize; // Add 2nd which is used in size calculation.
+            dims = new int[]{ dims [0], 1 }; // Add 2nd which is used in size calculation.
         }
 
         // Else assume dims are okay.

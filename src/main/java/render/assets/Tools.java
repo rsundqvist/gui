@@ -75,7 +75,7 @@ public abstract class Tools {
     /**
      * Memoization for number of nodes.
      */
-    public static final HashMap<Integer, ArrayList<Integer>> lowerLevelSums = new HashMap<Integer, ArrayList<Integer>>();
+    public static final HashMap<Integer, ArrayList<Integer>> lowerLevelSums = new HashMap<>();
 
     /**
      * Memoized function. Calculates the total number of elements above a given depth and
@@ -92,7 +92,7 @@ public abstract class Tools {
 
         if (sums == null) {
             // Start a new list.
-            sums = new ArrayList<Integer>();
+            sums = new ArrayList<>();
             sums.add(0);
             Tools.lowerLevelSums.put(K, sums);
         }

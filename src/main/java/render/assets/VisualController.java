@@ -89,9 +89,7 @@ public class VisualController implements OperationsExecutedListener {
 
     @Override
     public void operationsExecuted (List<Operation> executedOperations) {
-        for (Operation op : executedOperations) {
-            visualization.render(op);
-        }
+        executedOperations.forEach(visualization::render);
         executedOperations.clear();
     }
 
@@ -169,11 +167,6 @@ public class VisualController implements OperationsExecutedListener {
         modelController.executePrevious();
     }
 
-    /**
-     * @param toIndex
-     * @return
-     * @see model.ExecutionModel#execute(int)
-     */
     public void execute (int toIndex) {
         modelController.execute(toIndex);
     }

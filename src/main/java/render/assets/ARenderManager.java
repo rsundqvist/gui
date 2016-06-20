@@ -1,7 +1,5 @@
 package render.assets;
 
-import java.util.HashMap;
-
 import contract.datastructure.DataStructure;
 import contract.datastructure.DataStructure.VisualListener;
 import contract.datastructure.VisualType;
@@ -9,11 +7,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import render.ARender;
 
+import java.util.HashMap;
+
 /**
  * Class maintaining visualisations for a structure.
  *
  * @author Richard Sundqvist
- *
  */
 public class ARenderManager extends BorderPane implements VisualListener {
 
@@ -28,33 +27,27 @@ public class ARenderManager extends BorderPane implements VisualListener {
     /**
      * The data structure this thingy is responsible for.
      */
-    private final DataStructure                struct;
+    private final DataStructure struct;
 
     /**
      * The pane used for animation.
      */
-    private final Pane                         animPane;
+    private final Pane animPane;
 
     /**
      * Mapping of renders for the structure.
      */
-    private final HashMap<VisualType, ARender> renders                     = new HashMap<VisualType, ARender>();
+    private final HashMap<VisualType, ARender> renders = new HashMap<>();
 
     /**
      * The current render for the structure.
      */
-    private ARender                            curRender;
+    private ARender currentRender;
 
     // Used to maintain settings when changing renders.
-    private double                             scaleX                      = 1;
-    private double                             scaleY                      = 1;
-    private double                             translateX                  = 0;
-    private double                             translateY                  = 0;
-    private double                             layoutX                     = 0;
-    private double                             layoutY                     = 0;
-    private ARender                            prevRender;
+    private ARender previousRender;
 
-    public boolean                             translateOnVisualTypeChange = true;
+    private boolean translateOnVisualTypeChange = true;
 
     // ============================================================= //
     /*
@@ -67,10 +60,8 @@ public class ARenderManager extends BorderPane implements VisualListener {
     /**
      * Create a new thingy.
      *
-     * @param struct
-     *            The data structure being visualized.
-     * @param animation_container
-     *            Container for animation.
+     * @param struct The data structure being visualized.
+     * @param animation_container Container for animation.
      */
     public ARenderManager (DataStructure struct, Pane animation_container) {
         struct.resolveVisual();
@@ -93,24 +84,23 @@ public class ARenderManager extends BorderPane implements VisualListener {
     /**
      * Set the visual type to use for this Structure.
      *
-     * @param type
-     *            The type to use.
+     * @param type The type to use.
      */
     public void setRender (VisualType type) {
-        curRender = renders.get(type);
+        currentRender = renders.get(type);
 
-        if (curRender == null) { // Create new render for the structure.
-        // @formatter:off
-	    curRender = ARenderFactory.resolveRender(struct, render.assets.Const.DEFAULT_ELEMENT_WIDTH, render.assets.Const.DEFAULT_ELEMENT_HEIGHT,
-		    render.assets.Const.DEFAULT_RENDER_WIDTH, render.assets.Const.DEFAULT_RENDER_HEIGHT);
-	    // @formatter:on
-            renders.put(struct.resolveVisual(), curRender);
+        if (currentRender == null) { // Create new render for the structure.
+            // @formatter:off
+            currentRender = ARenderFactory.resolveRender(struct, render.assets.Const.DEFAULT_ELEMENT_WIDTH, render.assets.Const.DEFAULT_ELEMENT_HEIGHT,
+                    render.assets.Const.DEFAULT_RENDER_WIDTH, render.assets.Const.DEFAULT_RENDER_HEIGHT);
+            // @formatter:on
+            renders.put(struct.resolveVisual(), currentRender);
         }
 
         struct.setVisualListener(this);
 
         initRender();
-        setCenter(curRender);
+        setCenter(currentRender);
         if (type == VisualType.single) {
             toFront(); // Single element renders are small.
         }
@@ -122,10 +112,10 @@ public class ARenderManager extends BorderPane implements VisualListener {
      * @return The current Render for the structure.
      */
     public ARender getRender () {
-        if (curRender == null) {
+        if (currentRender == null) {
             setRender(struct.resolveVisual());
         }
-        return curRender;
+        return currentRender;
     }
 
     /**
@@ -151,43 +141,41 @@ public class ARenderManager extends BorderPane implements VisualListener {
     // ============================================================= //
 
     private void initRender () {
-        if (translateOnVisualTypeChange && prevRender != null) {
-            scaleX = prevRender.getScaleX();
-            scaleY = prevRender.getScaleY();
-            translateX = prevRender.getTranslateX();
-            translateY = prevRender.getTranslateY();
-            layoutX = prevRender.getLayoutX();
-            layoutY = prevRender.getLayoutY();
+        if (translateOnVisualTypeChange && previousRender != null) {
+            double scaleX = previousRender.getScaleX();
+            double scaleY = previousRender.getScaleY();
+            double translateX = previousRender.getTranslateX();
+            double translateY = previousRender.getTranslateY();
+            double layoutX = previousRender.getLayoutX();
+            double layoutY = previousRender.getLayoutY();
 
-            curRender.setScaleX(scaleX);
-            curRender.setScaleX(scaleY);
-            curRender.setTranslateX(translateX);
-            curRender.setTranslateY(translateY);
-            curRender.setLayoutX(layoutX);
-            curRender.setLayoutY(layoutY);
+            currentRender.setScaleX(scaleX);
+            currentRender.setScaleX(scaleY);
+            currentRender.setTranslateX(translateX);
+            currentRender.setTranslateY(translateY);
+            currentRender.setLayoutX(layoutX);
+            currentRender.setLayoutY(layoutY);
         }
 
-        curRender.repaintAll();
-        curRender.updateInfoLabels();
-        animPane.getChildren().remove(curRender.getAnimationPane());
-        animPane.getChildren().add(curRender.getAnimationPane());
-        prevRender = curRender;
+        currentRender.repaintAll();
+        currentRender.updateInfoLabels();
+        animPane.getChildren().remove(currentRender.getAnimationPane());
+        animPane.getChildren().add(currentRender.getAnimationPane());
+        previousRender = currentRender;
     }
 
     /**
      * Force the current Render to initialise.
      */
     public void init () {
-        curRender.repaintAll();
+        currentRender.repaintAll();
     }
 
     /**
      * Reset the renders held by this manager.
      */
     public void reset () {
-        for (ARender r : renders.values()) {
-            r.reset();
-        }
+        renders.values().forEach(ARender::reset);
     }
 
     /**
@@ -197,8 +185,7 @@ public class ARenderManager extends BorderPane implements VisualListener {
      * <br>
      * Will disable for {@code factor <= 0} and {@code factor == 1}
      *
-     * @param factor
-     *            The min-max size factor for this render.
+     * @param factor The min-max size factor for this render.
      */
     public void setRelativeNodeSize (double factor) {
         for (ARender render : renders.values()) {
