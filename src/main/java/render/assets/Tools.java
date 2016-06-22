@@ -1,9 +1,5 @@
 package render.assets;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
 import contract.datastructure.IndexedElement;
@@ -26,11 +22,14 @@ import render.ARender;
 import render.Visualization;
 import render.element.AVElement;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 /**
  * Utility class to reduce clutter.
  *
  * @author Richard Sundqvist
- *
  */
 public abstract class Tools {
 
@@ -81,10 +80,8 @@ public abstract class Tools {
      * Memoized function. Calculates the total number of elements above a given depth and
      * saves it to higherLevelSums.
      *
-     * @param targetDepth
-     *            The greatest depth to calculate for.
-     * @param K
-     *            The number of children per node in the tree.
+     * @param targetDepth The greatest depth to calculate for.
+     * @param K The number of children per node in the tree.
      * @return The total number of elements above {@code targetDepth} for a K-ary tree.
      */
     public static int lowerLevelSum (int targetDepth, int K) {
@@ -110,10 +107,8 @@ public abstract class Tools {
     /**
      * Calculate base^exp. No need for double as in java.lang.Math
      *
-     * @param b
-     *            The base.
-     * @param e
-     *            The exponent.
+     * @param b The base.
+     * @param e The exponent.
      * @return base^x
      */
     public static int pow (int b, int e) {
@@ -130,32 +125,18 @@ public abstract class Tools {
         return p;
     }
 
-    /**
-     * Tries to simplify the variable name. For example,
-     * {@code "package.subpackage.class:var"} becomes {@code "var"}.
-     *
-     * @param orig
-     *            A string to simplify.
-     * @return A simplified variable name (hopefully).
-     */
-    public static String stripQualifiers (String orig) {
-        String a[] = orig.split("\\p{Punct}");
-        a = orig.split(" ");
-        return a [a.length - 1];
-    }
-
     public static Background getRawTypeBackground (DataStructure struct) {
         if (struct == null) {
             return null;
         }
 
         switch (struct.rawType) {
-        case array:
-            return render.assets.Const.ARRAY_BACKGROUND;
-        case tree:
-            return render.assets.Const.TREE_BACKGROUND;
-        case independentElement:
-            return render.assets.Const.ORPHAN_BACKGROUND;
+            case array:
+                return render.assets.Const.ARRAY_BACKGROUND;
+            case tree:
+                return render.assets.Const.TREE_BACKGROUND;
+            case independentElement:
+                return render.assets.Const.ORPHAN_BACKGROUND;
         }
 
         return null;
@@ -211,7 +192,7 @@ public abstract class Tools {
      * @return A number in {@code [low, high]}.
      */
     public static double bindInRange (double arg, double low, double high) {
-        if(arg == high){
+        if (arg == high) {
             System.out.println("arg == high");
         }
         if (arg < low) {

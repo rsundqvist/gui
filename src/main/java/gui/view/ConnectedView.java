@@ -1,8 +1,5 @@
 package gui.view;
 
-import java.io.IOException;
-import java.util.Collection;
-
 import contract.io.JGroupCommunicator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +10,15 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.Collection;
+
 public class ConnectedView {
 
     private final SimpleStringProperty currentlyConnected = new SimpleStringProperty();
-    private final SimpleStringProperty allConnected       = new SimpleStringProperty();
-    private final Stage                root, parent;
-    private final JGroupCommunicator   jgc;
+    private final SimpleStringProperty allConnected = new SimpleStringProperty();
+    private final Stage root, parent;
+    private final JGroupCommunicator jgc;
 
     public ConnectedView (Stage parent, JGroupCommunicator jgc) {
         this.parent = parent;

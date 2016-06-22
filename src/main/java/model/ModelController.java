@@ -16,7 +16,6 @@ import render.assets.Const;
  * ExecutionModel convenience class.
  *
  * @author Richard Sundqvist
- *
  */
 public class ModelController {
 
@@ -31,29 +30,29 @@ public class ModelController {
     /**
      * The model this controller is responsible for.
      */
-    private final ExecutionModel  executionModel;
+    private final ExecutionModel executionModel;
 
     /**
      * Time line used for timed model progression.
      */
-    private final Timeline        autoExecutionTimeline;
+    private final Timeline autoExecutionTimeline;
 
     /**
      * Time line used for timed model progression.
      */
-    private final Timeline        executionTickTimeline;
+    private final Timeline executionTickTimeline;
 
     /**
      * The number of ticks per execution call. That is, the number of times the the
      * {@code executionTickListener} will be called for each time the
      * {@code operationsExecutedListener} will be called.
      */
-    private int                   executionTickCount;
+    private int executionTickCount;
 
     /**
      * The current tick number.
      */
-    private int                   currentExecutionTick;
+    private int currentExecutionTick;
 
     /**
      * The tick listener for the controller.
@@ -63,7 +62,7 @@ public class ModelController {
     /**
      * The delay between ticks.
      */
-    private long                  autoExecutionSpeed;
+    private long autoExecutionSpeed;
 
     // ============================================================= //
     /*
@@ -76,8 +75,7 @@ public class ModelController {
     /**
      * Create a new model controller.
      *
-     * @param executionModel
-     *            The model to control.
+     * @param executionModel The model to control.
      */
     public ModelController (ExecutionModel executionModel) {
         this.executionModel = executionModel;
@@ -95,7 +93,6 @@ public class ModelController {
 
     /**
      * Create a new model controller for {@link ExecutionModel#INSTANCE}.
-     *
      */
     public ModelController () {
         this(ExecutionModel.INSTANCE);
@@ -131,8 +128,7 @@ public class ModelController {
     /**
      * Begin timed execution for the model.
      *
-     * @param millis
-     *            The time between executions.
+     * @param millis The time between executions.
      */
     public void startAutoExecution (long millis) {
         startExecutionTickUpdates(millis);
@@ -158,8 +154,7 @@ public class ModelController {
     /**
      * Start execution tick updates, if there is a listener.
      *
-     * @param millis
-     *            The time between executions.
+     * @param millis The time between executions.
      */
     private void startExecutionTickUpdates (long millis) {
         if (executionTickListener != null) {
@@ -198,10 +193,8 @@ public class ModelController {
      * Set the auto execution speed in milliseconds. Will stop auto execution, update the
      * speed, and resume if auto execution was on when this method was called.
      *
-     * @param autoExecutionSpeed
-     *            The time between execution calls in milliseconds.
-     * @throws IllegalArgumentException
-     *             If {@code autoExecutionSpeed < 0}.
+     * @param autoExecutionSpeed The time between execution calls in milliseconds.
+     * @throws IllegalArgumentException If {@code autoExecutionSpeed < 0}.
      */
     public void setAutoExecutionSpeed (long autoExecutionSpeed) {
         if (autoExecutionSpeed < 0) {
@@ -235,12 +228,9 @@ public class ModelController {
      * the the {@code executionTickListener} will be called for each time the
      * {@code operationsExecutedListener} will be called.
      *
-     * @param executionTickListener
-     *            An {@code ExecutionTickListener}.
-     * @param tickCount
-     *            The number of ticks per execution cycle.
-     * @throws IllegalArgumentException
-     *             If {@code tickCount < 0}.
+     * @param executionTickListener An {@code ExecutionTickListener}.
+     * @param tickCount The number of ticks per execution cycle.
+     * @throws IllegalArgumentException If {@code tickCount < 0}.
      */
     public void setExecutionTickListener (ExecutionTickListener executionTickListener, int tickCount) {
         if (tickCount < 1) {
@@ -272,8 +262,8 @@ public class ModelController {
      */
     // ============================================================= //
 
-    private final ReadOnlyLongWrapper    autoExecutionSpeedProperty = new ReadOnlyLongWrapper(autoExecutionSpeed);
-    private final ReadOnlyBooleanWrapper autoExecutingProperty      = new ReadOnlyBooleanWrapper(false);
+    private final ReadOnlyLongWrapper autoExecutionSpeedProperty = new ReadOnlyLongWrapper(autoExecutionSpeed);
+    private final ReadOnlyBooleanWrapper autoExecutingProperty = new ReadOnlyBooleanWrapper(false);
 
     /**
      * Returns a property indicating whether auto execution is currently on.
@@ -319,8 +309,6 @@ public class ModelController {
     }
 
     /**
-     * @param toIndex
-     * @return
      * @see model.ExecutionModel#execute(int)
      */
     public void execute (int toIndex) {
@@ -329,7 +317,6 @@ public class ModelController {
     }
 
     /**
-     *
      * @see model.ExecutionModel#reset()
      */
     public void reset () {
@@ -339,7 +326,6 @@ public class ModelController {
     }
 
     /**
-     *
      * @see model.ExecutionModel#clear()
      */
     public void clear () {

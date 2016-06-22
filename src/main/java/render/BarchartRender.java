@@ -1,5 +1,6 @@
 package render;
 
+import render.assets.Const;
 import contract.datastructure.Array;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
@@ -58,11 +59,11 @@ public class BarchartRender extends ARender implements MinMaxListener {
      * @param nodeWidth Width of the bars.
      * @param renderHeight Height of the Render itself.
      * @param nodeHeight The height of the bars per unit.
-     * @param hspace Space between bars.
+     * @param hSpace Space between bars.
      */
     public BarchartRender (DataStructure struct, double nodeWidth, double renderHeight, double nodeHeight,
-                           double hspace) {
-        super(struct, nodeWidth, nodeHeight, hspace, 0);
+                           double hSpace) {
+        super(struct, nodeWidth, nodeHeight, hSpace, 0);
 
         // Convenient names
         padding = nodeWidth / 2;
@@ -77,7 +78,7 @@ public class BarchartRender extends ARender implements MinMaxListener {
                 calculateHeight(((Array) struct).getMax());
                 // permit.
             } else {
-                this.renderHeight = render.assets.Const.DEFAULT_RENDER_HEIGHT;
+                this.renderHeight = Const.DEFAULT_RENDER_HEIGHT;
             }
         } else {
             this.renderHeight = renderHeight;

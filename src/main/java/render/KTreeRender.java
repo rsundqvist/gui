@@ -1,8 +1,6 @@
 package render;
 
-import java.util.Arrays;
-
-import assets.Tools;
+import render.assets.Tools;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
 import contract.datastructure.IndexedElement;
@@ -14,6 +12,8 @@ import render.element.AVElement;
 import render.element.AVElementFactory;
 import render.element.ElementShape;
 
+import java.util.Arrays;
+
 // TODO Draw arrays with index.length > 1 by reducing to linear index.
 
 /**
@@ -24,7 +24,6 @@ import render.element.ElementShape;
  * checking of index length is performed. Behaviour is undefined for index.length != 1.
  *
  * @author Richard Sundqvist
- *
  */
 public class KTreeRender extends ARender {
 
@@ -41,26 +40,24 @@ public class KTreeRender extends ARender {
     /**
      * Container for connector lines.
      */
-    private final Pane               nodeConnectorLines    = new Pane();
+    private final Pane nodeConnectorLines = new Pane();
     /**
      * Number of children per node.
      */
-    private int                      K;
+    private int K;
 
     /**
      * Current number of levels of this tree (excluding root).
      */
-    private int                      totDepth;
+    private int totDepth;
     /**
-     *
      * Number leaf nodes.
      */
-    private int                      totBreadth;
+    private int totBreadth;
     /**
-     *
      * Total capacity for a tree with depth {@link #totDepth}.
      */
-    private int                      completedSize;
+    private int completedSize;
 
     // ============================================================= //
     /*
@@ -74,18 +71,12 @@ public class KTreeRender extends ARender {
      * Create a new KTreeRender with K children and one parent. Will set K = 2 for any K <
      * 2.
      *
-     * @param struct
-     *            The structure to draw as an K-ary tree.
-     * @param K
-     *            The number of children each node has.
-     * @param width
-     *            The width of the visual_nodes.
-     * @param height
-     *            The height of the visual_nodes.
-     * @param hspace
-     *            The horizontal space between elements.
-     * @param vspace
-     *            The vertical space between elements.
+     * @param struct The structure to draw as an K-ary tree.
+     * @param K The number of children each node has.
+     * @param width The width of the visual_nodes.
+     * @param height The height of the visual_nodes.
+     * @param hspace The horizontal space between elements.
+     * @param vspace The vertical space between elements.
      */
     public KTreeRender (DataStructure struct, int K, double width, double height, double hspace, double vspace) {
         super(struct, width, height, hspace, vspace);
@@ -125,8 +116,7 @@ public class KTreeRender extends ARender {
     /**
      * Set K for the K-Tree, the maximum number of children per node.
      *
-     * @param K
-     *            The new K-value.
+     * @param K The new K-value.
      */
     public void setK (int K) {
         if (this.K != K) {
@@ -146,20 +136,18 @@ public class KTreeRender extends ARender {
     /**
      * Connect a node to its parent.
      *
-     * @param ae
-     *            The child node.
-     * @param childVis
-     *            The child node visual.
+     * @param ae The child node.
+     * @param childVis The child node visual.
      */
     @Override
     protected void bellsAndWhistles (Element ae, AVElement childVis) {
         // System.out.println("ktree: baw shape = " + childVis.getShape());
 
-        new IndexedElement(0, new int[] { (((IndexedElement) ae).getIndex() [0] - 1) / K });
+        new IndexedElement(0, new int[]{(((IndexedElement) ae).getIndex()[0] - 1) / K});
 
         // VisualElement parentVis = visualElementsMapping.get(parent_clone);
         AVElement parentVis = visualMap
-                .get(Arrays.toString(new int[] { (((IndexedElement) ae).getIndex() [0] - 1) / K }));
+                .get(Arrays.toString(new int[]{(((IndexedElement) ae).getIndex()[0] - 1) / K}));
 
         double dx = nodeWidth / 2;
         double dy = nodeHeight / 2;
@@ -192,13 +180,12 @@ public class KTreeRender extends ARender {
     /**
      * Complete the tree using ghosts.
      *
-     * @param index
-     *            The index to start from.
+     * @param index The index to start from.
      */
     private void createGhosts (int index) {
         AVElement ghostVis;
         for (; index < completedSize; index++) {
-            IndexedElement ghostElem = new IndexedElement(Double.MAX_VALUE, new int[] { index });
+            IndexedElement ghostElem = new IndexedElement(Double.MAX_VALUE, new int[]{index});
             ghostVis = this.createVisualElement(ghostElem);
             ghostVis.setLayoutX(this.getX(ghostElem));
             ghostVis.setLayoutY(this.getY(ghostElem));
@@ -215,7 +202,7 @@ public class KTreeRender extends ARender {
             return -1;
         }
 
-        int index = ((IndexedElement) e).getIndex() [0];
+        int index = ((IndexedElement) e).getIndex()[0];
         double x;
         int breadth, depth;
         if (index == 0) { // Root element
@@ -253,7 +240,7 @@ public class KTreeRender extends ARender {
             return -1;
         }
 
-        int index = ((IndexedElement) e).getIndex() [0];
+        int index = ((IndexedElement) e).getIndex()[0];
 
         double y = vSpace;
 

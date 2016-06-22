@@ -1,28 +1,27 @@
 package gui.panel;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import contract.json.Operation;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Class and methods for displaying and jumping to relevant source code. Can only
  * highlight full rows.
  *
  * @author Richard Sundqvist
- *
  */
 public class SourcePanel extends TabPane {
 
-    private final HashMap<String, Integer>  nameTabMapping;
+    private final HashMap<String, Integer> nameTabMapping;
     private final Map<String, List<String>> sources;
-    private boolean                         initTabs = true;
-    private double                          divPos   = 0;
+    private boolean initTabs = true;
+    private double divPos = 0;
 
     /**
      * Create a new SourceViewer.
@@ -42,8 +41,7 @@ public class SourcePanel extends TabPane {
     /**
      * Add sources which are to be displayed by this SourceViewer.
      *
-     * @param newSources
-     *            The sources to display.
+     * @param newSources The sources to display.
      */
     public void addSources (Map<String, List<String>> newSources) {
         if (newSources == null) {
@@ -68,17 +66,15 @@ public class SourcePanel extends TabPane {
         sources.clear();
         getTabs().clear();
         SplitPane sp = (SplitPane) getParent().getParent().getParent();
-        divPos = sp.getDividerPositions() [0];
+        divPos = sp.getDividerPositions()[0];
         sp.setDividerPosition(0, 0);
     }
 
     /**
      * Create a tab for a source file.
      *
-     * @param sourceName
-     *            The name of the source file.
-     * @param sourceLines
-     *            The lines for the source file.
+     * @param sourceName The name of the source file.
+     * @param sourceLines The lines for the source file.
      */
     private void addSourceTab (String sourceName, List<String> sourceLines) {
         // Build new Tab
@@ -101,8 +97,7 @@ public class SourcePanel extends TabPane {
      * Jump to the appropriate tab and line number for this Operation. Will abort if
      * {@code op == null} or {@code op.source == null}.
      *
-     * @param op
-     *            The Operation to show.
+     * @param op The Operation to show.
      */
     @SuppressWarnings("unchecked")
     public void show (Operation op) {

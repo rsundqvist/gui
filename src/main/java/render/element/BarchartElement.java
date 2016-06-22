@@ -10,25 +10,20 @@ import javafx.scene.shape.Rectangle;
  * A resizable Rectangle element used by BarChart.
  *
  * @author Richard
- *
  */
 public class BarchartElement extends RectangleElement {
 
     private Rectangle rect;
 
-    private double    unitHeight;
+    private double unitHeight;
 
     /**
      * Create a static, unbound RectangleElement.
      *
-     * @param value
-     *            The initial value.
-     * @param paint
-     *            The paint to use.
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param value The initial value.
+     * @param paint The paint to use.
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public BarchartElement (double value, Paint paint, double node_width, double node_height) {
         super(value, paint, node_width, node_height);
@@ -38,25 +33,21 @@ public class BarchartElement extends RectangleElement {
     /**
      * Create a bound visual RectangleElement.
      *
-     * @param element
-     *            The Element this VisualElement represents
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param element The Element this VisualElement represents
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public BarchartElement (Element element, double node_width, double node_height) {
         super(element, node_width, node_height);
         valueLabel.setTranslateY(-15); // Raise slightly does it doesn't
-                                       // cover
+        // cover
         // the x-axis.
     }
 
     /**
      * Set the height of the bar.
      *
-     * @param unitHeight
-     *            The new height.
+     * @param unitHeight The new height.
      */
     public void updateSize (double unitHeight, double foo) {
         this.unitHeight = unitHeight;
@@ -87,8 +78,7 @@ public class BarchartElement extends RectangleElement {
     /**
      * Set the Y-coordinate of the bottom left of the bar.
      *
-     * @param y
-     *            The y coordinate at the bottom of the bar.
+     * @param y The y coordinate at the bottom of the bar.
      */
     public void setBotY (double y) {
         layoutYProperty().unbind();

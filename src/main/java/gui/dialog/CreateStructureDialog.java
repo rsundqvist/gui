@@ -1,13 +1,11 @@
 package gui.dialog;
 
-import java.io.IOException;
-
 import assets.Const;
+import contract.datastructure.AbstractType;
 import contract.datastructure.Array;
 import contract.datastructure.DataStructure;
 import contract.datastructure.IndependentElement;
 import contract.datastructure.RawType;
-import contract.datastructure.AbstractType;
 import contract.datastructure.VisualType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
@@ -19,18 +17,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+import java.io.IOException;
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class CreateStructureDialog {
 
-    private final Stage              parent, root;
+    private final Stage parent, root;
     private final ChoiceBox<RawType> rawType;
-    private final Label              name;
+    private final Label name;
     // Volatile
-    private RawType                  raw;
-    private AbstractType             abs;
-    private VisualType               vis;
-    private DataStructure            struct;
-    private String                   identifier;
+    private RawType raw;
+    private AbstractType abs;
+    private VisualType vis;
+    private DataStructure struct;
+    private String identifier;
 
     public CreateStructureDialog (Stage parent) {
         this.parent = parent;
@@ -86,24 +86,23 @@ public class CreateStructureDialog {
     private void createStruct () {
         raw = rawType.getSelectionModel().getSelectedItem();
         switch (raw) {
-        case array:
-            struct = new Array(identifier, abs, vis, null);
-            break;
-        case tree:
-            struct = null;
-            System.err.println("Raw type tree not supported yet.");
-            break;
-        case independentElement:
-            struct = new IndependentElement(identifier, abs, vis, null);
-            break;
+            case array:
+                struct = new Array(identifier, abs, vis, null);
+                break;
+            case tree:
+                struct = null;
+                System.err.println("Raw type tree not supported yet.");
+                break;
+            case independentElement:
+                struct = new IndependentElement(identifier, abs, vis, null);
+                break;
         }
     }
 
     /**
      * Show the DataStructure creation dialog.
      *
-     * @param identifier
-     *            The name of the new structure.
+     * @param identifier The name of the new structure.
      * @return A new DataStructure. Returns {@code null} if the user cancelled.
      */
     public DataStructure show (String identifier) {

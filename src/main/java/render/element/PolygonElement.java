@@ -10,16 +10,11 @@ public class PolygonElement extends AVElement {
     /**
      * Create a static, unbound RectangleElement.
      *
-     * @param value
-     *            The initial value.
-     * @param paint
-     *            The style to use.
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
-     * @param points
-     *            The list of points for this PolygonElement.
+     * @param value The initial value.
+     * @param paint The style to use.
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
+     * @param points The list of points for this PolygonElement.
      */
 
     public PolygonElement (double value, Paint paint, double node_width, double node_height, double[] points) {
@@ -29,14 +24,10 @@ public class PolygonElement extends AVElement {
     /**
      * Create a bound visual RectangleElement.
      *
-     * @param element
-     *            The Element this VisualElement represents
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
-     * @param points
-     *            The list of points for this PolygonElement.
+     * @param element The Element this VisualElement represents
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
+     * @param points The list of points for this PolygonElement.
      */
     public PolygonElement (Element element, double node_width, double node_height, double[] points) {
         super(element, node_width, node_height, points);

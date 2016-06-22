@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
  * Hint pane for the visualizer window.
  *
  * @author Richard Sundqvist
- *
  */
 public class HintPane extends Pane {
 

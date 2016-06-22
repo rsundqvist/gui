@@ -10,14 +10,10 @@ public class RectangleElement extends AVElement {
     /**
      * Create a static, unbound RectangleElement.
      *
-     * @param value
-     *            The initial value.
-     * @param paint
-     *            The paint to use.
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param value The initial value.
+     * @param paint The paint to use.
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public RectangleElement (double value, Paint paint, double node_width, double node_height) {
         super(value, paint, node_width, node_height);
@@ -26,12 +22,9 @@ public class RectangleElement extends AVElement {
     /**
      * Create a bound visual RectangleElement.
      *
-     * @param element
-     *            The Element this VisualElement represents
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param element The Element this VisualElement represents
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public RectangleElement (Element element, double node_width, double node_height) {
         super(element, node_width, node_height);

@@ -24,12 +24,9 @@ public class SingleElementRender extends ARender {
     /**
      * Create a new SingleElementRender.
      *
-     * @param struct
-     *            The structure to draw as a single element.
-     * @param width
-     *            The width of the nodes.
-     * @param height
-     *            The height of the nodes.
+     * @param struct The structure to draw as a single element.
+     * @param width The width of the nodes.
+     * @param height The height of the nodes.
      */
     public SingleElementRender (DataStructure struct, double width, double height) {
         super(struct, width, height, 0, 0);
@@ -74,8 +71,7 @@ public class SingleElementRender extends ARender {
     /**
      * This method always returns 0.
      *
-     * @param e
-     *            An element.
+     * @param e An element.
      * @return 0 regardless of e.
      */
     @Override
@@ -86,8 +82,7 @@ public class SingleElementRender extends ARender {
     /**
      * This method always returns 0.
      *
-     * @param e
-     *            An element.
+     * @param e An element.
      * @return 0 regardless of e.
      */
     @Override
@@ -111,7 +106,7 @@ public class SingleElementRender extends ARender {
     protected void bellsAndWhistles (Element e, AVElement ve) {
         // System.out.println("single: bells shape = " + ve.getShape());
     }
-    
+
     @Override
     public void setRelativeNodeSize (double factor) {
         // Do nothing.

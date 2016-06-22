@@ -1,7 +1,7 @@
 package render;
 
 import assets.Debug;
-import assets.Tools;
+import render.assets.Tools;
 import contract.datastructure.Array;
 import contract.datastructure.Array.MinMaxListener;
 import contract.datastructure.DataStructure;
@@ -206,7 +206,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
     }
 
     private void loadFXML () {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/render/RenderBase.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/render/RenderBase.fxml"));
         fxmlLoader.setController(this);
 
         try {
@@ -512,7 +512,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     protected final ArrayList<Node> optionalHeaderContent = new ArrayList<Node>();
     // Centre on button when hiding or showing.
-    private double resizingOffset = 0;
+    private double resizeOffsetX = 0;
 
     public void toggleHidden (Event e) {
         ToggleButton tb = (ToggleButton) e.getSource();
@@ -531,8 +531,8 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void collapse () {
         // Make the render expand and collapse and NE corner.
-        resizingOffset = contentPane.getPrefWidth() - 150;
-        setTranslateX(getTranslateX() + resizingOffset);
+        resizeOffsetX = contentPane.getPrefWidth() - 150;
+        setTranslateX(getTranslateX() + resizeOffsetX);
 
         // Show only header
         root.setPrefSize(150, 20);
@@ -551,7 +551,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
      */
     public void expand () {
         contentPane.setVisible(true);
-        setTranslateX(getTranslateX() - resizingOffset);
+        setTranslateX(getTranslateX() - resizeOffsetX);
         bindHeader();
         calculateSize(); // Size recalculation is disabled while hidden.
 
@@ -629,7 +629,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
         DecimalFormat df = new DecimalFormat("#0.00");
         xPosLabel.setText("XPos: " + (int) (getTranslateX() + 0.5));
         yPosLabel.setText("| YPos: " + (int) (getTranslateY() + 0.5));
-        scaleLabel.setText("| Scale: " + df.format(scale));
     }
 
     /**
@@ -727,7 +726,7 @@ public abstract class ARender extends Pane implements MinMaxListener {
         double v = ave.getElement().getNumValue();
 
         r = ((v - L) / (H - L));
-        r = render.assets.Tools.bindInRange(r, 0, 1);
+        r = Tools.bindInRange(r, 0, 1);
         r = r * (factor - 1);
 
         relNodeWidth = nodeWidth / factor;
@@ -786,7 +785,6 @@ public abstract class ARender extends Pane implements MinMaxListener {
     // ============================================================= //
 
     private double transX, transY;
-    private final double scale = 1;
 
     /**
      * Create listeners to drag and zoom.

@@ -1,18 +1,17 @@
 package render.assets;
 
-import java.util.List;
-
 import contract.json.Operation;
 import model.ExecutionModel;
 import model.ModelController;
 import model.OperationsExecutedListener;
 import render.Visualization;
 
+import java.util.List;
+
 /**
  * ExecutionModel convenience class.
  *
  * @author Richard Sundqvist
- *
  */
 public class VisualController implements OperationsExecutedListener {
 
@@ -32,7 +31,7 @@ public class VisualController implements OperationsExecutedListener {
     /**
      * The visualization used to animate the model.
      */
-    private final Visualization   visualization;
+    private final Visualization visualization;
 
     // ============================================================= //
     /*
@@ -45,10 +44,8 @@ public class VisualController implements OperationsExecutedListener {
     /**
      * Create a new model controller.
      *
-     * @param executionModel
-     *            The model to control.
-     * @param visualization
-     *            The visualization used to animate.
+     * @param executionModel The model to control.
+     * @param visualization The visualization used to animate.
      */
     public VisualController (ModelController executionModel, Visualization visualization) {
         this.modelController = executionModel;
@@ -59,7 +56,6 @@ public class VisualController implements OperationsExecutedListener {
 
     /**
      * Create a new model controller for {@link ExecutionModel#INSTANCE}.
-     *
      */
     public VisualController () {
         this(new ModelController(ExecutionModel.INSTANCE), new Visualization(ExecutionModel.INSTANCE));
@@ -112,10 +108,8 @@ public class VisualController implements OperationsExecutedListener {
      * Set the auto execution speed in milliseconds. Will stop auto execution, update the
      * speed, and resume if auto execution was on when this method was called.
      *
-     * @param autoExecutionSpeed
-     *            The time between execution calls in milliseconds.
-     * @throws IllegalArgumentException
-     *             If {@code autoExecutionSpeed < 0}.
+     * @param autoExecutionSpeed The time between execution calls in milliseconds.
+     * @throws IllegalArgumentException If {@code autoExecutionSpeed < 0}.
      */
     public void setAutoExecutionSpeed (long autoExecutionSpeed) {
         if (autoExecutionSpeed < 0) {
@@ -172,7 +166,6 @@ public class VisualController implements OperationsExecutedListener {
     }
 
     /**
-     *
      * @see model.ExecutionModel#reset()
      */
     public void reset () {
@@ -181,7 +174,6 @@ public class VisualController implements OperationsExecutedListener {
     }
 
     /**
-     *
      * @see model.ExecutionModel#clear()
      */
     public void clear () {

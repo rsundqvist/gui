@@ -1,7 +1,7 @@
 package render;
 
 import assets.Debug;
-import assets.Tools;
+import render.assets.Tools;
 import contract.datastructure.Array;
 import contract.datastructure.DataStructure;
 import contract.datastructure.Element;
@@ -16,31 +16,25 @@ import render.element.ElementShape;
  * Render drawing data structures with their elements in a grid.
  *
  * @author Richard Sundqvist
- *
  */
 public class GridRender extends ARender {
 
     private static final ElementShape DEFAULT_ELEMENT_STYLE = ElementShape.RECTANGLE;
 
-    private final Order              majorOrder;
-    private int[]                    dims;
+    private final Order majorOrder;
+    private int[] dims;
 
     /**
      * Creates a new GridRender.
      *
-     * @param struct
-     *            The structure to render.
-     * @param width
-     *            The width of the elements in this Render.
-     * @param height
-     *            The height of the elements in this Render.
-     * @param hspace
-     *            The horizontal space between elements in this Render.
-     * @param vspace
-     *            The vertical space between elements in this Render.
+     * @param struct The structure to render.
+     * @param width The width of the elements in this Render.
+     * @param height The height of the elements in this Render.
+     * @param hspace The horizontal space between elements in this Render.
+     * @param vspace The vertical space between elements in this Render.
      */
     public GridRender (DataStructure struct, Order majorOrder, double width, double height, double hspace,
-            double vspace) {
+                       double vspace) {
         super(struct, width, height, hspace, vspace);
         this.majorOrder = majorOrder;
     }
@@ -81,10 +75,10 @@ public class GridRender extends ARender {
         int[] index = ((IndexedElement) e).getIndex();
         double x = hSpace;
         if (majorOrder == Order.ROW_MAJOR) {
-            x = this.getX(index [0]);
+            x = this.getX(index[0]);
         } else {
             if (index.length == 2) {
-                x = this.getY(index [1]);
+                x = this.getY(index[1]);
             }
         }
         return x + Tools.getAdjustedX(this, e);
@@ -104,10 +98,10 @@ public class GridRender extends ARender {
         double y = vSpace;
         if (majorOrder == Order.ROW_MAJOR) {
             if (index.length == 2) {
-                y = this.getY(index [1]);
+                y = this.getY(index[1]);
             }
         } else {
-            y = this.getX(index [0]);
+            y = this.getX(index[0]);
         }
         return y + Tools.getAdjustedY(this, e);
     }
@@ -125,21 +119,21 @@ public class GridRender extends ARender {
          * Row Major
          */
         if (majorOrder == Order.ROW_MAJOR) {
-            renderWidth = vSpace + (vSpace + nodeWidth) * dims [0];
-            renderHeight = hSpace + (hSpace + nodeHeight) * dims [1];
+            renderWidth = vSpace + (vSpace + nodeWidth) * dims[0];
+            renderHeight = hSpace + (hSpace + nodeHeight) * dims[1];
 
             /*
              * Column Major
              */
         } else {
-            renderHeight = hSpace + (hSpace + nodeHeight) * dims [0];
-            renderWidth = 2 + vSpace + (vSpace + nodeWidth) * dims [1];
+            renderHeight = hSpace + (hSpace + nodeHeight) * dims[0];
+            renderWidth = 2 + vSpace + (vSpace + nodeWidth) * dims[1];
         }
         setRestrictedSize(renderWidth, renderHeight);
     }
 
     private void ensureDimensionsSet () {
-        int[] backup = new int[] { struct.getElements().size(), 1 };
+        int[] backup = new int[]{struct.getElements().size(), 1};
         Array array = (Array) struct;
 
         dims = array.getSize();
@@ -150,7 +144,7 @@ public class GridRender extends ARender {
                 System.err.println("Size was null or empty for \"" + struct + "\"!");
             }
         } else if (dims.length == 1) {
-            dims = new int[]{ dims [0], 1 }; // Add 2nd which is used in size calculation.
+            dims = new int[]{dims[0], 1}; // Add 2nd which is used in size calculation.
         }
 
         // Else assume dims are okay.
@@ -162,7 +156,7 @@ public class GridRender extends ARender {
 
         public final String name;
         public final String description;
-        public final int    optionNbr;
+        public final int optionNbr;
 
         Order (String name, String description, int optionNbr) {
             this.name = name;
@@ -174,8 +168,7 @@ public class GridRender extends ARender {
          * Returns the Order corresponding to the given option number. Defaults to
          * ROW_MAJOR for unknown option numbers.
          *
-         * @param optionNbr
-         *            The option to resolve an order for.
+         * @param optionNbr The option to resolve an order for.
          * @return An Order.
          */
         public static Order resolve (int optionNbr) {

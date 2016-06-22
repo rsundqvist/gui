@@ -4,7 +4,6 @@ package render.element;
  * Shape enumeration.
  *
  * @author Richard Sundqvist
- *
  */
 public enum ElementShape {
     ELLIPSE, CIRCLE, RECTANGLE, BAR_ELEMENT(false), SQUARE, TRAPEZOID(true), TRIANGLE(true),
@@ -46,7 +45,7 @@ public enum ElementShape {
     public static ElementShape random () {
         ElementShape random = null;
         do {
-            random = values() [(int) (Math.random() * values().length)];
+            random = values()[(int) (Math.random() * values().length)];
         } while (random.random == false);
 
         System.out.println("Random Shape: " + random);
@@ -64,11 +63,11 @@ public enum ElementShape {
         int count = 0;
         for (ElementShape es : values()) {
             if (es.randomPolygon) {
-                polys [count] = es;
+                polys[count] = es;
                 count++;
             }
         }
 
-        return polys [(int) (Math.random() * count)];
+        return polys[(int) (Math.random() * count)];
     }
 }

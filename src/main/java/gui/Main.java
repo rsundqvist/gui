@@ -1,8 +1,5 @@
 package gui;
 
-import java.io.IOException;
-import java.util.Map;
-
 import assets.Const;
 import assets.examples.Examples;
 import assets.examples.Examples.Algorithm;
@@ -26,6 +23,9 @@ import model.ModelController;
 import render.Visualization;
 import render.assets.VisualController;
 
+import java.io.IOException;
+import java.util.Map;
+
 /**
  * Entry class for the GUI.
  */
@@ -46,7 +46,7 @@ public class Main extends Application {
     /**
      * Controller class for the GUI.
      */
-    private Controller         controller;
+    private Controller controller;
 
     // ============================================================= //
     /*

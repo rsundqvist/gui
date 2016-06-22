@@ -1,9 +1,5 @@
 package render.element;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import assets.Debug;
 import contract.datastructure.Element;
 import contract.utility.OperationCounter.OperationCounterHaver;
@@ -22,6 +18,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A visualisation element. Elements which use the
  * {@code VisualElement(Element element, ..)} constructor are bound to their elements.
@@ -30,67 +30,62 @@ import javafx.util.Duration;
  * exception.
  *
  * @author Richard Sundqvist
- *
  */
 public abstract class AVElement extends Pane {
 
     // Should always merge into purple (255, 0, 255)!!
     public static final String DEBUG_FXML_ROOT = "-fx-background-color: rgba(255, 0, 0, 0.3); \n -fx-opacity: 0.8;";
     public static final String DEBUG_FXML_THIS = "-fx-background-color: rgba(0, 0, 255, 0.3); \n -fx-opacity: 0.8;";
-    public static final String URL             = "/render/FXMLElement.fxml";
+    public static final String URL = "/render/FXMLElement.fxml";
 
     /**
      * Enum indicating the shape of this polygon. Used by the factory.
      */
-    public ElementShape        elemShape;
+    public ElementShape elemShape;
 
     /**
      * Current info label position.
      */
-    protected Pos              infoPos;
+    protected Pos infoPos;
 
     /**
      * The element this VisualElement represents.
      */
-    protected final Element    element;
+    protected final Element element;
     /**
      * Extra info label for stuff such as index.
      */
-    protected final Label      infoLabel       = new Label();
+    protected final Label infoLabel = new Label();
     /*
      * FXML elements.
      */
-    protected Shape            shape;
+    protected Shape shape;
 
-    protected Label            valueLabel;
-    protected GridPane         root;
+    protected Label valueLabel;
+    protected GridPane root;
 
     /**
      * Bounding width of the node.
      */
-    public double              width;
+    public double width;
     /**
      * Bounding height of the node.
      */
-    public double              height;
+    public double height;
 
     /**
      * Points used by Polygons.
      */
-    public final double[]      points;
+    public final double[] points;
 
     /**
      * Create a static, unbound VisualElement.
      *
-     * @param value
-     *            The initial value.
-     * @param style
-     *            The style to use.
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node. * @param fxmlUrl Path to the FXML file
-     *            containing the layout for the element.
+     * @param value The initial value.
+     * @param style The style to use.
+     * @param node_width The width of the node.
+     * @param node_height The height of the node. * @param fxmlUrl Path to the FXML file
+     * containing the layout for the element.
      */
     public AVElement (double value, Paint style, double node_width, double node_height) {
         element = null;
@@ -104,14 +99,10 @@ public abstract class AVElement extends Pane {
     /**
      * Create a bound VisualElement.
      *
-     * @param element
-     *            The Element this VisualElement represents
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
-     * @param fxmlUrl
-     *            Path to the FXML file containing the layout for the element.
+     * @param element The Element this VisualElement represents
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
+     * @param fxmlUrl Path to the FXML file containing the layout for the element.
      */
     public AVElement (Element element, double node_width, double node_height) {
         this.element = element;
@@ -126,14 +117,10 @@ public abstract class AVElement extends Pane {
     /**
      * Create a static, unbound VisualElement.
      *
-     * @param value
-     *            The initial value.
-     * @param style
-     *            The style to use.
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param value The initial value.
+     * @param style The style to use.
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public AVElement (double value, Paint style, double node_width, double node_height, double[] points) {
         element = null;
@@ -147,12 +134,9 @@ public abstract class AVElement extends Pane {
     /**
      * Create a bound VisualElement.
      *
-     * @param element
-     *            The Element this VisualElement represents
-     * @param node_width
-     *            The width of the node.
-     * @param node_height
-     *            The height of the node.
+     * @param element The Element this VisualElement represents
+     * @param node_width The width of the node.
+     * @param node_height The height of the node.
      */
     public AVElement (Element element, double node_width, double node_height, double[] points) {
         this.element = element;
@@ -298,8 +282,7 @@ public abstract class AVElement extends Pane {
      * Determines whether this element should be shown as a ghost, with no value and a
      * dashed border.
      *
-     * @param ghost
-     *            The new value.
+     * @param ghost The new value.
      */
     public void setGhost (boolean ghost) {
         if (ghost != valueLabel.isVisible()) {
@@ -330,8 +313,7 @@ public abstract class AVElement extends Pane {
     /**
      * Show an array using the info label.
      *
-     * @param array
-     *            The array to show.
+     * @param array The array to show.
      */
     public void setInfoArray (int[] array) {
         setInfoText(Arrays.toString(array));
@@ -340,8 +322,7 @@ public abstract class AVElement extends Pane {
     /**
      * Enables and disables visibility for the info label.
      *
-     * @param visible
-     *            The new visibility setting.
+     * @param visible The new visibility setting.
      */
     public void setInfoVisible (boolean visible) {
         infoLabel.setVisible(visible);
@@ -351,8 +332,7 @@ public abstract class AVElement extends Pane {
      * Set text for the label. Will render at {@link Pos#BOTTOM_CENTER} if no position is
      * specified.
      *
-     * @param text
-     *            The text to render.
+     * @param text The text to render.
      */
     public void setInfoText (String text) {
         infoLabel.setText(text);
@@ -364,8 +344,7 @@ public abstract class AVElement extends Pane {
      * Set the position of the extra info label. Will hide the label if
      * {@code pos == null}. <br>
      *
-     * @param pos
-     *            The new position for the info label.
+     * @param pos The new position for the info label.
      */
     @SuppressWarnings("incomplete-switch")
     public void setInfoPos (Pos pos) {
@@ -394,27 +373,27 @@ public abstract class AVElement extends Pane {
         double ty = 0;
 
         switch (pos.getHpos()) {
-        case LEFT:
-            tx = -(width / 2 + textW);
-            break;
-        case CENTER:
-            // tx already 0.
-            break;
-        case RIGHT:
-            tx = width / 2 + textW;
-            break;
+            case LEFT:
+                tx = -(width / 2 + textW);
+                break;
+            case CENTER:
+                // tx already 0.
+                break;
+            case RIGHT:
+                tx = width / 2 + textW;
+                break;
         }
 
         switch (pos.getVpos()) {
-        case BOTTOM:
-            ty = height / 2 + textH;
-            break;
-        case CENTER:
-            // ty already 0.
-            break;
-        case TOP:
-            ty = -(height / 2 + textH);
-            break;
+            case BOTTOM:
+                ty = height / 2 + textH;
+                break;
+            case CENTER:
+                // ty already 0.
+                break;
+            case TOP:
+                ty = -(height / 2 + textH);
+                break;
         }
 
         infoLabel.setTranslateX(tx);
@@ -425,8 +404,7 @@ public abstract class AVElement extends Pane {
      * Set the value of this element, applying it to the <b>visual representation only</b>
      * . The model is not changed.
      *
-     * @param value
-     *            A double value to show.
+     * @param value A double value to show.
      */
     public void setValue (double value) {
         valueLabel.setText(" " + value + " ");
@@ -436,8 +414,7 @@ public abstract class AVElement extends Pane {
      * Set the value of this element, applying it to the <b>visual representation only</b>
      * . The model is not changed.
      *
-     * @param value
-     *            A String value to show.
+     * @param value A String value to show.
      */
     public void setValue (String value) {
         valueLabel.setText(" " + value + " ");
@@ -453,10 +430,8 @@ public abstract class AVElement extends Pane {
      * as the root. The default implementation of this method only changes the size of the
      * root.
      *
-     * @param newWidth
-     *            The new width.
-     * @param newHeight
-     *            The new height.
+     * @param newWidth The new width.
+     * @param newHeight The new height.
      */
     public void setSize (double newWidth, double newHeight) {
         if (newWidth != width) {

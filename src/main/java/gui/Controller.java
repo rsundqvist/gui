@@ -1,23 +1,12 @@
 package gui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
 import assets.Const;
 import assets.Debug;
 import assets.Tools;
 import assets.examples.Examples;
 import assets.examples.Examples.Algorithm;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import contract.datastructure.DataStructure;
 import contract.io.ComListener;
 import contract.io.JGroupCommunicator;
@@ -52,6 +41,16 @@ import model.ModelLoader;
 import render.Visualization;
 import render.assets.VisualController;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+
 public class Controller implements ComListener {
 
     // ============================================================= //
@@ -62,18 +61,18 @@ public class Controller implements ComListener {
      */
     // ============================================================= //
 
-    private final Visualization    visualization;
-    private final Stage            primaryStage;
+    private final Visualization visualization;
+    private final Stage primaryStage;
     private final LogStreamManager lsm;
 
-    private final ExecutionModel   execModel;
-    private final ModelLoader      modelLoader;
+    private final ExecutionModel execModel;
+    private final ModelLoader modelLoader;
     private final VisualController visualController;
     // Controls
-    private Menu                   visualMenu;
+    private Menu visualMenu;
     // Views, panels, dialogs
-    private final SourcePanel      sourcePanel;
-    private final ConnectedView    connectedView;
+    private final SourcePanel sourcePanel;
+    private final ConnectedView connectedView;
 
     // ============================================================= //
     /*
@@ -181,8 +180,7 @@ public class Controller implements ComListener {
     /**
      * Helper function for {@link #openFileChooser() openFileChooser}
      *
-     * @param file
-     *            The file to load.
+     * @param file The file to load.
      */
     public void readLog (File file) {
         lsm.clearData();
@@ -274,7 +272,7 @@ public class Controller implements ComListener {
             connectedView.update(jgc.getMemberStrings(), jgc.allKnownEntities());
             return;
         }
-        Platform.runLater( () -> {
+        Platform.runLater(() -> {
             Controller.this.loadFromLSM();
             Controller.this.lsm.clearData();
         });
@@ -373,8 +371,7 @@ public class Controller implements ComListener {
     /**
      * Load an example.
      *
-     * @param algo
-     *            The algorithm to run.
+     * @param algo The algorithm to run.
      */
     public void loadExample (Algorithm algo) {
         ExamplesDialog examplesDialog = new ExamplesDialog(primaryStage);
@@ -457,6 +454,6 @@ public class Controller implements ComListener {
     }
 
     public void markElementXY () {
-        Tools.markElementXY(visualization);
+        render.assets.Tools.markElementXY(visualization);
     }
 }

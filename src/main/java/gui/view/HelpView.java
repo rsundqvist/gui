@@ -1,8 +1,5 @@
 package gui.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import assets.Const;
 import contract.operation.OperationType;
 import javafx.animation.Animation;
@@ -25,11 +22,14 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class HelpView {
 
-    private final Stage  stage = new Stage();
+    private final Stage stage = new Stage();
     private final Window owner;
-    private BorderPane   root;
+    private BorderPane root;
 
     /**
      * Create a new HelpView.
@@ -95,9 +95,9 @@ public class HelpView {
             double[] random = new double[3];
             for (int i = 0; i < 2; i++) {
                 int sign = Math.random() < 0.5 ? -1 : 1;
-                random [i] = Math.random() * sign;
+                random[i] = Math.random() * sign;
             }
-            Point3D axis = new Point3D(random [0], random [1], random [2]);
+            Point3D axis = new Point3D(random[0], random[1], random[2]);
             box.setRotationAxis(axis);
             box.setRotate(Math.random() * 180);
 

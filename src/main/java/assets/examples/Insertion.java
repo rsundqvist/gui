@@ -6,9 +6,7 @@ class Insertion {
      * Generate a log file for Insertion Sort on the given data. <br>
      * <b>Source: </b> {@link http://mathbits.com/MathBits/Java/arrays/InsertionSort.htm}
      *
-     *
-     * @param data
-     *            The data to run the algorithm on.
+     * @param data The data to run the algorithm on.
      * @return The operations performed by the algorithm on the given data.
      */
     static void sort (double[] data) {
@@ -17,13 +15,13 @@ class Insertion {
         int i;
         for (j = 1; j < data.length; j++) // Start with 1 (not 0)
         {
-            key = data [j];
-            for (i = j - 1; i >= 0 && data [i] < key; i--) // Smaller values
-                                                           // are moving up
+            key = data[j];
+            for (i = j - 1; i >= 0 && data[i] < key; i--) // Smaller values
+            // are moving up
             {
-                data [i + 1] = data [i];
+                data[i + 1] = data[i];
             }
-            data [i + 1] = key; // Put the key in its proper location
+            data[i + 1] = key; // Put the key in its proper location
         }
     }
 }

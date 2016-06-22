@@ -1,8 +1,5 @@
 package gui.dialog;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import assets.Const;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,16 +12,19 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 public class ExamplesDialog {
 
-    private static final double[] EMPTY      = new double[] {};
-    private static final Color    STATUS_OK  = Color.web("#00c8ff");
-    private static final Color    STATUS_ERR = Color.web("#ff0000");
-    private final TextField       input, mirror;
-    private final Label           status, name;
-    private final Stage           parent, root;
-    private final Button          run;
-    private double[]              data;
+    private static final double[] EMPTY = new double[]{};
+    private static final Color STATUS_OK = Color.web("#00c8ff");
+    private static final Color STATUS_ERR = Color.web("#ff0000");
+    private final TextField input, mirror;
+    private final Label status, name;
+    private final Stage parent, root;
+    private final Button run;
+    private double[] data;
 
     public ExamplesDialog (Stage parent) {
         this.parent = parent;
@@ -75,12 +75,12 @@ public class ExamplesDialog {
         if (input.contains(",")) {
             doubles_string = input.split(",");
         } else {
-            doubles_string = new String[] { input };
+            doubles_string = new String[]{input};
         }
         double[] doubles = new double[doubles_string.length];
         for (int i = 0; i < doubles_string.length; i++) {
             try {
-                doubles [i] = Double.parseDouble(doubles_string [i]);
+                doubles[i] = Double.parseDouble(doubles_string[i]);
             } catch (Exception e) {
                 status.setText("INPUT INVALID");
                 status.setTextFill(STATUS_ERR);
@@ -101,8 +101,7 @@ public class ExamplesDialog {
     /**
      * Show and wait for user input. Returns a (possibly empty) double[].
      *
-     * @param name
-     *            The name of the algoritm.
+     * @param name The name of the algoritm.
      * @return An array of doubles.
      */
     public double[] show (String name) {

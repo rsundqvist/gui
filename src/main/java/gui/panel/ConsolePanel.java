@@ -9,14 +9,13 @@ import javafx.scene.control.TextArea;
  * toString to print them.
  *
  * @author Richard Sundqvist
- *
  */
 public class ConsolePanel {
 
     public static final String PREPEND_SEVERE = "\n<>\t";
-    public static final String PREPEND_ERROR  = "\n>\t";
+    public static final String PREPEND_ERROR = "\n>\t";
     public static final String PREPEND_NORMAL = "\n";
-    public static final String PREPEND_DEBUG  = "\n";
+    public static final String PREPEND_DEBUG = "\n";
 
     // ============================================================= //
     /*
@@ -26,12 +25,12 @@ public class ConsolePanel {
      */
     // ============================================================= //
 
-    private boolean            quiet          = false;
-    private boolean            info           = true;
-    private boolean            err            = true;
-    private boolean            debug          = false;
+    private boolean quiet = false;
+    private boolean info = true;
+    private boolean err = true;
+    private boolean debug = false;
 
-    private final TextArea     consoleTextArea;
+    private final TextArea consoleTextArea;
 
     // ============================================================= //
     /*
@@ -65,8 +64,7 @@ public class ConsolePanel {
     /**
      * Print a regular line to the GUI console.
      *
-     * @param info
-     *            The line to prine.
+     * @param info The line to prine.
      */
     public void info (String info) {
         if (quiet || !this.info) {
@@ -78,8 +76,7 @@ public class ConsolePanel {
     /**
      * Print an error to the GUI console.
      *
-     * @param err
-     *            The error to print.
+     * @param err The error to print.
      */
     public void err (String err) {
         if (quiet || !this.err) {
@@ -91,8 +88,7 @@ public class ConsolePanel {
     /**
      * Print a debug String. Generally DISABLED.
      *
-     * @param debug
-     *            A debug String to print.
+     * @param debug A debug String to print.
      */
     public void debug (String debug) {
         if (quiet || !this.debug) {
@@ -103,8 +99,7 @@ public class ConsolePanel {
     /**
      * Print a line regardless of settings.
      *
-     * @param force
-     *            The line to print.
+     * @param force The line to print.
      */
     public void force (String force) {
         print((force.equals("") ? "" : PREPEND_SEVERE) + force);
@@ -121,11 +116,10 @@ public class ConsolePanel {
     /**
      * Print the given String. Runs on JavaFX Application thread.
      *
-     * @param string
-     *            The string to print to the console.
+     * @param string The string to print to the console.
      */
     private void print (String string) {
-        Platform.runLater( () -> ConsolePanel.this.consoleTextArea.appendText(string));
+        Platform.runLater(() -> ConsolePanel.this.consoleTextArea.appendText(string));
     }
 
     private void init () {
@@ -133,7 +127,7 @@ public class ConsolePanel {
         sb.append(Const.PROGRAM_NAME + " version " + Const.VERSION_NUMBER);
         sb.replace(sb.length() - 2, sb.length(), "\n");
         String initMessage = sb.toString();
-        Platform.runLater( () -> ConsolePanel.this.consoleTextArea.setText(initMessage));
+        Platform.runLater(() -> ConsolePanel.this.consoleTextArea.setText(initMessage));
     }
 
     // ============================================================= //
@@ -147,8 +141,7 @@ public class ConsolePanel {
     /**
      * Enable or disable information printouts.
      *
-     * @param value
-     *            The setting to apply.
+     * @param value The setting to apply.
      */
     public void setInfo (boolean value) {
         info = value;
@@ -160,8 +153,7 @@ public class ConsolePanel {
     /**
      * Enable or disable Quiet Mode.
      *
-     * @param value
-     *            The setting to apply.
+     * @param value The setting to apply.
      */
     public void setQuiet (boolean value) {
         quiet = value;
@@ -171,8 +163,7 @@ public class ConsolePanel {
     /**
      * Enable or disable debug printouts.
      *
-     * @param value
-     *            The setting to apply.
+     * @param value The setting to apply.
      */
     public void setDebug (boolean value) {
         debug = value;
@@ -184,8 +175,7 @@ public class ConsolePanel {
     /**
      * Enable or disable error printouts.
      *
-     * @param value
-     *            The setting to apply.
+     * @param value The setting to apply.
      */
     public void setError (boolean value) {
         err = value;

@@ -1,13 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import contract.datastructure.DataStructure;
 import contract.datastructure.IndependentElement;
 import contract.json.Locator;
@@ -18,10 +10,16 @@ import gui.Main;
 import gui.dialog.CreateStructureDialog;
 import gui.dialog.IdentifierCollisionDialog;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
- *
  * @author Richard
- *
  */
 public class ModelLoader {
 
@@ -41,44 +39,44 @@ public class ModelLoader {
     /**
      * Automatic removal setting.
      */
-    private boolean              autoRemoveUnsued = true;
+    private boolean autoRemoveUnsued = true;
 
     /**
      * Automatic add setting.
      */
-    private boolean              autoCreateOrphan = false;
+    private boolean autoCreateOrphan = false;
 
     /**
      * Indicates that old data should always be cleared in case of an identifier
      * collision.
      */
-    private boolean              alwaysClearOld   = false;
+    private boolean alwaysClearOld = false;
     /**
      * Indicates that new data should always be rejected in case of an identifier
      * collision.
      */
-    private boolean              alwaysKeepOld    = false;
+    private boolean alwaysKeepOld = false;
 
     /**
      * List of used identifiers.
      */
-    private ArrayList<String>    usedNames;
+    private ArrayList<String> usedNames;
 
     /**
      * List of unused identifiers.
      */
-    private ArrayList<String>    unusedNames;
+    private ArrayList<String> unusedNames;
 
     /**
      * List of rejected identifiers.
      */
-    private ArrayList<String>    removedNames;
+    private ArrayList<String> removedNames;
 
     /**
      * List of the <b>data structure</b> (not operation type) names present in a list of
      * operations.
      */
-    private Set<String>          operationStructNames;
+    private Set<String> operationStructNames;
 
     // ============================================================= //
     /*
@@ -91,8 +89,7 @@ public class ModelLoader {
     /**
      * Creates a new ModelManager for the live model
      *
-     * @param liveModel
-     *            The live model in use.
+     * @param liveModel The live model in use.
      */
     public ModelLoader (ExecutionModel liveModel) {
         this.liveModel = liveModel;
@@ -109,30 +106,24 @@ public class ModelLoader {
     /**
      * Attempt to insert structures and operations into a model.
      *
-     * @param model
-     *            The model to insert into.
-     * @param newOps
-     *            The new operations to insert.
-     * @param newStructs
-     *            The new data structures to insert.
+     * @param model The model to insert into.
+     * @param newOps The new operations to insert.
+     * @param newStructs The new data structures to insert.
      * @return {@code false} if {@code model} hasn't changed. True if there is a
-     *         possibility that is has.
+     * possibility that is has.
      */
     public static boolean insertIntoModel (ExecutionModel targetModel, List<Operation> newOps,
-            Map<String, DataStructure> newStructs) {
+                                           Map<String, DataStructure> newStructs) {
         return new ModelLoader(targetModel).insertIntoLiveModel(newStructs, newOps);
     }
 
     /**
      * Attempt to insert structures and operations into a live model.
      *
-     * @param newStructs
-     *            The new data structures to insert.
-     * @param newOps
-     *            The new operations to insert.
-     *
+     * @param newStructs The new data structures to insert.
+     * @param newOps The new operations to insert.
      * @return {@code false} if the live model hasn't changed. True if there is a
-     *         possibility that is has.
+     * possibility that is has.
      */
     public boolean insertIntoLiveModel (Map<String, DataStructure> newStructs, List<Operation> newOps) {
 
@@ -175,8 +166,7 @@ public class ModelLoader {
     /**
      * Strip all unused variables from a model, without user prompt.
      *
-     * @param liveModel
-     *            The model to strip unused names from.
+     * @param liveModel The model to strip unused names from.
      */
     public static void stripUnusedNames (ExecutionModel liveModel) {
         ModelLoader loader = new ModelLoader(liveModel);
@@ -255,52 +245,52 @@ public class ModelLoader {
         // Gather all operation identifiers.
         for (Operation op : ops) {
             switch (op.operation) {
-            case message:
-                break;
-            case read:
-            case write:
+                case message:
+                    break;
+                case read:
+                case write:
 
-                Locator source = OpUtil.getLocator(op, Key.source);
-                if (source != null) {
-                    DataStructure sourceStruct = structs.get(source.identifier);
-                    if (sourceStruct == null) {
-                        operationStructNames.add(source.identifier);
+                    Locator source = OpUtil.getLocator(op, Key.source);
+                    if (source != null) {
+                        DataStructure sourceStruct = structs.get(source.identifier);
+                        if (sourceStruct == null) {
+                            operationStructNames.add(source.identifier);
+                        }
                     }
-                }
 
-                Locator target = OpUtil.getLocator(op, Key.target);
-                if (target != null) {
-                    DataStructure targetStruct = structs.get(target.identifier);
+                    Locator target = OpUtil.getLocator(op, Key.target);
+                    if (target != null) {
+                        DataStructure targetStruct = structs.get(target.identifier);
+                        if (targetStruct == null) {
+                            operationStructNames.add(target.identifier);
+                        }
+                    }
+                    break;
+                case swap:
+                    Locator var1 = OpUtil.getLocator(op, Key.var1);
+
+                    if (var1 != null) {
+                        DataStructure var1Struct = structs.get(var1.identifier);
+                        if (var1Struct == null) {
+                            operationStructNames.add(var1.identifier);
+                        }
+                    }
+
+                    Locator var2 = OpUtil.getLocator(op, Key.target);
+                    if (var2 != null) {
+                        DataStructure var2Struct = structs.get(var2.identifier);
+                        if (var2Struct == null) {
+                            operationStructNames.add(var2.identifier);
+                        }
+                    }
+                    break;
+                case remove:
+                    String identifier = OpUtil.getIdentifier(op);
+                    DataStructure targetStruct = structs.get(identifier);
                     if (targetStruct == null) {
-                        operationStructNames.add(target.identifier);
+                        operationStructNames.add(identifier);
                     }
-                }
-                break;
-            case swap:
-                Locator var1 = OpUtil.getLocator(op, Key.var1);
-
-                if (var1 != null) {
-                    DataStructure var1Struct = structs.get(var1.identifier);
-                    if (var1Struct == null) {
-                        operationStructNames.add(var1.identifier);
-                    }
-                }
-
-                Locator var2 = OpUtil.getLocator(op, Key.target);
-                if (var2 != null) {
-                    DataStructure var2Struct = structs.get(var2.identifier);
-                    if (var2Struct == null) {
-                        operationStructNames.add(var2.identifier);
-                    }
-                }
-                break;
-            case remove:
-                String identifier = OpUtil.getIdentifier(op);
-                DataStructure targetStruct = structs.get(identifier);
-                if (targetStruct == null) {
-                    operationStructNames.add(identifier);
-                }
-                break;
+                    break;
             }
         }
     }
@@ -317,17 +307,17 @@ public class ModelLoader {
 
         switch (foo) {
 
-        case IdentifierCollisionDialog.CLEAR_OLD_ALWAYS:
-            alwaysClearOld = true;
-        case IdentifierCollisionDialog.CLEAR_OLD:
-            liveModel.clear();
-            abortImport = false;
-            break;
+            case IdentifierCollisionDialog.CLEAR_OLD_ALWAYS:
+                alwaysClearOld = true;
+            case IdentifierCollisionDialog.CLEAR_OLD:
+                liveModel.clear();
+                abortImport = false;
+                break;
 
-        case IdentifierCollisionDialog.KEEP_OLD_ALWAYS:
-            alwaysKeepOld = true;
-        case IdentifierCollisionDialog.KEEP_OLD:
-            abortImport = true;
+            case IdentifierCollisionDialog.KEEP_OLD_ALWAYS:
+                alwaysKeepOld = true;
+            case IdentifierCollisionDialog.KEEP_OLD:
+                abortImport = true;
         }
 
         return abortImport;
@@ -368,10 +358,8 @@ public class ModelLoader {
     /**
      * Test usage of structures without altering the {@code liveModel}.
      *
-     * @param newOps
-     *            The list of new operations.
-     * @param newStructs
-     *            The map of new structures.
+     * @param newOps The list of new operations.
+     * @param newStructs The map of new structures.
      */
     public void runUseageTest (List<Operation> newOps, Map<String, DataStructure> newStructs) {
         ExecutionModel testModel = new ExecutionModel("testModel " + Math.random() * Integer.MAX_VALUE, true, false);
@@ -387,10 +375,8 @@ public class ModelLoader {
     /**
      * Check for collision between keys
      *
-     * @param newNames
-     *            The new identifiers.
-     * @param oldNames
-     *            The old identifiers.
+     * @param newNames The new identifiers.
+     * @param oldNames The old identifiers.
      * @return {@code} if there was a collision, false otherwise.
      */
     public static boolean checkNameCollision (Collection<String> newNames, Collection<String> oldNames) {
@@ -413,8 +399,7 @@ public class ModelLoader {
     /**
      * If {@code true}, unused structures will be removed automatically.
      *
-     * @param autoRemoveUnsued
-     *            The automatic removal settings.
+     * @param autoRemoveUnsued The automatic removal settings.
      */
     public void setAutoRemoveUnused (boolean autoRemoveUnsued) {
         this.autoRemoveUnsued = autoRemoveUnsued;
@@ -423,8 +408,7 @@ public class ModelLoader {
     /**
      * If {@code true}, undeclared structures will be created as Orphans automatically.
      *
-     * @param autoRemoveUnsued
-     *            The automatic adding of orphans settings.
+     * @param autoRemoveUnsued The automatic adding of orphans settings.
      */
     public void setAutoCreateOrphan (boolean autoCreateOrphan) {
         this.autoCreateOrphan = autoCreateOrphan;

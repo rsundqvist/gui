@@ -1,9 +1,5 @@
 package gui.panel;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
-
 import contract.json.Operation;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -24,14 +20,16 @@ import model.ExecutionTickListener;
 import render.Visualization;
 import render.assets.VisualController;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+
 /**
- *
  * @author Richard Sundqvist
- *
  */
 public class ControlPanel extends Pane implements ExecutionTickListener {
 
-    private static final int          tickCount = 100;
+    private static final int tickCount = 100;
 
     // ============================================================= //
     /*
@@ -41,15 +39,15 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
      */
     // ============================================================= //
 
-    private final VisualController    visualController;
-    private final Visualization       visualization;
-    private final ProgressBar         animationProgress;
+    private final VisualController visualController;
+    private final Visualization visualization;
+    private final ProgressBar animationProgress;
 
     // Model progress list + related items.
-    private final ProgressBar         modelProgress;
+    private final ProgressBar modelProgress;
     private final ListView<Operation> operationList;
-    private final TextField           listSizeLabel;
-    private final TextField           currentOperationLabel;
+    private final TextField listSizeLabel;
+    private final TextField currentOperationLabel;
 
     // ============================================================= //
     /*
@@ -62,10 +60,8 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
     /**
      * Create a new ControlPanel
      *
-     * @param executionModelController
-     *            Used to control the model
-     * @param visualization
-     *            Used to control visualization.
+     * @param executionModelController Used to control the model
+     * @param visualization Used to control visualization.
      */
     @SuppressWarnings("unchecked")
     public ControlPanel (VisualController executionModelController, Visualization visualization) {
@@ -105,7 +101,7 @@ public class ControlPanel extends Pane implements ExecutionTickListener {
         Slider speedSlider = (Slider) namespace.get("speedSlider");
         speedSlider.setValue(-visualController.getAutoExecutionSpeed());
         speedSlider.setOnMouseReleased(event ->
-            visualController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()))
+                visualController.setAutoExecutionSpeed(Math.abs((long) speedSlider.getValue()))
         );
 
         // Panel sizing.

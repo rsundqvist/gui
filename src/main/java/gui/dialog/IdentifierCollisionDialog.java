@@ -1,8 +1,5 @@
 package gui.dialog;
 
-import java.io.IOException;
-import java.util.Collection;
-
 import assets.Const;
 import contract.datastructure.DataStructure;
 import javafx.fxml.FXMLLoader;
@@ -14,17 +11,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.Collection;
+
 public class IdentifierCollisionDialog {
 
-    public static final short KEEP_OLD         = 0;
-    public static final short KEEP_OLD_ALWAYS  = 1;
-    public static final short CLEAR_OLD        = 3;
+    public static final short KEEP_OLD = 0;
+    public static final short KEEP_OLD_ALWAYS = 1;
+    public static final short CLEAR_OLD = 3;
     public static final short CLEAR_OLD_ALWAYS = 4;
 
-    private short             answer;
-    private final TextField   oldStructs, newStructs;
-    private final CheckBox    memory;
-    private final Stage       parent, root;
+    private short answer;
+    private final TextField oldStructs, newStructs;
+    private final CheckBox memory;
+    private final Stage parent, root;
 
     public IdentifierCollisionDialog (Stage parent) {
         this.parent = parent;

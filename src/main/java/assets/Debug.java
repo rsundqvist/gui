@@ -2,7 +2,6 @@ package assets;
 
 /**
  * @author Richard Sundqvist
- *
  */
 public final class Debug {
     public static void main (String[] args) {

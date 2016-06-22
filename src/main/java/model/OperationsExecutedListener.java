@@ -1,13 +1,11 @@
 package model;
 
-import java.util.List;
-
 import contract.json.Operation;
 
+import java.util.List;
+
 /**
- *
  * @author Richard Sundqvist
- *
  */
 public interface OperationsExecutedListener {
 

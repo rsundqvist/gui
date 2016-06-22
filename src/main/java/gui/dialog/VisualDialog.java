@@ -1,7 +1,5 @@
 package gui.dialog;
 
-import java.io.IOException;
-
 import assets.Const;
 import contract.datastructure.DataStructure;
 import contract.datastructure.VisualType;
@@ -14,14 +12,16 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+import java.io.IOException;
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class VisualDialog {
 
-    private final Stage     root;
-    private final Label     nameLabel;
-    private DataStructure   struct;
+    private final Stage root;
+    private final Label nameLabel;
+    private DataStructure struct;
     private final ChoiceBox visualTypeChoiceBox;
-    private boolean         visualChanged;
+    private boolean visualChanged;
 
     public VisualDialog (Stage parent) {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/dialog/VisualDialog.fxml"));
@@ -68,10 +68,9 @@ public class VisualDialog {
     /**
      * Show the visualisation options dialog for a given structure.
      *
-     * @param struct
-     *            A DataStructure.
+     * @param struct A DataStructure.
      * @return {@code true} if the visualisation options have changed. {@code false}
-     *         otherwise.
+     * otherwise.
      */
     public boolean show (DataStructure struct) {
         // Modify the dialog for this structure.

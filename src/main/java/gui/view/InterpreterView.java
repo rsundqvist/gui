@@ -1,10 +1,5 @@
 package gui.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import contract.json.Operation;
 import contract.operation.OperationType;
 import gui.Main;
@@ -25,11 +20,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Controller and model for the Interpreter view.
  *
  * @author Richard Sundqvist
- *
  */
 public class InterpreterView implements InvalidationListener {
 
@@ -42,18 +41,18 @@ public class InterpreterView implements InvalidationListener {
     // ============================================================= //
 
     private final ObservableList<Operation> beforeItems, afterItems;
-    private final Map<String, Object>       namespace;
-    private final Stage                     root;
-    private final TextField                 beforeCount, afterCount;
-    private final Interpreter               interpreter;
-    private final Stage                     parent;
+    private final Map<String, Object> namespace;
+    private final Stage root;
+    private final TextField beforeCount, afterCount;
+    private final Interpreter interpreter;
+    private final Stage parent;
     /**
      * Items received from the caller of show ().
      */
-    private List<Operation>                 receivedItems;
-    private final Button                    interpretButton;
-    private final Button                    moveToBeforeButton;
-    private final Button                    keepButton;
+    private List<Operation> receivedItems;
+    private final Button interpretButton;
+    private final Button moveToBeforeButton;
+    private final Button keepButton;
 
     // ============================================================= //
     /*
@@ -124,8 +123,7 @@ public class InterpreterView implements InvalidationListener {
     /**
      * Show the Interpreter View.
      *
-     * @param ops
-     *            The list of operations to use.
+     * @param ops The list of operations to use.
      * @return A list of interpreted operations, or {@code null} if the user cancelled.
      */
     public List<Operation> show (List<Operation> ops) {
