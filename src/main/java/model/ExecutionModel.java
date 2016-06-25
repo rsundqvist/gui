@@ -532,7 +532,7 @@ public class ExecutionModel {
                     offset += numAtomic - 1;
 
                     if (atomicExecution) {
-                        index += numAtomic - 1;
+                        index += numAtomic - 1; // Increase index as well if to ensure all operations are counted.
                     }
                 }
             }
