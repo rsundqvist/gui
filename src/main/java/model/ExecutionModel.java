@@ -4,7 +4,6 @@ import assets.Debug;
 import contract.datastructure.DataStructure;
 import contract.json.Locator;
 import contract.json.Operation;
-import contract.operation.HighLevelOperation;
 import contract.operation.Key;
 import contract.operation.OP_Message;
 import contract.operation.OperationType;
@@ -454,7 +453,7 @@ public class ExecutionModel {
     public void setOperations (List<Operation> operations) {
         if (operations != null) {
 
-            atomicOperations.setAll(asAtomic(operations));
+            atomicOperations.setAll(OpUtil.asAtomicList(operations));
             mixedOperations.setAll(operations);
 
             if (atomicExecution) {
@@ -528,7 +527,6 @@ public class ExecutionModel {
             for (int i = 0; i <= index; i++) {
                 op = mixedOperations.get(i);
                 numAtomic = op.operation.numAtomicOperations;
-                //TODO: Måste justera index när vi använder non-atomic index på mixad lista
 
                 if (numAtomic > 1) {
                     offset += numAtomic - 1;
@@ -541,12 +539,14 @@ public class ExecutionModel {
 
             if (atomicExecution) {
                 currentExecutionList.setAll(atomicOperations);
-                this.index += offset;
+                index += offset;
             } else {
                 currentExecutionList.setAll(mixedOperations);
-                this.index -= offset;
+                index -= offset;
             }
 
+            reset();
+            execute(index);
             updateProperties();
         }
     }
@@ -558,35 +558,6 @@ public class ExecutionModel {
      */
     public boolean isAtomicExecution () {
         return atomicExecution;
-    }
-
-    /**
-     * Converts any {@link HighLevelOperation} found into a group of low level
-     * operations.
-     *
-     * @param mixedList A list of atomic and high level operations.
-     * @return A list a atomic operations.
-     */
-    public List<Operation> asAtomic (List<Operation> mixedList) {
-        List<Operation> answer = new ArrayList<>(mixedList.size() * 2);
-
-        for (Operation op : mixedList) {
-            if (op.operation.numAtomicOperations > 1) {
-                HighLevelOperation hlo = (HighLevelOperation) op;
-
-                if (hlo.atomicOperations == null || hlo.atomicOperations.size() != hlo.operation.numAtomicOperations) {
-                    System.err.println("WARNING: Bad atomic operations list: " + hlo.atomicOperations + " in " + hlo);
-                    answer.add(hlo);
-                } else {
-                    answer.addAll(hlo.atomicOperations);
-                }
-
-            } else {
-                answer.add(op);
-            }
-        }
-
-        return answer;
     }
 
     /**
@@ -716,4 +687,5 @@ public class ExecutionModel {
     public ReadOnlyIntegerProperty indexProperty () {
         return indexProperty.getReadOnlyProperty();
     }
+
 }
