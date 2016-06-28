@@ -39,7 +39,7 @@ public class ModelLoader {
     /**
      * Automatic removal setting.
      */
-    private boolean autoRemoveUnsued = true;
+    private boolean autoRemoveUnused = true;
 
     /**
      * Automatic add setting.
@@ -106,7 +106,7 @@ public class ModelLoader {
     /**
      * Attempt to insert structures and operations into a model.
      *
-     * @param model The model to insert into.
+     * @param targetModel The model to insert into.
      * @param newOps The new operations to insert.
      * @param newStructs The new data structures to insert.
      * @return {@code false} if {@code model} hasn't changed. True if there is a
@@ -135,8 +135,8 @@ public class ModelLoader {
         if (nameCollision) {
             IdentifierCollisionDialog icd = new IdentifierCollisionDialog(null);
 
-            short icdReturnedRoutine = icd.show(liveModel.getDataStructures().values(), newStructs.values());
-            boolean abortImport = handleNameCollisionRespone(icdReturnedRoutine);
+            short collisionRoutine = icd.show(liveModel.getDataStructures().values(), newStructs.values());
+            boolean abortImport = handleNameCollisionRespone(collisionRoutine);
 
             if (abortImport) {
                 return false;
@@ -284,13 +284,6 @@ public class ModelLoader {
                         }
                     }
                     break;
-                case remove:
-                    String identifier = OpUtil.getIdentifier(op);
-                    DataStructure targetStruct = structs.get(identifier);
-                    if (targetStruct == null) {
-                        operationStructNames.add(identifier);
-                    }
-                    break;
             }
         }
     }
@@ -324,7 +317,7 @@ public class ModelLoader {
     }
 
     private void handleUnusedNames (Map<String, DataStructure> newStructs) {
-        if (autoRemoveUnsued) {
+        if (autoRemoveUnused) {
             for (String name : unusedNames) {
                 newStructs.remove(name);
                 removedNames.add(name);
@@ -402,13 +395,13 @@ public class ModelLoader {
      * @param autoRemoveUnsued The automatic removal settings.
      */
     public void setAutoRemoveUnused (boolean autoRemoveUnsued) {
-        this.autoRemoveUnsued = autoRemoveUnsued;
+        this.autoRemoveUnused = autoRemoveUnsued;
     }
 
     /**
      * If {@code true}, undeclared structures will be created as Orphans automatically.
      *
-     * @param autoRemoveUnsued The automatic adding of orphans settings.
+     * @param autoCreateOrphan The automatic adding of orphans settings.
      */
     public void setAutoCreateOrphan (boolean autoCreateOrphan) {
         this.autoCreateOrphan = autoCreateOrphan;

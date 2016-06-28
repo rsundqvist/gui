@@ -28,7 +28,7 @@ public class IdentifierCollisionDialog {
 
     public IdentifierCollisionDialog (Stage parent) {
         this.parent = parent;
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/dialog/IdentifierCollisionDialog.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dialog/IdentifierCollisionDialog.fxml"));
         fxmlLoader.setController(this);
         root = new Stage();
         root.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon_cogwheel.png")));
@@ -42,7 +42,7 @@ public class IdentifierCollisionDialog {
             e.printStackTrace();
         }
         root.setOnCloseRequest(event -> {
-            event.consume(); // Better to do this now than missing it later.
+            event.consume();
             answer = KEEP_OLD;
             root.close();
         });
