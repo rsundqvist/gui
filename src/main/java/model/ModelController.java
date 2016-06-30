@@ -234,7 +234,7 @@ public class ModelController {
      */
     public void setExecutionTickListener (ExecutionTickListener executionTickListener, int tickCount) {
         if (tickCount < 1) {
-            throw new IllegalArgumentException("tickCount cannot be less than zero.");
+            throw new IllegalArgumentException("tickCount cannot be less than one.");
         }
 
         if (Debug.ERR) {

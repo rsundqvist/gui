@@ -93,9 +93,7 @@ public class BarchartElement extends RectangleElement {
     @Override
     public BarchartElement clone () {
         BarchartElement clone = (BarchartElement) AVElementFactory.clone(this);
-
         clone.updateSize(unitHeight, -1);
-
         return clone;
     }
 }

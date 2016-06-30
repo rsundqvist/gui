@@ -1,6 +1,6 @@
 package render.assets;
 
-import contract.json.Operation;
+import contract.wrapper.Operation;
 import model.ExecutionModel;
 import model.ModelController;
 import model.OperationsExecutedListener;

@@ -1,6 +1,6 @@
 package model;
 
-import contract.json.Operation;
+import contract.wrapper.Operation;
 
 import java.util.List;
 

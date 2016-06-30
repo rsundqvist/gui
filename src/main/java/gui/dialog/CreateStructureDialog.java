@@ -22,7 +22,7 @@ import java.io.IOException;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class CreateStructureDialog {
 
-    private final Stage parent, root;
+    private final Stage root;
     private final ChoiceBox<RawType> rawType;
     private final Label name;
     // Volatile
@@ -33,14 +33,13 @@ public class CreateStructureDialog {
     private String identifier;
 
     public CreateStructureDialog (Stage parent) {
-        this.parent = parent;
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/dialog/CreateStructureDialog.fxml"));
         fxmlLoader.setController(this);
         root = new Stage();
         root.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon_cogwheel.png")));
         root.initModality(Modality.APPLICATION_MODAL);
         root.setTitle(Const.PROGRAM_NAME + ": Create Data Structure");
-        root.initOwner(this.parent);
+        root.initOwner(parent);
         GridPane p = null;
         try {
             p = fxmlLoader.load();

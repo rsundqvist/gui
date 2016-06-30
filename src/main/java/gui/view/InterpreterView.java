@@ -1,6 +1,6 @@
 package gui.view;
 
-import contract.json.Operation;
+import contract.wrapper.Operation;
 import contract.operation.OperationType;
 import gui.Main;
 import interpreter.Interpreter;
@@ -52,7 +52,6 @@ public class InterpreterView implements InvalidationListener {
     private List<Operation> receivedItems;
     private final Button interpretButton;
     private final Button moveToBeforeButton;
-    private final Button keepButton;
 
     // ============================================================= //
     /*
@@ -93,7 +92,7 @@ public class InterpreterView implements InvalidationListener {
         beforeItems.addListener(this);
         afterItems.addListener(this);
 
-        receivedItems = new ArrayList<Operation>();
+        receivedItems = new ArrayList<>();
 
         // Counters
         beforeCount = (TextField) namespace.get("beforeCount");
@@ -102,7 +101,7 @@ public class InterpreterView implements InvalidationListener {
         // Button enabling
         interpretButton = (Button) namespace.get("interpretButton");
         moveToBeforeButton = (Button) namespace.get("moveToBeforeButton");
-        keepButton = (Button) namespace.get("keepButton");
+        Button keepButton = (Button) namespace.get("keepButton");
         keepButton.disableProperty().bind(moveToBeforeButton.disabledProperty());
 
         // Size and build
@@ -129,7 +128,7 @@ public class InterpreterView implements InvalidationListener {
     public List<Operation> show (List<Operation> ops) {
         interpretButton.setDisable(ops.isEmpty());
         moveToBeforeButton.setDisable(true);
-        receivedItems = new ArrayList<Operation>(ops);
+        receivedItems = new ArrayList<>(ops);
         beforeItems.setAll(receivedItems);
         afterItems.clear();
         loadTestCases();
@@ -144,7 +143,7 @@ public class InterpreterView implements InvalidationListener {
      * Listener for the "Keep" button.
      */
     public void keepInterpreted () {
-        if (afterItems.isEmpty() == false) {
+        if (!afterItems.isEmpty()) {
             receivedItems.clear();
             receivedItems.addAll(afterItems);
             root.close();
@@ -167,7 +166,7 @@ public class InterpreterView implements InvalidationListener {
     public void moveToBefore () {
         moveToBeforeButton.setDisable(true);
         interpretButton.setDisable(false);
-        if (afterItems.isEmpty() == false) {
+        if (!afterItems.isEmpty()) {
             beforeItems.setAll(afterItems);
             afterItems.clear();
         }

@@ -1,6 +1,6 @@
 package gui.panel;
 
-import contract.json.Operation;
+import contract.wrapper.Operation;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;

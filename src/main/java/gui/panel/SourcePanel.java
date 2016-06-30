@@ -1,6 +1,6 @@
 package gui.panel;
 
-import contract.json.Operation;
+import contract.wrapper.Operation;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -128,7 +128,6 @@ public class SourcePanel extends TabPane {
         return sources;
     }
 
-    @Deprecated
     private void initTab () {
         Tab newTab = new Tab();
         newTab.setText("sample_source.java");

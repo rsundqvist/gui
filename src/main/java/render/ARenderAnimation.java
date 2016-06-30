@@ -254,14 +254,14 @@ public abstract class ARenderAnimation {
             return st;
         }
 
-        public static final Transition fadeIn (long millis) {
+        public static Transition fadeIn (long millis) {
             FadeTransition ft = new FadeTransition(Duration.millis(millis));
             ft.setFromValue(0);
             ft.setToValue(1.0);
             return ft;
         }
 
-        public static final Transition fadeOut (long millis) {
+        public static Transition fadeOut (long millis) {
             FadeTransition ft = new FadeTransition(Duration.millis(millis));
             ft.setFromValue(1.0);
             ft.setToValue(0);

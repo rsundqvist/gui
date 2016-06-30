@@ -22,19 +22,18 @@ public class ExamplesDialog {
     private static final Color STATUS_ERR = Color.web("#ff0000");
     private final TextField input, mirror;
     private final Label status, name;
-    private final Stage parent, root;
+    private final Stage root;
     private final Button run;
     private double[] data;
 
     public ExamplesDialog (Stage parent) {
-        this.parent = parent;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dialog/ExamplesDialog.fxml"));
         fxmlLoader.setController(this);
         root = new Stage();
         root.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon_cogwheel.png")));
         root.initModality(Modality.APPLICATION_MODAL);
         root.setTitle(Const.PROGRAM_NAME + ": Example");
-        root.initOwner(this.parent);
+        root.initOwner(parent);
         GridPane p = null;
         try {
             p = fxmlLoader.load();
@@ -47,9 +46,7 @@ public class ExamplesDialog {
         });
         fxmlLoader.getNamespace();
         input = (TextField) fxmlLoader.getNamespace().get("input");
-        input.setOnKeyTyped(event -> {
-            validateInput();
-        });
+        input.setOnKeyTyped(event -> validateInput());
         mirror = (TextField) fxmlLoader.getNamespace().get("mirror");
         status = (Label) fxmlLoader.getNamespace().get("status");
         name = (Label) fxmlLoader.getNamespace().get("name");
@@ -70,7 +67,7 @@ public class ExamplesDialog {
             return true;
         }
         input = input.replaceAll("\\s+", "");
-        input.replaceAll("\\s", "");
+        input = input.replaceAll("\\s", "");
         String[] doubles_string;
         if (input.contains(",")) {
             doubles_string = input.split(",");
@@ -101,7 +98,7 @@ public class ExamplesDialog {
     /**
      * Show and wait for user input. Returns a (possibly empty) double[].
      *
-     * @param name The name of the algoritm.
+     * @param name The name of the algorithm.
      * @return An array of doubles.
      */
     public double[] show (String name) {
@@ -117,6 +114,9 @@ public class ExamplesDialog {
         }
     }
 
+    /**
+     * FXML listener method.
+     */
     public void closeButton () {
         input.clear();
         mirror.clear();
@@ -124,6 +124,9 @@ public class ExamplesDialog {
         root.close();
     }
 
+    /**
+     * FXML listener method.
+     */
     public void okButton () {
         root.close();
     }

@@ -24,17 +24,20 @@ public class IdentifierCollisionDialog {
     private short answer;
     private final TextField oldStructs, newStructs;
     private final CheckBox memory;
-    private final Stage parent, root;
+    private final Stage root;
 
+    /**
+     * Create a new IdentifierCollisionDialog.
+     * @param parent The parent for the dialog.
+     */
     public IdentifierCollisionDialog (Stage parent) {
-        this.parent = parent;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dialog/IdentifierCollisionDialog.fxml"));
         fxmlLoader.setController(this);
         root = new Stage();
         root.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon_cogwheel.png")));
         root.initModality(Modality.APPLICATION_MODAL);
         root.setTitle(Const.PROGRAM_NAME + ": Identifier Collision");
-        root.initOwner(this.parent);
+        root.initOwner(parent);
         GridPane p = null;
         try {
             p = fxmlLoader.load();
@@ -55,6 +58,12 @@ public class IdentifierCollisionDialog {
         root.setResizable(false);
     }
 
+    /**
+     * Show the collision dialog.
+     * @param oldStructs The old, known structures.
+     * @param newStructs The new structures which are being imported.
+     * @return A {@code short} indicating how the collision should be handled.
+     */
     public short show (Collection<DataStructure> oldStructs, Collection<DataStructure> newStructs) {
         this.oldStructs.setText(oldStructs.toString());
         this.newStructs.setText(newStructs.toString());
@@ -62,6 +71,9 @@ public class IdentifierCollisionDialog {
         return answer;
     }
 
+    /**
+     * FXML Listener method.
+     */
     public void reject_old () {
         if (memory.isSelected()) {
             answer = CLEAR_OLD_ALWAYS;
@@ -71,6 +83,9 @@ public class IdentifierCollisionDialog {
         root.close();
     }
 
+    /**
+     * FXML Listener method.
+     */
     public void keep_old () {
         if (memory.isSelected()) {
             answer = KEEP_OLD_ALWAYS;

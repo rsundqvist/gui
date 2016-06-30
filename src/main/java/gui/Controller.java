@@ -2,7 +2,6 @@ package gui;
 
 import assets.Const;
 import assets.Debug;
-import assets.Tools;
 import assets.examples.Examples;
 import assets.examples.Examples.Algorithm;
 import com.google.gson.JsonIOException;
@@ -11,7 +10,7 @@ import contract.datastructure.DataStructure;
 import contract.io.ComListener;
 import contract.io.JGroupCommunicator;
 import contract.io.LogStreamManager;
-import contract.json.Operation;
+import contract.wrapper.Operation;
 import gui.dialog.ExamplesDialog;
 import gui.dialog.VisualDialog;
 import gui.panel.SourcePanel;
@@ -168,7 +167,7 @@ public class Controller implements ComListener {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
         fc.setTitle("Open Log File");
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.json"),
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.wrapper"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File source = fc.showOpenDialog(primaryStage);
         if (source != null) {
@@ -285,7 +284,7 @@ public class Controller implements ComListener {
         DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd_HHmmss");
         Calendar cal = Calendar.getInstance();
         fc.setInitialFileName(dateFormat.format(cal.getTime()));
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.json"),
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.wrapper"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File target = fc.showSaveDialog(primaryStage);
         if (target == null) {

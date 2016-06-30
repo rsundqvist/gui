@@ -2,8 +2,8 @@ package model;
 
 import contract.datastructure.DataStructure;
 import contract.datastructure.IndependentElement;
-import contract.json.Locator;
-import contract.json.Operation;
+import contract.wrapper.Locator;
+import contract.wrapper.Operation;
 import contract.operation.Key;
 import contract.utility.OpUtil;
 import gui.Main;

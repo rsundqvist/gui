@@ -2,12 +2,11 @@ package model;
 
 import assets.Debug;
 import contract.datastructure.DataStructure;
-import contract.json.Locator;
-import contract.json.Operation;
 import contract.operation.Key;
 import contract.operation.OP_Message;
-import contract.operation.OperationType;
 import contract.utility.OpUtil;
+import contract.wrapper.Locator;
+import contract.wrapper.Operation;
 import gui.Main;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
@@ -47,11 +46,7 @@ public class ExecutionModel {
     private final ObservableMap<String, DataStructure> dataStructures;
 
     /**
-     * The current list from which operations are currently executed.<br>
-     * <b>Atomic operations:</br>
-     * {@link OperationType#read}<br>
-     * {@link OperationType#write}<br>
-     * {@link OperationType#message}<br>
+     * The current list from which operations are currently executed.
      */
     private final ObservableList<Operation> currentExecutionList;
 
@@ -82,7 +77,8 @@ public class ExecutionModel {
 
 
     /**
-     * Indicates whether parallel execution is permitted.
+     * Indicates whether parallel execution is allowed.
+     * If {@code true}, all operations with the same (non-negative) group number are executed at once.
      */
     private boolean parallelExecution;
 
@@ -270,7 +266,7 @@ public class ExecutionModel {
 
         for (int i = 0; i <= targetIndex; i++) {
             if (tryExecuteNext()) {
-                execute();
+                nextOperation();
             }
         }
 
@@ -306,39 +302,70 @@ public class ExecutionModel {
     // ============================================================= //
 
     /**
-     * Execute the
+     * Perform execution in parallel mode.
      */
     private void executeParallel () {
-        // TODO: Implement parallel execution.
-        executeLinear();
+        Operation operation = nextOperation();
+        if (operation == null) {
+            return; // Nothing was executed.
+        }
+
+        int group = operation.group;
+        if (group < 0) {
+            return; // Ignore groups with negative values.
+        }
+
+        do {
+            execute();
+            operation = nextOperation();
+        } while (operation != null && operation.group == group);
     }
 
     /**
-     * Execute the next operation.
+     * Perform execution in linear mode.
      */
     private void executeLinear () {
-        execute();
-    }
-
-    /**
-     * Execute the next operation in the queue and add it to {@link #executedOperations}.
-     */
-    private void execute () {
-        setIndex(index + 1);
-
-        if (index >= 0 && index < currentExecutionList.size()) {
-            Operation op = currentExecutionList.get(index);
-            executedOperations.add(op);
-            execute(op);
+        Operation op = nextOperation();
+        if (op != null) {
+            execute();
         }
     }
 
     /**
-     * Execute an operation.
+     * Increment the index by one and fetch the operation from the {@link #currentExecutionList} for execution.
+     */
+    private void execute () {
+        setIndex(index + 1);
+        Operation op = currentExecutionList.get(index);
+        execute(op);
+    }
+
+    /**
+     * Returns the operation ahead of the current {@link #index}.
+     *
+     * @return The operation which is next in line to be executed.
+     */
+    public Operation nextOperation () {
+        int index = this.index + 1;
+
+        if (index < currentExecutionList.size()) {
+            return currentExecutionList.get(index);
+        }
+
+        return null;
+    }
+
+    /**
+     * Execute an operation. Argument {@code op} must not be null.
      *
      * @param op The operation to execute.
+     * @return The operation which was executed if successful, {@code null} otherwise.
      */
-    private void execute (Operation op) {
+    private Operation execute (Operation op) {
+        if (Debug.OUT) {
+            System.out.println("ExecutionModel: execute(): " + op);
+        }
+
         switch (op.operation) {
 
             case message:
@@ -398,13 +425,11 @@ public class ExecutionModel {
                 }
                 break;
             default:
-                System.err.print("Unknown operation type: \"" + op.operation + "\"");
-                break;
+                System.err.print("Bad operation type: \"" + op.operation + "\"");
+                return null;
         }
-
-        if (Debug.OUT) {
-            System.out.println("ExecutionModel: execute(): " + op);
-        }
+        executedOperations.add(op);
+        return op;
     }
 
     // ============================================================= //
@@ -518,15 +543,13 @@ public class ExecutionModel {
             this.atomicExecution = atomicExecution;
             atomicExecutionProperty.set(atomicExecution);
 
-            Operation op;
             int numAtomic;
             int offset = 0;
             int index = this.index;
 
             // Translate index
             for (int i = 0; i <= index; i++) {
-                op = mixedOperations.get(i);
-                numAtomic = op.operation.numAtomicOperations;
+                numAtomic = mixedOperations.get(i).operation.numAtomicOperations;
 
                 if (numAtomic > 1) {
                     offset += numAtomic - 1;

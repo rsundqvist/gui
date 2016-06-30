@@ -47,8 +47,6 @@ public class ARenderManager extends BorderPane implements VisualListener {
     // Used to maintain settings when changing renders.
     private ARender previousRender;
 
-    private boolean translateOnVisualTypeChange = true;
-
     // ============================================================= //
     /*
      *
@@ -141,7 +139,9 @@ public class ARenderManager extends BorderPane implements VisualListener {
     // ============================================================= //
 
     private void initRender () {
-        if (translateOnVisualTypeChange && previousRender != null) {
+        if (previousRender != null) {
+
+            // Keep render in the same place.
             double scaleX = previousRender.getScaleX();
             double scaleY = previousRender.getScaleY();
             double translateX = previousRender.getTranslateX();
