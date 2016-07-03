@@ -13,8 +13,6 @@ import javafx.scene.shape.Rectangle;
  */
 public class BarchartElement extends RectangleElement {
 
-    private Rectangle rect;
-
     private double unitHeight;
 
     /**
@@ -63,15 +61,7 @@ public class BarchartElement extends RectangleElement {
 
     @Override
     public void createShape () {
-        // super.createShape(); TODO Uncomment, but fucks up positioning on the
-        // Y-axis.
-
-        rect = new Rectangle();
-        rect.setWidth(width);
-        rect.setHeight(height);
-        rect.setStroke(Color.BLACK);
-        shape = rect;
-
+        super.createShape();
         fixPositioning(0);
     }
 
@@ -86,8 +76,11 @@ public class BarchartElement extends RectangleElement {
     }
 
     private void fixPositioning (double y) {
+        /*
         DoubleBinding neg_half_height = rect.heightProperty().divide(2).multiply(-1);
         layoutYProperty().bind(neg_half_height.add(y).subtract(render.assets.Const.DEFAULT_ELEMENT_HEIGHT / 2));
+        */
+        System.out.println("BarchartElement.fixPositioning does nothing.");
     }
 
     @Override
