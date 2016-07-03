@@ -7,7 +7,6 @@ import contract.operation.OP_Message;
 import contract.utility.OpUtil;
 import contract.wrapper.Locator;
 import contract.wrapper.Operation;
-import gui.Main;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -207,9 +206,9 @@ public class ExecutionModel {
 
     private void notifyExecutedOperationsListeners () {
         List<Operation> executedOperations;
-        for (OperationsExecutedListener opl : operationsExecutedListeners) {
+        for (OperationsExecutedListener oel : operationsExecutedListeners) {
             executedOperations = new ArrayList<>(this.executedOperations);
-            opl.operationsExecuted(executedOperations);
+            oel.operationsExecuted(executedOperations);
         }
     }
 
@@ -252,9 +251,8 @@ public class ExecutionModel {
     public ObservableList<Operation> execute (int toIndex) {
         executedOperations.clear();
 
-        if (toIndex < 0) {
-            toIndex = 0;
-        }
+        toIndex = toIndex < 0 ? 0 : toIndex;
+
         if (index == toIndex) {
             return executedOperations;
         }
@@ -370,19 +368,20 @@ public class ExecutionModel {
 
             case message:
                 // ============================================================= //
-            /*
-             * Message
-             */
+                /*
+                * Message
+                */
                 // ============================================================= //
+
                 // TODO: Callback mechanism.
-                Main.console.info("MESSAGE: " + ((OP_Message) op).getMessage());
+                System.out.println("MESSAGE: " + ((OP_Message) op).getMessage());
                 break;
             case read:
             case write:
                 // ============================================================= //
-            /*
-             * Read and Write
-             */
+                /*
+                 * Read and Write
+                 */
                 // ============================================================= //
                 Locator source = OpUtil.getLocator(op, Key.source);
                 if (source != null) {
@@ -402,9 +401,9 @@ public class ExecutionModel {
                 break;
             case swap:
                 // ============================================================= //
-            /*
-             * Swap
-             */
+                /*
+                 * Swap
+                 */
                 // ============================================================= //
                 Locator var1 = OpUtil.getLocator(op, Key.var1);
                 dataStructures.get(var1.identifier).applyOperation(op);
@@ -414,9 +413,9 @@ public class ExecutionModel {
                 break;
             case remove:
                 // ============================================================= //
-            /*
-             * TODO Fix after renaming remove.
-             */
+                /*
+                 * TODO Fix after renaming remove.
+                 */
                 // ============================================================= //
                 Locator removeTarget = OpUtil.getLocator(op, Key.target);
                 DataStructure targetStruct = dataStructures.get(removeTarget.identifier);
@@ -441,7 +440,7 @@ public class ExecutionModel {
     // ============================================================= //
 
     /**
-     * Set the data structures, operations, and atomic operations for this model. Will
+     * Set the data structures ans operations for this model. Will
      * keep the current collection if the corresponding argument is {@code null}.
      *
      * @param dataStructures A map of data structures.
@@ -555,7 +554,7 @@ public class ExecutionModel {
                     offset += numAtomic - 1;
 
                     if (atomicExecution) {
-                        index += numAtomic - 1; // Increase index as well if to ensure all operations are counted.
+                        index += numAtomic - 1; // Increase index as well to ensure all operations are counted.
                     }
                 }
             }
