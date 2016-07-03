@@ -1,8 +1,6 @@
 package render.element;
 
 import contract.datastructure.Element;
-import javafx.beans.binding.DoubleBinding;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
@@ -13,8 +11,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class BarchartElement extends RectangleElement {
 
-    private Rectangle rect;
-
+    private static final int labelOffset = -15;
     private double unitHeight;
 
     /**
@@ -27,7 +24,7 @@ public class BarchartElement extends RectangleElement {
      */
     public BarchartElement (double value, Paint paint, double node_width, double node_height) {
         super(value, paint, node_width, node_height);
-        valueLabel.setTranslateY(-15);
+        valueLabel.setTranslateY(labelOffset);
     }
 
     /**
@@ -39,7 +36,7 @@ public class BarchartElement extends RectangleElement {
      */
     public BarchartElement (Element element, double node_width, double node_height) {
         super(element, node_width, node_height);
-        valueLabel.setTranslateY(-15); // Raise slightly does it doesn't
+        valueLabel.setTranslateY(labelOffset); // Raise slightly does it doesn't
         // cover
         // the x-axis.
     }
@@ -63,15 +60,7 @@ public class BarchartElement extends RectangleElement {
 
     @Override
     public void createShape () {
-        // super.createShape(); TODO Uncomment, but fucks up positioning on the
-        // Y-axis.
-
-        rect = new Rectangle();
-        rect.setWidth(width);
-        rect.setHeight(height);
-        rect.setStroke(Color.BLACK);
-        shape = rect;
-
+        super.createShape();
         fixPositioning(0);
     }
 
@@ -86,8 +75,11 @@ public class BarchartElement extends RectangleElement {
     }
 
     private void fixPositioning (double y) {
+        /*
         DoubleBinding neg_half_height = rect.heightProperty().divide(2).multiply(-1);
         layoutYProperty().bind(neg_half_height.add(y).subtract(render.assets.Const.DEFAULT_ELEMENT_HEIGHT / 2));
+        */
+        System.out.println("BarchartElement.fixPositioning does nothing.");
     }
 
     @Override
