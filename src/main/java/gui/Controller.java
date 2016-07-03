@@ -167,7 +167,7 @@ public class Controller implements ComListener {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
         fc.setTitle("Open Log File");
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.wrapper"),
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.json"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File source = fc.showOpenDialog(primaryStage);
         if (source != null) {
@@ -284,7 +284,7 @@ public class Controller implements ComListener {
         DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd_HHmmss");
         Calendar cal = Calendar.getInstance();
         fc.setInitialFileName(dateFormat.format(cal.getTime()));
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.wrapper"),
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON-Files", "*.json"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File target = fc.showSaveDialog(primaryStage);
         if (target == null) {
